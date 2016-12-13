@@ -2,7 +2,8 @@ import {
 	isNullOrUndef,
 	isStatefulComponent,
 	isUndefined,
-	isString
+	isString,
+	isNull
 } from '../shared';
 
 export interface Styles {
