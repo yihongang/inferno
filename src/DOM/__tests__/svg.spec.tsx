@@ -26,13 +26,13 @@ describe('createTree - SVG (JSX)', () => {
 		render(<svg xmlns="http://www.w3.org/2000/svg">
 			<circle xmlns="http://www.w3.org/2000/svg"/>
 		</svg>, container);
+		expect(innerHTML(container.firstChild.firstChild.tagName)).to.equal('circle');
 		expect(
-			innerHTML(container.innerHTML)
-		).to.equal(
 			innerHTML(
-				'<svg xmlns="http://www.w3.org/2000/svg"><circle xmlns="http://www.w3.org/2000/svg"></circle></svg>'
+				container.firstChild.getAttribute('xmlns')
 			)
-		);
+		).to.equal('http://www.w3.org/2000/svg');
+
 		render(null, container);
 		expect(container.innerHTML).to.equal('');
 	});

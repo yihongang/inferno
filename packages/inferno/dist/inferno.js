@@ -133,7 +133,16 @@ function createVNode(flags, type, props, children, events, key, ref) {
 function createVoidVNode() {
     return createVNode(4096 /* Void */);
 }
-
+function createTextVNode(text) {
+    return createVNode(1 /* Text */, null, null, text);
+}
+function createFragmentVNode(children) {
+    return {
+        dom: children,
+        flags: 8192 /* Fragment */,
+        key: null
+    };
+}
 function isVNode(o) {
     return !!o.flags;
 }
@@ -311,7 +320,7 @@ constructDefaults('xml:base,xml:lang,xml:space', namespaces, xmlNS);
 constructDefaults('volume,defaultValue,defaultChecked', strictProps, true);
 constructDefaults('children,ref,key,selected,checked,value,multiple', skipProps, true);
 constructDefaults('onClick,onMouseDown,onMouseUp,onMouseMove,onSubmit,onDblClick,onKeyDown,onKeyUp,onKeyPress', delegatedProps, true);
-constructDefaults('muted,scoped,loop,open,checked,default,capture,disabled,readonly,required,autoplay,controls,seamless,reversed,allowfullscreen,novalidate', booleanProps, true);
+constructDefaults('muted,scoped,loop,open,checked,default,capture,disabled,readOnly,required,autoplay,controls,seamless,reversed,allowfullscreen,novalidate', booleanProps, true);
 constructDefaults('animationIterationCount,borderImageOutset,borderImageSlice,borderImageWidth,boxFlex,boxFlexGroup,boxOrdinalGroup,columnCount,flex,flexGrow,flexPositive,flexShrink,flexNegative,flexOrder,gridRow,gridColumn,fontWeight,lineClamp,lineHeight,opacity,order,orphans,tabSize,widows,zIndex,zoom,fillOpacity,floodOpacity,stopOpacity,strokeDasharray,strokeDashoffset,strokeMiterlimit,strokeOpacity,strokeWidth,', isUnitlessNumber, true);
 
 var delegatedEvents = new Map();
@@ -388,6 +397,16 @@ function attachEventToDocument(name, delegatedRoots) {
     };
     document.addEventListener(normalizeEventName(name), docEvent);
     return docEvent;
+}
+
+function normalize$1(input) {
+    if (isStringOrNumber(input)) {
+        return createTextVNode(input);
+    }
+    else if (isArray(input)) {
+        return createFragmentVNode(input);
+    }
+    return input;
 }
 
 function isCheckedType(type) {
@@ -783,6 +802,14 @@ function patch(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRec
                 replaceVNode(parentDom, mountElement(nextVNode, null, lifecycle, context, isSVG), lastVNode, lifecycle, isRecycling);
             }
         }
+        else if (nextFlags & 8192 /* Fragment */) {
+            if (lastFlags & 8192 /* Fragment */) {
+                debugger;
+            }
+            else {
+                debugger;
+            }
+        }
         else if (nextFlags & 1 /* Text */) {
             if (lastFlags & 1 /* Text */) {
                 patchText(lastVNode, nextVNode);
@@ -1096,21 +1123,16 @@ function patchNonKeyedChildren(lastChildren, nextChildren, dom, lifecycle, conte
     var lastChildrenLength = lastChildren.length;
     var nextChildrenLength = nextChildren.length;
     var commonLength = lastChildrenLength > nextChildrenLength ? nextChildrenLength : lastChildrenLength;
-    var i;
-    var nextNode = null;
-    var newNode;
-    // Loop backwards so we can use insertBefore
+    var i = 0;
+    for (; i < commonLength; i++) {
+        var lastChild = lastChildren[i];
+        var nextChild = nextChildren[i] = normalize$1(nextChildren[i]);
+        patch(lastChild, nextChild, dom, lifecycle, context, isSVG, isRecycling);
+    }
     if (lastChildrenLength < nextChildrenLength) {
-        for (i = nextChildrenLength - 1; i >= commonLength; i--) {
-            var child = nextChildren[i];
-            if (!isInvalid(child)) {
-                if (child.dom) {
-                    nextChildren[i] = child = cloneVNode(child);
-                }
-                newNode = mount(child, null, lifecycle, context, isSVG);
-                insertOrAppend(dom, newNode, nextNode);
-                nextNode = newNode;
-            }
+        for (i = commonLength; i < nextChildrenLength; i++) {
+            var child = nextChildren[i] = normalize$1(nextChildren[i]);
+            appendChild(dom, mount(child, null, lifecycle, context, isSVG));
         }
     }
     else if (nextChildrenLength === 0) {
@@ -1118,33 +1140,7 @@ function patchNonKeyedChildren(lastChildren, nextChildren, dom, lifecycle, conte
     }
     else if (lastChildrenLength > nextChildrenLength) {
         for (i = commonLength; i < lastChildrenLength; i++) {
-            var child$1 = lastChildren[i];
-            if (!isInvalid(child$1)) {
-                unmount(lastChildren[i], dom, lifecycle, false, false, isRecycling);
-            }
-        }
-    }
-    for (i = commonLength - 1; i >= 0; i--) {
-        var lastChild = lastChildren[i];
-        var nextChild = nextChildren[i];
-        if (isInvalid(nextChild)) {
-            if (!isInvalid(lastChild)) {
-                unmount(lastChild, dom, lifecycle, true, false, isRecycling);
-            }
-        }
-        else {
-            if (nextChild.dom) {
-                nextChildren[i] = nextChild = cloneVNode(nextChild);
-            }
-            if (isInvalid(lastChild)) {
-                newNode = mount(nextChild, null, lifecycle, context, isSVG);
-                insertOrAppend(dom, newNode, nextNode);
-                nextNode = newNode;
-            }
-            else {
-                patch(lastChild, nextChild, dom, lifecycle, context, isSVG, isRecycling);
-                nextNode = nextChild.dom;
-            }
+            unmount(lastChildren[i], dom, lifecycle, false, false, isRecycling);
         }
     }
 }
@@ -1591,7 +1587,6 @@ function removeProp(prop, lastValue, dom) {
         dom.value = '';
     }
     else if (prop === 'style') {
-        dom.style.cssText = null;
         dom.removeAttribute('style');
     }
     else if (isAttrAnEvent(prop)) {
@@ -1716,12 +1711,25 @@ function mount(vNode, parentDom, lifecycle, context, isSVG) {
     else if (flags & 1 /* Text */) {
         return mountText(vNode, parentDom);
     }
+    else if (flags & 8192 /* Fragment */) {
+        return mountFragment(vNode, parentDom, lifecycle, context, isSVG);
+    }
     else {
         if (process.env.NODE_ENV !== 'production') {
             throwError(("mount() expects a valid VNode, instead it received an object with the type \"" + (typeof vNode) + "\"."));
         }
         throwError();
     }
+}
+function mountFragment(vNode, parentDom, lifecycle, context, isSVG) {
+    var childrenAndDom = vNode.dom;
+    var trackEnd = document.createTextNode('');
+    childrenAndDom.trackEnd = trackEnd;
+    mountArrayChildren(childrenAndDom, childrenAndDom, lifecycle, context, isSVG);
+    if (parentDom) {
+        parentDom.appendChild(trackEnd);
+    }
+    return childrenAndDom;
 }
 function mountText(vNode, parentDom) {
     var dom = document.createTextNode(vNode.children);
@@ -1768,7 +1776,7 @@ function mountElement(vNode, parentDom, lifecycle, context, isSVG) {
             mountArrayChildren(children, dom, lifecycle, context, isSVG);
         }
         else if (isVNode(children)) {
-            mount(children, dom, lifecycle, context, isSVG);
+            mount(vNode.children = normalize$1(children), dom, lifecycle, context, isSVG);
         }
     }
     if (!(flags & 2 /* HtmlElement */)) {
@@ -1796,13 +1804,7 @@ function mountElement(vNode, parentDom, lifecycle, context, isSVG) {
 }
 function mountArrayChildren(children, dom, lifecycle, context, isSVG) {
     for (var i = 0; i < children.length; i++) {
-        var child = children[i];
-        if (!isInvalid(child)) {
-            if (child.dom) {
-                children[i] = child = cloneVNode(child);
-            }
-            mount(children[i], dom, lifecycle, context, isSVG);
-        }
+        mount(children[i] = normalize$1(children[i]), dom, lifecycle, context, isSVG);
     }
 }
 function mountComponent(vNode, parentDom, lifecycle, context, isSVG, isClass) {
@@ -1976,7 +1978,20 @@ function replaceVNode(parentDom, dom, vNode, lifecycle, isRecycling) {
         vNode = vNode.children._lastInput || vNode.children;
         shallowUnmount = true;
     }
-    replaceChild(parentDom, dom, vNode.dom);
+    var replaceDom = vNode.dom;
+    if (isArray(dom)) {
+        var trackEnd = dom.trackEnd;
+        replaceChild(parentDom, trackEnd, replaceDom);
+        for (var i = 0; i < dom.length; i++) {
+            insertOrAppend(parentDom, dom[i], trackEnd);
+        }
+    }
+    else if (isArray(replaceDom)) {
+        debugger;
+    }
+    else {
+        replaceChild(parentDom, dom, replaceDom);
+    }
     unmount(vNode, null, lifecycle, false, shallowUnmount, isRecycling);
 }
 function createStatelessComponentInput(vNode, component, props, context) {

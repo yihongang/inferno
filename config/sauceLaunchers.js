@@ -89,11 +89,12 @@ const config = {};
 /* ==============
     IE 
 ================== */
-['8', '9', '10', '11'].forEach((version) => {
+['11'].forEach((version) => {
   config['sl_ie-' + version] = {
     base: 'SauceLabs',
     browserName: 'Internet Explorer',
     platform: 'Windows 7',
+    'x-ua-compatible': 'IE=edge',
     version
   };
 });

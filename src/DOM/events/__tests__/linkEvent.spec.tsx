@@ -51,7 +51,10 @@ describe('linkEvent', () => {
 
 		function simulateInput(elm, text) {
 			if (typeof Event !== 'undefined') {
-				elm.dispatchEvent(new Event('input'));
+				const newEvent = document.createEvent('Event');
+				newEvent.initEvent('input', true, true);
+
+				elm.dispatchEvent(newEvent);
 			} else {
 				elm.oninput({
 					target: elm

@@ -1,6 +1,7 @@
 import { observable } from 'mobx';
 import { expect } from 'chai';
 import Provider from '../Provider';
+import { innerHTML } from '../../tools/utils';
 import connect from '../connect';
 import Component from 'inferno-component';
 import Inferno, { render } from 'inferno';
@@ -71,7 +72,7 @@ describe('MobX Provider', () => {
 			const link = container.querySelector('#update') as HTMLElement;
 			link.click();
 
-			expect(container.innerHTML).to.equal('<article><a id="update">update</a><span>Statefull</span></article>');
+			expect(container.innerHTML).to.equal(innerHTML('<article><a id="update">update</a><span>Statefull</span></article>'));
 		});
 
 		it('should update a stateless component', () => {
@@ -80,7 +81,7 @@ describe('MobX Provider', () => {
 			const link = container.querySelector('#update') as HTMLElement;
 			link.click();
 
-			expect(container.innerHTML).to.equal('<article><a id="update">update</a><span>Stateless</span></article>');
+			expect(container.innerHTML).to.equal(innerHTML('<article><a id="update">update</a><span>Stateless</span></article>'));
 		});
 
 		it('should update a stateless component with stores', () => {
@@ -89,7 +90,7 @@ describe('MobX Provider', () => {
 			const link = container.querySelector('#update') as HTMLElement;
 			link.click();
 
-			expect(container.innerHTML).to.equal('<article><a id="update">update</a><span>hello world</span></article>');
+			expect(container.innerHTML).to.equal(innerHTML('<article><a id="update">update</a><span>hello world</span></article>'));
 		});
 	});
 
@@ -117,10 +118,12 @@ describe('MobX Provider', () => {
 				</Provider>
 			</Provider>, container);
 
-			expect(container.innerHTML).to.equal('<div><span>one</span><span>two</span></div>');
+			expect(container.innerHTML).to.equal(innerHTML('<div><span>one</span><span>two</span></div>'));
 		});
 
-		// Unfinished
+		// TODO: UNFINISHED
+		// Commented out as travisCI does not honor skip syntax with all browsers
+		/*
 		it.skip('should warn if stores change', () => {
 
 			const TestComponent = connect(['store1'], class extends Component<any, any> {
@@ -138,8 +141,8 @@ describe('MobX Provider', () => {
 				<TestComponent/>
 			</Provider>, container);
 
-			expect(container.innerHTML).to.equal('<div>one</div>');
+			expect(container.innerHTML).to.equal(innerHTML('<div>one</div>'));
 		});
-
+		*/
 	});
 });
