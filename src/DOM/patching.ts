@@ -38,6 +38,7 @@ import {
 	copyPropsTo,
 	createStatelessComponentInput,
 	insertOrAppend,
+	appendChild,
 	isKeyed,
 	removeAllChildren,
 	replaceChild,
@@ -63,6 +64,7 @@ import {
 
 import Lifecycle from './lifecycle';
 import cloneVNode from '../factories/cloneVNode';
+import { normalize } from './normalization';
 import { componentToDOMNodeMap, findDOMNodeEnabled } from './rendering';
 import processElement from './wrappers/processElement';
 import { unmount } from './unmounting';
@@ -117,6 +119,12 @@ export function patch(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG
 					lifecycle,
 					isRecycling
 				);
+			}
+		} else if (nextFlags & VNodeFlags.Fragment) {
+			if (lastFlags & VNodeFlags.Fragment) {
+				debugger;
+			} else {
+				debugger;
 			}
 		} else if (nextFlags & VNodeFlags.Text) {
 			if (lastFlags & VNodeFlags.Text) {
@@ -439,56 +447,25 @@ export function patchNonKeyedChildren(lastChildren, nextChildren, dom, lifecycle
 	let lastChildrenLength = lastChildren.length;
 	let nextChildrenLength = nextChildren.length;
 	let commonLength = lastChildrenLength > nextChildrenLength ? nextChildrenLength : lastChildrenLength;
-	let i;
-	let nextNode = null;
-	let newNode;
+	let i = 0;
 
-	// Loop backwards so we can use insertBefore
+	for (; i < commonLength; i++) {
+		const lastChild = lastChildren[i];
+		const nextChild = nextChildren[i] = normalize(nextChildren[i]);
+
+		patch(lastChild, nextChild, dom, lifecycle, context, isSVG, isRecycling);
+	}
 	if (lastChildrenLength < nextChildrenLength) {
-		for (i = nextChildrenLength - 1; i >= commonLength; i--) {
-			let child = nextChildren[i];
+		for (i = commonLength; i < nextChildrenLength; i++) {
+			const child = nextChildren[i] = normalize(nextChildren[i]);
 
-			if (!isInvalid(child)) {
-				if (child.dom) {
-					nextChildren[i] = child = cloneVNode(child);
-				}
-				newNode = mount(child, null, lifecycle, context, isSVG);
-				insertOrAppend(dom, newNode, nextNode);
-				nextNode = newNode;
-			}
+			appendChild(dom, mount(child, null, lifecycle, context, isSVG));
 		}
 	} else if (nextChildrenLength === 0) {
 		removeAllChildren(dom, lastChildren, lifecycle, false, isRecycling);
 	} else if (lastChildrenLength > nextChildrenLength) {
 		for (i = commonLength; i < lastChildrenLength; i++) {
-			const child = lastChildren[i];
-
-			if (!isInvalid(child)) {
-				unmount(lastChildren[i], dom, lifecycle, false, false, isRecycling);
-			}
-		}
-	}
-
-	for (i = commonLength - 1; i >= 0; i--) {
-		const lastChild = lastChildren[i];
-		let nextChild = nextChildren[i];
-
-		if (isInvalid(nextChild)) {
-			if (!isInvalid(lastChild)) {
-				unmount(lastChild, dom, lifecycle, true, false, isRecycling);
-			}
-		} else {
-			if (nextChild.dom) {
-				nextChildren[i] = nextChild = cloneVNode(nextChild);
-			}
-			if (isInvalid(lastChild)) {
-				newNode = mount(nextChild, null, lifecycle, context, isSVG);
-				insertOrAppend(dom, newNode, nextNode);
-				nextNode = newNode;
-			} else {
-				patch(lastChild, nextChild, dom, lifecycle, context, isSVG, isRecycling);
-				nextNode = nextChild.dom;
-			}
+			unmount(lastChildren[i], dom, lifecycle, false, false, isRecycling);
 		}
 	}
 }

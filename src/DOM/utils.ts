@@ -95,7 +95,20 @@ export function replaceVNode(parentDom, dom, vNode, lifecycle, isRecycling) {
 		vNode = vNode.children._lastInput || vNode.children;
 		shallowUnmount = true;
 	}
-	replaceChild(parentDom, dom, vNode.dom);
+	const replaceDom = vNode.dom;
+
+	if (isArray(dom)) {
+		const trackEnd = (dom as any).trackEnd;
+
+		replaceChild(parentDom, trackEnd, replaceDom);
+		for (let i = 0; i < dom.length; i++) {
+			insertOrAppend(parentDom, dom[i], trackEnd);
+		}
+	} else if (isArray(replaceDom)) {
+		debugger;
+	} else {
+		replaceChild(parentDom, dom, replaceDom);
+	}
 	unmount(vNode, null, lifecycle, false, shallowUnmount, isRecycling);
 }
 

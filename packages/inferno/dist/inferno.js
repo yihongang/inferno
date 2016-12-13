@@ -65,6 +65,79 @@ function warning(condition, message) {
 }
 var EMPTY_OBJ = {};
 
+function normalizeProps(vNode, props, children) {
+    if (!(vNode.flags & 28 /* Component */) && isNullOrUndef(children) && !isNullOrUndef(props.children)) {
+        vNode.children = props.children;
+    }
+    if (props.ref) {
+        vNode.ref = props.ref;
+    }
+    if (props.events) {
+        vNode.events = props.events;
+    }
+    if (!isNullOrUndef(props.key)) {
+        vNode.key = props.key;
+    }
+}
+function normalizeElement(type, vNode) {
+    if (type === 'svg') {
+        vNode.flags = 128 /* SvgElement */;
+    }
+    else if (type === 'input') {
+        vNode.flags = 512 /* InputElement */;
+    }
+    else if (type === 'select') {
+        vNode.flags = 2048 /* SelectElement */;
+    }
+    else if (type === 'textarea') {
+        vNode.flags = 1024 /* TextareaElement */;
+    }
+    else if (type === 'media') {
+        vNode.flags = 256 /* MediaElement */;
+    }
+    else {
+        vNode.flags = 2 /* HtmlElement */;
+    }
+    if (vNode.props.children) {
+        vNode.children = vNode.props.children;
+    }
+}
+function normalize(vNode) {
+    var props = vNode.props;
+    var type = vNode.type;
+    // convert a wrongly created type back to element
+    if (isString(type) && (vNode.flags & 28 /* Component */)) {
+        normalizeElement(type, vNode);
+    }
+    if (props) {
+        normalizeProps(vNode, props, vNode.children);
+    }
+}
+function createVNode(flags, type, props, children, events, key, ref) {
+    if (flags & 16 /* ComponentUnknown */) {
+        flags = isStatefulComponent(type) ? 4 /* ComponentClass */ : 8 /* ComponentFunction */;
+    }
+    var vNode = {
+        children: isUndefined(children) ? null : children,
+        dom: null,
+        events: events || null,
+        flags: flags || 0,
+        key: key === undefined ? null : key,
+        props: props || null,
+        ref: ref || null,
+        type: type
+    };
+    normalize(vNode);
+    return vNode;
+}
+function createVoidVNode() {
+    return createVNode(4096 /* Void */);
+}
+
+function isVNode(o) {
+    return !!o.flags;
+}
+
 function cloneVNode(vNodeToClone, props) {
     var _children = [], len = arguments.length - 2;
     while ( len-- > 0 ) _children[ len ] = arguments[ len + 2 ];
@@ -145,163 +218,6 @@ function cloneVNode(vNodeToClone, props) {
     }
     newVNode.dom = null;
     return newVNode;
-}
-
-function _normalizeVNodes(nodes, result, i) {
-    for (; i < nodes.length; i++) {
-        var n = nodes[i];
-        if (!isInvalid(n)) {
-            if (Array.isArray(n)) {
-                _normalizeVNodes(n, result, 0);
-            }
-            else {
-                if (isStringOrNumber(n)) {
-                    n = createTextVNode(n);
-                }
-                else if (isVNode(n) && n.dom) {
-                    n = cloneVNode(n);
-                }
-                result.push(n);
-            }
-        }
-    }
-}
-function normalizeVNodes(nodes) {
-    var newNodes;
-    // we assign $ which basically means we've flagged this array for future note
-    // if it comes back again, we need to clone it, as people are using it
-    // in an immutable way
-    // tslint:disable
-    if (nodes['$']) {
-        nodes = nodes.slice();
-    }
-    else {
-        nodes['$'] = true;
-    }
-    // tslint:enable
-    for (var i = 0; i < nodes.length; i++) {
-        var n = nodes[i];
-        if (isInvalid(n)) {
-            if (!newNodes) {
-                newNodes = nodes.slice(0, i);
-            }
-            newNodes.push(n);
-        }
-        else if (Array.isArray(n)) {
-            var result = (newNodes || nodes).slice(0, i);
-            _normalizeVNodes(nodes, result, i);
-            return result;
-        }
-        else if (isStringOrNumber(n)) {
-            if (!newNodes) {
-                newNodes = nodes.slice(0, i);
-            }
-            newNodes.push(createTextVNode(n));
-        }
-        else if (isVNode(n) && n.dom) {
-            if (!newNodes) {
-                newNodes = nodes.slice(0, i);
-            }
-            newNodes.push(cloneVNode(n));
-        }
-        else if (newNodes) {
-            newNodes.push(cloneVNode(n));
-        }
-    }
-    return newNodes || nodes;
-}
-function normalizeChildren(children) {
-    if (isArray(children)) {
-        return normalizeVNodes(children);
-    }
-    else if (isVNode(children) && children.dom) {
-        return cloneVNode(children);
-    }
-    return children;
-}
-function normalizeProps(vNode, props, children) {
-    if (!(vNode.flags & 28 /* Component */) && isNullOrUndef(children) && !isNullOrUndef(props.children)) {
-        vNode.children = props.children;
-    }
-    if (props.ref) {
-        vNode.ref = props.ref;
-    }
-    if (props.events) {
-        vNode.events = props.events;
-    }
-    if (!isNullOrUndef(props.key)) {
-        vNode.key = props.key;
-    }
-}
-function normalizeElement(type, vNode) {
-    if (type === 'svg') {
-        vNode.flags = 128 /* SvgElement */;
-    }
-    else if (type === 'input') {
-        vNode.flags = 512 /* InputElement */;
-    }
-    else if (type === 'select') {
-        vNode.flags = 2048 /* SelectElement */;
-    }
-    else if (type === 'textarea') {
-        vNode.flags = 1024 /* TextareaElement */;
-    }
-    else if (type === 'media') {
-        vNode.flags = 256 /* MediaElement */;
-    }
-    else {
-        vNode.flags = 2 /* HtmlElement */;
-    }
-}
-function normalize(vNode) {
-    var props = vNode.props;
-    var type = vNode.type;
-    var children = vNode.children;
-    // convert a wrongly created type back to element
-    if (isString(type) && (vNode.flags & 28 /* Component */)) {
-        normalizeElement(type, vNode);
-        if (props.children) {
-            vNode.children = props.children;
-            children = props.children;
-        }
-    }
-    if (props) {
-        normalizeProps(vNode, props, children);
-    }
-    if (!isInvalid(children)) {
-        vNode.children = normalizeChildren(children);
-    }
-    if (props && !isInvalid(props.children)) {
-        props.children = normalizeChildren(props.children);
-    }
-}
-function createVNode(flags, type, props, children, events, key, ref, noNormalise) {
-    if (flags & 16 /* ComponentUnknown */) {
-        flags = isStatefulComponent(type) ? 4 /* ComponentClass */ : 8 /* ComponentFunction */;
-    }
-    var vNode = {
-        children: isUndefined(children) ? null : children,
-        dom: null,
-        events: events || null,
-        flags: flags || 0,
-        key: key === undefined ? null : key,
-        props: props || null,
-        ref: ref || null,
-        type: type
-    };
-    if (!noNormalise) {
-        normalize(vNode);
-    }
-    return vNode;
-}
-function createVoidVNode() {
-    return createVNode(4096 /* Void */);
-}
-function createTextVNode(text) {
-    return createVNode(1 /* Text */, null, null, text);
-}
-function isVNode(o) {
-    return !!o.flags;
 }
 
 var devToolsStatus = {

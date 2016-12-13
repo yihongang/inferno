@@ -25,7 +25,7 @@ import {
 } from './recycling';
 
 import Lifecycle from './lifecycle';
-import cloneVNode from '../factories/cloneVNode';
+import { normalize } from './normalization';
 import { componentToDOMNodeMap, findDOMNodeEnabled } from './rendering';
 import { devToolsStatus } from './devtools';
 import {
@@ -45,12 +45,26 @@ export function mount(vNode, parentDom, lifecycle, context, isSVG) {
 		return mountVoid(vNode, parentDom);
 	} else if (flags & VNodeFlags.Text) {
 		return mountText(vNode, parentDom);
+	} else if (flags & VNodeFlags.Fragment) {
+		return mountFragment(vNode, parentDom, lifecycle, context, isSVG);
 	} else {
 		if (process.env.NODE_ENV !== 'production') {
 			throwError(`mount() expects a valid VNode, instead it received an object with the type "${ typeof vNode }".`);
 		}
 		throwError();
 	}
+}
+
+function mountFragment(vNode, parentDom, lifecycle, context, isSVG) {
+	const childrenAndDom = vNode.dom;
+	const trackEnd = document.createTextNode('');
+
+	childrenAndDom.trackEnd = trackEnd;
+	mountArrayChildren(childrenAndDom, childrenAndDom, lifecycle, context, isSVG);
+	if (parentDom) {
+		parentDom.appendChild(trackEnd);
+	}
+	return childrenAndDom;
 }
 
 export function mountText(vNode, parentDom) {
@@ -103,7 +117,7 @@ export function mountElement(vNode, parentDom, lifecycle, context, isSVG) {
 		} else if (isArray(children)) {
 			mountArrayChildren(children, dom, lifecycle, context, isSVG);
 		} else if (isVNode(children)) {
-			mount(children, dom, lifecycle, context, isSVG);
+			mount(vNode.children = normalize(children), dom, lifecycle, context, isSVG);
 		}
 	}
 	if (!(flags & VNodeFlags.HtmlElement)) {
@@ -132,14 +146,7 @@ export function mountElement(vNode, parentDom, lifecycle, context, isSVG) {
 
 export function mountArrayChildren(children, dom, lifecycle, context, isSVG) {
 	for (let i = 0; i < children.length; i++) {
-		let child = children[i];
-
-		if (!isInvalid(child)) {
-			if (child.dom) {
-				children[i] = child = cloneVNode(child);
-			}
-			mount(children[i], dom, lifecycle, context, isSVG);
-		}
+		mount(children[i] = normalize(children[i]), dom, lifecycle, context, isSVG);
 	}
 }
 
