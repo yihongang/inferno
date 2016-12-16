@@ -41,18 +41,108 @@ export const enum VNodeFlags {
 	Component = ComponentFunction | ComponentClass | ComponentUnknown
 }
 
+export type Key = string | number | null;
+export type Ref = Function | null;
+export type InfernoChildren = string | number | VNode | Array<string | VNode> | null;
+export type Type = string | Function | null;
+
+export interface Props {
+	children?: InfernoChildren;
+	ref?: Ref;
+	key?: Key;
+	events?: Object | null;
+}
+
 export interface VNode {
-	children: string | Array<string | VNode> | VNode | null;
+	children: InfernoChildren;
 	dom: Node | null;
 	events: Object | null;
 	flags: VNodeFlags;
-	key: string | number | null;
-	props: Object | null;
-	ref: Function | null;
-	type: string | Function | null;
+	key: Key;
+	props: Props | null;
+	ref: Ref;
+	type: Type;
+	parentVNode?: VNode;
 }
 
+<<<<<<< HEAD
 function normalizeProps(vNode, props, children) {
+=======
+function _normalizeVNodes(nodes: any[], result: VNode[], i: number): void {
+	for (; i < nodes.length; i++) {
+		let n = nodes[i];
+
+		if (!isInvalid(n)) {
+			if (Array.isArray(n)) {
+				_normalizeVNodes(n, result, 0);
+			} else {
+				if (isStringOrNumber(n)) {
+					n = createTextVNode(n);
+				} else if (isVNode(n) && n.dom) {
+					n = cloneVNode(n);
+				}
+				result.push((applyKeyIfMissing(i, n as VNode)));
+			}
+		}
+	}
+}
+
+function applyKeyIfMissing(index: number, vNode: VNode): VNode {
+	if (isNull(vNode.key)) {
+		vNode.key = `.${ index }`;
+	}
+	return vNode;
+}
+
+export function normalizeVNodes(nodes: any[]): VNode[] {
+	let newNodes;
+
+	// we assign $ which basically means we've flagged this array for future note
+	// if it comes back again, we need to clone it, as people are using it
+	// in an immutable way
+	// tslint:disable
+	if (nodes['$']) {
+		nodes = nodes.slice();
+	} else {
+		nodes['$'] = true;
+	}
+	// tslint:enable
+	for (let i = 0; i < nodes.length; i++) {
+		const n = nodes[i];
+
+		if (isInvalid(n) || Array.isArray(n)) {
+			const result = (newNodes || nodes).slice(0, i) as VNode[];
+
+			_normalizeVNodes(nodes, result, i);
+			return result;
+		} else if (isStringOrNumber(n)) {
+			if (!newNodes) {
+				newNodes = nodes.slice(0, i) as VNode[];
+			}
+			newNodes.push(applyKeyIfMissing(i, createTextVNode(n)));
+		} else if ((isVNode(n) && n.dom) || (isNull(n.key) && !(n.flags & VNodeFlags.HasNonKeyedChildren))) {
+			if (!newNodes) {
+				newNodes = nodes.slice(0, i) as VNode[];
+			}
+			newNodes.push(applyKeyIfMissing(i, cloneVNode(n)));
+		} else if (newNodes) {
+			newNodes.push(applyKeyIfMissing(i, cloneVNode(n)));
+		}
+	}
+	return newNodes || nodes as VNode[];
+}
+
+function normalizeChildren(children: InfernoChildren | null) {
+	if (isArray(children)) {
+		return normalizeVNodes(children);
+	} else if (isVNode(children as VNode) && (children as VNode).dom) {
+		return cloneVNode(children as VNode);
+	}
+	return children;
+}
+
+function normalizeProps(vNode: VNode, props: Props, children: InfernoChildren) {
+>>>>>>> dev
 	if (!(vNode.flags & VNodeFlags.Component) && isNullOrUndef(children) && !isNullOrUndef(props.children)) {
 		vNode.children = props.children;
 	}
@@ -67,7 +157,7 @@ function normalizeProps(vNode, props, children) {
 	}
 }
 
-export function copyPropsTo(copyFrom, copyTo) {
+export function copyPropsTo(copyFrom: Props, copyTo: Props) {
 	for (let prop in copyFrom) {
 		if (isUndefined(copyTo[prop])) {
 			copyTo[prop] = copyFrom[prop];
@@ -75,7 +165,7 @@ export function copyPropsTo(copyFrom, copyTo) {
 	}
 }
 
-function normalizeElement(type, vNode) {
+function normalizeElement(type: string, vNode: VNode) {
 	if (type === 'svg') {
 		vNode.flags = VNodeFlags.SvgElement;
 	} else if (type === 'input') {
@@ -94,20 +184,41 @@ function normalizeElement(type, vNode) {
 	}
 }
 
-function normalize(vNode) {
+function normalize(vNode: VNode) {
 	const props = vNode.props;
 	const type = vNode.type;
 
 	// convert a wrongly created type back to element
 	if (isString(type) && (vNode.flags & VNodeFlags.Component)) {
+<<<<<<< HEAD
 		normalizeElement(type, vNode);
+=======
+		normalizeElement(type as string, vNode);
+		if (props.children) {
+			vNode.children = props.children;
+			children = props.children;
+		}
+>>>>>>> dev
 	}
 	if (props) {
 		normalizeProps(vNode, props, vNode.children);
 	}
 }
 
+<<<<<<< HEAD
 export function createVNode(flags, type?, props?, children?, events?, key?, ref?): VNode {
+=======
+export function createVNode(
+	flags: VNodeFlags,
+	type?,
+	props?: Props,
+	children?: InfernoChildren,
+	events?,
+	key?: Key,
+	ref?: Ref,
+	noNormalise?: boolean
+): VNode {
+>>>>>>> dev
 	if (flags & VNodeFlags.ComponentUnknown) {
 		flags = isStatefulComponent(type) ? VNodeFlags.ComponentClass : VNodeFlags.ComponentFunction;
 	}
@@ -125,14 +236,15 @@ export function createVNode(flags, type?, props?, children?, events?, key?, ref?
 	return vNode;
 }
 
-export function createVoidVNode() {
+export function createVoidVNode(): VNode {
 	return createVNode(VNodeFlags.Void);
 }
 
-export function createTextVNode(text) {
+export function createTextVNode(text: string | number): VNode {
 	return createVNode(VNodeFlags.Text, null, null, text);
 }
 
+<<<<<<< HEAD
 export function createFragmentVNode(children) {
 	return {
 		dom: children,
@@ -142,5 +254,8 @@ export function createFragmentVNode(children) {
 }
 
 export function isVNode(o: VType): boolean {
+=======
+export function isVNode(o: VNode): boolean {
+>>>>>>> dev
 	return !!o.flags;
 }
