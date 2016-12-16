@@ -3,7 +3,6 @@ import {
 	isStatefulComponent,
 	isUndefined,
 	isString,
-	isNull
 } from '../shared';
 
 export interface Styles {
@@ -65,6 +64,14 @@ function normalizeProps(vNode, props, children) {
 	}
 	if (!isNullOrUndef(props.key)) {
 		vNode.key = props.key;
+	}
+}
+
+export function copyPropsTo(copyFrom, copyTo) {
+	for (let prop in copyFrom) {
+		if (isUndefined(copyTo[prop])) {
+			copyTo[prop] = copyFrom[prop];
+		}
 	}
 }
 

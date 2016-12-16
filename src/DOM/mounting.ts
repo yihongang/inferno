@@ -1,5 +1,5 @@
+import { EMPTY_OBJ } from 'inferno';
 import {
-	EMPTY_OBJ,
 	isArray,
 	isFunction,
 	isInvalid,
@@ -9,10 +9,9 @@ import {
 	isUndefined,
 	throwError,
 } from '../shared';
-import { VNodeFlags, isVNode } from '../core/shapes';
+import { VNodeFlags, isVNode, copyPropsTo } from '../core/shapes';
 import {
 	appendChild,
-	copyPropsTo,
 	createStatefulComponentInstance,
 	createStatelessComponentInput,
 	documentCreateElement,
@@ -55,14 +54,16 @@ export function mount(vNode, parentDom, lifecycle, context, isSVG) {
 	}
 }
 
-function mountFragment(vNode, parentDom, lifecycle, context, isSVG) {
+export function mountFragment(vNode, parentDom, lifecycle, context, isSVG) {
 	const childrenAndDom = vNode.dom;
 	const trackEnd = document.createTextNode('');
+	const docFrag = document.createDocumentFragment();
 
 	childrenAndDom.trackEnd = trackEnd;
-	mountArrayChildren(childrenAndDom, childrenAndDom, lifecycle, context, isSVG);
+	mountArrayChildren(childrenAndDom, docFrag, lifecycle, context, isSVG);
 	if (parentDom) {
-		parentDom.appendChild(trackEnd);
+		appendChild(parentDom, docFrag);
+		appendChild(parentDom, trackEnd);
 	}
 	return childrenAndDom;
 }

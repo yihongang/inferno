@@ -20,6 +20,7 @@ import {
 	createVoidVNode,
 	isVNode,
 	Styles,
+	copyPropsTo,
 } from '../core/shapes';
 import {
 	booleanProps,
@@ -35,7 +36,6 @@ import {
 	getIncrementalId,
 } from './devtools';
 import {
-	copyPropsTo,
 	createStatelessComponentInput,
 	insertOrAppend,
 	appendChild,
@@ -57,6 +57,7 @@ import {
 	mountStatelessComponentCallbacks,
 	mountText,
 	mountVoid,
+	mountFragment,
 } from './mounting';
 import {
 	handleEvent
@@ -122,9 +123,21 @@ export function patch(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG
 			}
 		} else if (nextFlags & VNodeFlags.Fragment) {
 			if (lastFlags & VNodeFlags.Fragment) {
-				debugger;
+				patchFragment(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling);
 			} else {
-				debugger;
+				replaceVNode(
+					parentDom,
+					mountFragment(
+						nextVNode,
+						null,
+						lifecycle,
+						context,
+						isSVG
+					),
+					lastVNode,
+					lifecycle,
+					isRecycling
+				);
 			}
 		} else if (nextFlags & VNodeFlags.Text) {
 			if (lastFlags & VNodeFlags.Text) {
@@ -143,6 +156,10 @@ export function patch(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG
 			replaceLastChildAndUnmount(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling);
 		}
 	}
+}
+
+function patchFragment(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling) {
+	debugger;
 }
 
 function unmountChildren(children, dom, lifecycle, isRecycling) {

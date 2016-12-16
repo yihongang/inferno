@@ -1,14 +1,18 @@
 import {
 	isStringOrNumber,
-	isArray
+	isArray,
+	isInvalid
 } from '../shared';
 import {
 	createTextVNode,
-	createFragmentVNode
+	createFragmentVNode,
+	createVoidVNode
 } from '../core/shapes';
 
 export function normalize(input) {
-	if (isStringOrNumber(input)) {
+	if (isInvalid(input)) {
+		return createVoidVNode();
+	} else if (isStringOrNumber(input)) {
 		return createTextVNode(input);
 	} else if (isArray(input)) {
 		return createFragmentVNode(input);

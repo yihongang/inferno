@@ -59,8 +59,7 @@ export default function cloneVNode(vNodeToClone, props?, ..._children) {
 				null,
 				events,
 				key,
-				ref,
-				true
+				ref
 			);
 		} else if (flags & VNodeFlags.Element) {
 			children = (props && props.children) || vNodeToClone.children;
@@ -69,8 +68,7 @@ export default function cloneVNode(vNodeToClone, props?, ..._children) {
 				children,
 				events,
 				key,
-				ref,
-				!children
+				ref
 			);
 		}
 	}

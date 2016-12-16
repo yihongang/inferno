@@ -20,14 +20,6 @@ import {
 	unmount,
 } from './unmounting';
 
-export function copyPropsTo(copyFrom, copyTo) {
-	for (let prop in copyFrom) {
-		if (isUndefined(copyTo[prop])) {
-			copyTo[prop] = copyFrom[prop];
-		}
-	}
-}
-
 export function createStatefulComponentInstance(vNode, Component, props, context, isSVG, devToolsStatus) {
 	if (isUndefined(context)) {
 		context = {};
@@ -102,10 +94,15 @@ export function replaceVNode(parentDom, dom, vNode, lifecycle, isRecycling) {
 
 		replaceChild(parentDom, trackEnd, replaceDom);
 		for (let i = 0; i < dom.length; i++) {
-			insertOrAppend(parentDom, dom[i], trackEnd);
+			insertOrAppend(parentDom, dom[i].dom, trackEnd);
 		}
 	} else if (isArray(replaceDom)) {
-		debugger;
+		const trackEnd = (replaceDom as any).trackEnd;
+
+		for (let i = 0; i < replaceDom.length; i++) {
+			removeChild(parentDom, replaceDom[i]);
+		}
+		replaceChild(parentDom, dom, trackEnd);
 	} else {
 		replaceChild(parentDom, dom, replaceDom);
 	}
@@ -150,7 +147,18 @@ export function updateTextContent(dom, text) {
 }
 
 export function appendChild(parentDom, dom) {
-	parentDom.appendChild(dom);
+	if (isArray(parentDom)) {
+		const trackEnd = (parentDom as any).trackEnd;
+		const realParentDom = trackEnd.parentNode;
+
+		if (realParentDom) {
+			realParentDom.insertBefore(dom, trackEnd);
+		}
+	} else if (isArray(dom)) {
+		debugger;
+	} else {
+		parentDom.appendChild(dom);
+	}
 }
 
 export function insertOrAppend(parentDom, newNode, nextNode) {
