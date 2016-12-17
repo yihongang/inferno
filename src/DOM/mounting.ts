@@ -24,7 +24,7 @@ import {
 } from './recycling';
 
 import Lifecycle from './lifecycle';
-import { normalize } from './normalization';
+import { normalize, normalizeArray } from './normalization';
 import { componentToDOMNodeMap, findDOMNodeEnabled } from './rendering';
 import { devToolsStatus } from './devtools';
 import {
@@ -106,16 +106,17 @@ export function mountElement(vNode, parentDom, lifecycle, context, isSVG) {
 		isSVG = true;
 	}
 	const dom = documentCreateElement(tag, isSVG);
-	const children = vNode.children;
 	const props = vNode.props;
 	const events = vNode.events;
 	const ref = vNode.ref;
+	let children = vNode.children;
 
 	vNode.dom = dom;
 	if (!isNull(children)) {
 		if (isStringOrNumber(children)) {
 			setTextContent(dom, children);
 		} else if (isArray(children)) {
+			children = vNode.children = normalizeArray(children);
 			mountArrayChildren(children, dom, lifecycle, context, isSVG);
 		} else if (isVNode(children)) {
 			mount(vNode.children = normalize(children), dom, lifecycle, context, isSVG);

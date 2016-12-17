@@ -3,6 +3,7 @@ import {
 	createVoidVNode,
 } from '../core/shapes';
 import {
+	isNull,
 	isArray,
 	isInvalid,
 	isNullOrUndef,
@@ -100,7 +101,7 @@ export function replaceVNode(parentDom, dom, vNode, lifecycle, isRecycling) {
 		const trackEnd = (replaceDom as any).trackEnd;
 
 		for (let i = 0; i < replaceDom.length; i++) {
-			removeChild(parentDom, replaceDom[i]);
+			removeChild(parentDom, replaceDom[i].dom);
 		}
 		replaceChild(parentDom, dom, trackEnd);
 	} else {
@@ -162,10 +163,17 @@ export function appendChild(parentDom, dom) {
 }
 
 export function insertOrAppend(parentDom, newNode, nextNode) {
-	if (isNullOrUndef(nextNode)) {
-		appendChild(parentDom, newNode);
+	if (isNull(nextNode)) {
+		if (isArray(parentDom)) {
+			const trackEnd = (parentDom as any).trackEnd;
+
+			parentDom = trackEnd.parentNode;
+			parentDom.insertBefore(newNode, trackEnd);
+		} else {
+			appendChild(parentDom, newNode);
+		}
 	} else {
-		parentDom.insertBefore(newNode, nextNode);
+		parentDom.insertBefore(newNode, nextNode)
 	}
 }
 
@@ -186,6 +194,9 @@ export function replaceWithNewNode(lastNode, nextNode, parentDom, lifecycle, con
 }
 
 export function replaceChild(parentDom, nextDom, lastDom) {
+	if (isArray(parentDom)) {
+		parentDom = (parentDom as any).trackEnd.parentNode;
+	}
 	if (!parentDom) {
 		parentDom = lastDom.parentNode;
 	}
@@ -193,7 +204,12 @@ export function replaceChild(parentDom, nextDom, lastDom) {
 }
 
 export function removeChild(parentDom, dom) {
-	parentDom.removeChild(dom);
+	if (isArray(parentDom)) {
+		parentDom = (parentDom as any).trackEnd.parentNode;
+	}
+	if (parentDom) {
+		parentDom.removeChild(dom);
+	}
 }
 
 export function removeAllChildren(dom, children, lifecycle, shallowUnmount, isRecycling) {
