@@ -1,13 +1,13 @@
 /*!
- * inferno v1.0.0-beta34
+ * inferno v1.0.0-beta36
  * (c) 2016 Dominic Gannaway
  * Released under the MIT License.
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('./inferno')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'inferno'], factory) :
-	(factory((global.Inferno = global.Inferno || {}),global.inferno));
-}(this, (function (exports,inferno) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.Inferno = global.Inferno || {})));
+}(this, (function (exports) { 'use strict';
 
 var NO_OP = '$NO_OP';
 var ERROR_MSG = 'a runtime error occured! Use Inferno in development environment to find the error.';
@@ -63,7 +63,7 @@ function warning(condition, message) {
         console.error(message);
     }
 }
-var EMPTY_OBJ$1 = {};
+var EMPTY_OBJ = {};
 
 function normalizeProps(vNode, props, children) {
     if (!(vNode.flags & 28 /* Component */) && isNullOrUndef(children) && !isNullOrUndef(props.children)) {
@@ -203,11 +203,11 @@ function cloneVNode(vNodeToClone, props) {
         var key = !isNullOrUndef(vNodeToClone.key) ? vNodeToClone.key : props.key;
         var ref = vNodeToClone.ref || props.ref;
         if (flags & 28 /* Component */) {
-            newVNode = createVNode(flags, vNodeToClone.type, Object.assign({}, vNodeToClone.props, props), null, events, key, ref, true);
+            newVNode = createVNode(flags, vNodeToClone.type, Object.assign({}, vNodeToClone.props, props), null, events, key, ref);
         }
         else if (flags & 3970 /* Element */) {
             children = (props && props.children) || vNodeToClone.children;
-            newVNode = createVNode(flags, vNodeToClone.type, Object.assign({}, vNodeToClone.props, props), children, events, key, ref, !children);
+            newVNode = createVNode(flags, vNodeToClone.type, Object.assign({}, vNodeToClone.props, props), children, events, key, ref);
         }
     }
     if (flags & 28 /* Component */) {
@@ -319,8 +319,13 @@ var namespaces = {};
 var isUnitlessNumber = {};
 var skipProps = {};
 var dehyphenProps = {
-    textAnchor: 'text-anchor'
+    httpEquiv: 'http-equiv',
+    acceptCharset: 'accept-charset'
 };
+var probablyKebabProps = /^(accentH|arabicF|capH|font[FSVW]|glyph[NO]|horiz[AO]|panose1|renderingI|strikethrough[PT]|underline[PT]|v[AHIM]|vert[AO]|xH|alignmentB|baselineS|clip[PR]|color[IPR]|dominantB|enableB|fill[OR]|flood[COF]|imageR|letterS|lightingC|marker[EMS]|pointerE|shapeR|stop[CO]|stroke[DLMOW]|text[ADR]|unicodeB|wordS|writingM).*/;
+function kebabize(str, smallLetter, largeLetter) {
+    return (smallLetter + "-" + (largeLetter.toLowerCase()));
+}
 var delegatedProps = {};
 constructDefaults('xlink:href,xlink:arcrole,xlink:actuate,xlink:role,xlink:titlef,xlink:type', namespaces, xlinkNS);
 constructDefaults('xml:base,xml:lang,xml:space', namespaces, xmlNS);
@@ -407,7 +412,10 @@ function attachEventToDocument(name, delegatedRoots) {
 }
 
 function normalize$1(input) {
-    if (isStringOrNumber(input)) {
+    if (isInvalid(input)) {
+        return createVoidVNode();
+    }
+    else if (isStringOrNumber(input)) {
         return createTextVNode(input);
     }
     else if (isArray(input)) {
@@ -425,7 +433,7 @@ function isControlled(props) {
 }
 function onTextInputChange(e) {
     var vNode = this.vNode;
-    var events = vNode.events || EMPTY_OBJ$1;
+    var events = vNode.events || EMPTY_OBJ;
     var dom = vNode.dom;
     if (events.onInput) {
         var event = events.onInput;
@@ -445,7 +453,7 @@ function onTextInputChange(e) {
 }
 function wrappedOnChange(e) {
     var vNode = this.vNode;
-    var events = vNode.events || EMPTY_OBJ$1;
+    var events = vNode.events || EMPTY_OBJ;
     var event = events.onChange;
     if (event.event) {
         event.event(event.data, e);
@@ -456,7 +464,7 @@ function wrappedOnChange(e) {
 }
 function onCheckboxChange(e) {
     var vNode = this.vNode;
-    var events = vNode.events || EMPTY_OBJ$1;
+    var events = vNode.events || EMPTY_OBJ;
     var dom = vNode.dom;
     if (events.onClick) {
         var event = events.onClick;
@@ -487,7 +495,7 @@ function handleAssociatedRadioInputs(name) {
     });
 }
 function processInput(vNode, dom) {
-    var props = vNode.props || EMPTY_OBJ$1;
+    var props = vNode.props || EMPTY_OBJ;
     applyValue(vNode, dom);
     if (isControlled(props)) {
         var inputWrapper = wrappers.get(dom);
@@ -513,7 +521,7 @@ function processInput(vNode, dom) {
     }
 }
 function applyValue(vNode, dom) {
-    var props = vNode.props || EMPTY_OBJ$1;
+    var props = vNode.props || EMPTY_OBJ;
     var type = props.type;
     var value = props.value;
     var checked = props.checked;
@@ -547,7 +555,7 @@ function isControlled$1(props) {
     return !isNullOrUndef(props.value);
 }
 function updateChildOption(vNode, value) {
-    var props = vNode.props || EMPTY_OBJ$1;
+    var props = vNode.props || EMPTY_OBJ;
     var dom = vNode.dom;
     // we do this as multiple may have changed
     dom.value = props.value;
@@ -560,7 +568,7 @@ function updateChildOption(vNode, value) {
 }
 function onSelectChange(e) {
     var vNode = this.vNode;
-    var events = vNode.events || EMPTY_OBJ$1;
+    var events = vNode.events || EMPTY_OBJ;
     var dom = vNode.dom;
     if (events.onChange) {
         var event = events.onChange;
@@ -579,7 +587,7 @@ function onSelectChange(e) {
     applyValue$1(this.vNode, dom);
 }
 function processSelect(vNode, dom) {
-    var props = vNode.props || EMPTY_OBJ$1;
+    var props = vNode.props || EMPTY_OBJ;
     applyValue$1(vNode, dom);
     if (isControlled$1(props)) {
         var selectWrapper = wrappers.get(dom);
@@ -595,7 +603,7 @@ function processSelect(vNode, dom) {
     }
 }
 function applyValue$1(vNode, dom) {
-    var props = vNode.props || EMPTY_OBJ$1;
+    var props = vNode.props || EMPTY_OBJ;
     if (props.multiple !== dom.multiple) {
         dom.multiple = props.multiple;
     }
@@ -616,7 +624,7 @@ function isControlled$2(props) {
 }
 function onTextareaInputChange(e) {
     var vNode = this.vNode;
-    var events = vNode.events || EMPTY_OBJ$1;
+    var events = vNode.events || EMPTY_OBJ;
     var dom = vNode.dom;
     if (events.onInput) {
         var event = events.onInput;
@@ -635,7 +643,7 @@ function onTextareaInputChange(e) {
     applyValue$2(this.vNode, dom);
 }
 function processTextarea(vNode, dom) {
-    var props = vNode.props || EMPTY_OBJ$1;
+    var props = vNode.props || EMPTY_OBJ;
     applyValue$2(vNode, dom);
     var textareaWrapper = wrappers.get(dom);
     if (isControlled$2(props)) {
@@ -651,7 +659,7 @@ function processTextarea(vNode, dom) {
     }
 }
 function applyValue$2(vNode, dom) {
-    var props = vNode.props || EMPTY_OBJ$1;
+    var props = vNode.props || EMPTY_OBJ;
     var value = props.value;
     if (dom.value !== value) {
         dom.value = value;
@@ -695,19 +703,6 @@ function unmountComponent(vNode, parentDom, lifecycle, canRecycle, shallowUnmoun
     var ref = vNode.ref;
     var dom = vNode.dom;
     if (!isRecycling) {
-        if (!shallowUnmount) {
-            if (isStatefulComponent$$1) {
-                var subLifecycle = instance._lifecycle;
-                if (!subLifecycle.fastUnmount) {
-                    unmount(instance._lastInput, null, lifecycle, false, shallowUnmount, isRecycling);
-                }
-            }
-            else {
-                if (!lifecycle.fastUnmount) {
-                    unmount(instance, null, lifecycle, false, shallowUnmount, isRecycling);
-                }
-            }
-        }
         if (isStatefulComponent$$1) {
             instance._ignoreSetState = true;
             instance.componentWillUnmount();
@@ -720,6 +715,19 @@ function unmountComponent(vNode, parentDom, lifecycle, canRecycle, shallowUnmoun
         else if (!isNullOrUndef(ref)) {
             if (!isNullOrUndef(ref.onComponentWillUnmount)) {
                 ref.onComponentWillUnmount(dom);
+            }
+        }
+        if (!shallowUnmount) {
+            if (isStatefulComponent$$1) {
+                var subLifecycle = instance._lifecycle;
+                if (!subLifecycle.fastUnmount) {
+                    unmount(instance._lastInput, null, lifecycle, false, shallowUnmount, isRecycling);
+                }
+            }
+            else {
+                if (!lifecycle.fastUnmount) {
+                    unmount(instance, null, lifecycle, false, shallowUnmount, isRecycling);
+                }
             }
         }
     }
@@ -811,10 +819,10 @@ function patch(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRec
         }
         else if (nextFlags & 8192 /* Fragment */) {
             if (lastFlags & 8192 /* Fragment */) {
-                debugger;
+                patchFragment(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling);
             }
             else {
-                debugger;
+                replaceVNode(parentDom, mountFragment(nextVNode, null, lifecycle, context, isSVG), lastVNode, lifecycle, isRecycling);
             }
         }
         else if (nextFlags & 1 /* Text */) {
@@ -838,6 +846,9 @@ function patch(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRec
             replaceLastChildAndUnmount(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling);
         }
     }
+}
+function patchFragment(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling) {
+    debugger;
 }
 function unmountChildren(children, dom, lifecycle, isRecycling) {
     if (isVNode(children)) {
@@ -967,7 +978,7 @@ function patchChildren(lastFlags, nextFlags, lastChildren, nextChildren, dom, li
 function patchComponent(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isClass, isRecycling) {
     var lastType = lastVNode.type;
     var nextType = nextVNode.type;
-    var nextProps = nextVNode.props || EMPTY_OBJ$1;
+    var nextProps = nextVNode.props || EMPTY_OBJ;
     var lastKey = lastVNode.key;
     var nextKey = nextVNode.key;
     var defaultProps = nextType.defaultProps;
@@ -1484,27 +1495,37 @@ function patchProp(prop, lastValue, nextValue, dom, isSVG, lifecycle) {
             }
         }
         else if (prop !== 'childrenType' && prop !== 'ref' && prop !== 'key') {
-            var dehyphenProp = dehyphenProps[prop];
-            var ns = namespaces[prop];
-            if (ns) {
-                dom.setAttributeNS(ns, dehyphenProp || prop, nextValue);
+            var dehyphenProp;
+            if (dehyphenProps[prop]) {
+                dehyphenProp = dehyphenProps[prop];
+            }
+            else if (isSVG && prop.match(probablyKebabProps)) {
+                dehyphenProp = prop.replace(/([a-z])([A-Z]|1)/g, kebabize);
+                dehyphenProps[prop] = dehyphenProp;
             }
             else {
-                dom.setAttribute(dehyphenProp || prop, nextValue);
+                dehyphenProp = prop;
+            }
+            var ns = namespaces[prop];
+            if (ns) {
+                dom.setAttributeNS(ns, dehyphenProp, nextValue);
+            }
+            else {
+                dom.setAttribute(dehyphenProp, nextValue);
             }
         }
     }
 }
 function patchEvents(lastEvents, nextEvents, dom, lifecycle) {
-    lastEvents = lastEvents || EMPTY_OBJ$1;
-    nextEvents = nextEvents || EMPTY_OBJ$1;
-    if (nextEvents !== EMPTY_OBJ$1) {
+    lastEvents = lastEvents || EMPTY_OBJ;
+    nextEvents = nextEvents || EMPTY_OBJ;
+    if (nextEvents !== EMPTY_OBJ) {
         for (var name in nextEvents) {
             // do not add a hasOwnProperty check here, it affects performance
             patchEvent(name, lastEvents[name], nextEvents[name], dom, lifecycle);
         }
     }
-    if (lastEvents !== EMPTY_OBJ$1) {
+    if (lastEvents !== EMPTY_OBJ) {
         for (var name$1 in lastEvents) {
             // do not add a hasOwnProperty check here, it affects performance
             if (isNullOrUndef(nextEvents[name$1])) {
@@ -1537,9 +1558,9 @@ function patchEvent(name, lastValue, nextValue, dom, lifecycle) {
     }
 }
 function patchProps(lastProps, nextProps, dom, lifecycle, context, isSVG) {
-    lastProps = lastProps || EMPTY_OBJ$1;
-    nextProps = nextProps || EMPTY_OBJ$1;
-    if (nextProps !== EMPTY_OBJ$1) {
+    lastProps = lastProps || EMPTY_OBJ;
+    nextProps = nextProps || EMPTY_OBJ;
+    if (nextProps !== EMPTY_OBJ) {
         for (var prop in nextProps) {
             // do not add a hasOwnProperty check here, it affects performance
             var nextValue = nextProps[prop];
@@ -1552,7 +1573,7 @@ function patchProps(lastProps, nextProps, dom, lifecycle, context, isSVG) {
             }
         }
     }
-    if (lastProps !== EMPTY_OBJ$1) {
+    if (lastProps !== EMPTY_OBJ) {
         for (var prop$1 in lastProps) {
             // do not add a hasOwnProperty check here, it affects performance
             if (isNullOrUndef(nextProps[prop$1])) {
@@ -1731,10 +1752,12 @@ function mount(vNode, parentDom, lifecycle, context, isSVG) {
 function mountFragment(vNode, parentDom, lifecycle, context, isSVG) {
     var childrenAndDom = vNode.dom;
     var trackEnd = document.createTextNode('');
+    var docFrag = document.createDocumentFragment();
     childrenAndDom.trackEnd = trackEnd;
-    mountArrayChildren(childrenAndDom, childrenAndDom, lifecycle, context, isSVG);
+    mountArrayChildren(childrenAndDom, docFrag, lifecycle, context, isSVG);
     if (parentDom) {
-        parentDom.appendChild(trackEnd);
+        appendChild(parentDom, docFrag);
+        appendChild(parentDom, trackEnd);
     }
     return childrenAndDom;
 }
@@ -1825,7 +1848,7 @@ function mountComponent(vNode, parentDom, lifecycle, context, isSVG, isClass) {
         }
     }
     var type = vNode.type;
-    var props = vNode.props || inferno.EMPTY_OBJ;
+    var props = vNode.props || EMPTY_OBJ;
     var defaultProps = type.defaultProps;
     var ref = vNode.ref;
     var dom;
@@ -1918,7 +1941,7 @@ function createStatefulComponentInstance(vNode, Component, props, context, isSVG
     }
     var instance = new Component(props, context);
     instance.context = context;
-    if (instance.props === EMPTY_OBJ$1) {
+    if (instance.props === EMPTY_OBJ) {
         instance.props = props;
     }
     instance._patch = patch;
@@ -1983,11 +2006,15 @@ function replaceVNode(parentDom, dom, vNode, lifecycle, isRecycling) {
         var trackEnd = dom.trackEnd;
         replaceChild(parentDom, trackEnd, replaceDom);
         for (var i = 0; i < dom.length; i++) {
-            insertOrAppend(parentDom, dom[i], trackEnd);
+            insertOrAppend(parentDom, dom[i].dom, trackEnd);
         }
     }
     else if (isArray(replaceDom)) {
-        debugger;
+        var trackEnd$1 = replaceDom.trackEnd;
+        for (var i$1 = 0; i$1 < replaceDom.length; i$1++) {
+            removeChild(parentDom, replaceDom[i$1]);
+        }
+        replaceChild(parentDom, dom, trackEnd$1);
     }
     else {
         replaceChild(parentDom, dom, replaceDom);
@@ -2031,7 +2058,19 @@ function updateTextContent(dom, text) {
     dom.firstChild.nodeValue = text;
 }
 function appendChild(parentDom, dom) {
-    parentDom.appendChild(dom);
+    if (isArray(parentDom)) {
+        var trackEnd = parentDom.trackEnd;
+        var realParentDom = trackEnd.parentNode;
+        if (realParentDom) {
+            realParentDom.insertBefore(dom, trackEnd);
+        }
+    }
+    else if (isArray(dom)) {
+        debugger;
+    }
+    else {
+        parentDom.appendChild(dom);
+    }
 }
 function insertOrAppend(parentDom, newNode, nextNode) {
     if (isNullOrUndef(nextNode)) {
@@ -2083,7 +2122,7 @@ function isKeyed(lastChildren, nextChildren) {
         && lastChildren.length && !isNullOrUndef(lastChildren[0]) && !isNullOrUndef(lastChildren[0].key);
 }
 
-function normaliseChildNodes(dom) {
+function normalizeChildNodes(dom) {
     var rawChildNodes = dom.childNodes;
     var length = rawChildNodes.length;
     var i = 0;
@@ -2107,7 +2146,7 @@ function normaliseChildNodes(dom) {
 }
 function hydrateComponent(vNode, dom, lifecycle, context, isSVG, isClass) {
     var type = vNode.type;
-    var props = vNode.props || inferno.EMPTY_OBJ;
+    var props = vNode.props || EMPTY_OBJ;
     var ref = vNode.ref;
     vNode.dom = dom;
     if (isClass) {
@@ -2174,7 +2213,7 @@ function hydrateElement(vNode, dom, lifecycle, context, isSVG) {
     }
 }
 function hydrateChildren(children, dom, lifecycle, context, isSVG) {
-    normaliseChildNodes(dom);
+    normalizeChildNodes(dom);
     var domNodes = Array.prototype.slice.call(dom.childNodes);
     var childNodeIndex = 0;
     if (isArray(children)) {
@@ -2347,7 +2386,7 @@ if (isBrowser) {
 }
 
 if (process.env.NODE_ENV !== 'production') {
-	Object.freeze(EMPTY_OBJ$1);
+	Object.freeze(EMPTY_OBJ);
 	var testFunc = function testFn() {};
 	warning(
 		(testFunc.name || testFunc.toString()).indexOf('testFn') !== -1,
@@ -2369,7 +2408,7 @@ var index = {
 
 	// used to shared common items between Inferno libs
 	NO_OP: NO_OP,
-	EMPTY_OBJ: EMPTY_OBJ$1,
+	EMPTY_OBJ: EMPTY_OBJ,
 
 	//DOM
 	render: render,
@@ -2384,7 +2423,7 @@ exports.linkEvent = linkEvent;
 exports.createVNode = createVNode;
 exports.cloneVNode = cloneVNode;
 exports.NO_OP = NO_OP;
-exports.EMPTY_OBJ = EMPTY_OBJ$1;
+exports.EMPTY_OBJ = EMPTY_OBJ;
 exports.render = render;
 exports.findDOMNode = findDOMNode;
 exports.createRenderer = createRenderer;

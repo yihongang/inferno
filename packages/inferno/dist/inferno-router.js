@@ -1,5 +1,5 @@
 /*!
- * inferno-router v1.0.0-beta34
+ * inferno-router v1.0.0-beta36
  * (c) 2016 Dominic Gannaway
  * Released under the MIT License.
  */
@@ -11,6 +11,7 @@
 
 createElement = 'default' in createElement ? createElement['default'] : createElement;
 Component = 'default' in Component ? Component['default'] : Component;
+Inferno = 'default' in Inferno ? Inferno['default'] : Inferno;
 
 function Link(props, ref) {
     var router = ref.router;
@@ -18,6 +19,7 @@ function Link(props, ref) {
     var activeClassName = props.activeClassName;
     var activeStyle = props.activeStyle;
     var className = props.className;
+    var onClick = props.onClick;
     var to = props.to;
     var elemProps = {
         href: to
@@ -38,6 +40,9 @@ function Link(props, ref) {
             return;
         }
         e.preventDefault();
+        if (typeof onClick === 'function') {
+            onClick();
+        }
         router.push(to, e.target.textContent);
     };
     return createElement('a', elemProps, props.children);
@@ -47,71 +52,6 @@ function IndexLink(props) {
     props.to = '/';
     return createElement(Link, props);
 }
-
-var Route = (function (Component$$1) {
-    function Route(props, context) {
-        Component$$1.call(this, props, context);
-    }
-
-    if ( Component$$1 ) Route.__proto__ = Component$$1;
-    Route.prototype = Object.create( Component$$1 && Component$$1.prototype );
-    Route.prototype.constructor = Route;
-    Route.prototype.componentWillMount = function componentWillMount () {
-        var this$1 = this;
-
-        var ref = this.props;
-        var onEnter = ref.onEnter;
-        var ref$1 = this.context;
-        var router = ref$1.router;
-        if (onEnter) {
-            Promise.resolve().then(function () {
-                onEnter({ props: this$1.props, router: router });
-            });
-        }
-    };
-    Route.prototype.onLeave = function onLeave (trigger) {
-        if ( trigger === void 0 ) trigger = false;
-
-        var ref = this.props;
-        var onLeave = ref.onLeave;
-        var ref$1 = this.context;
-        var router = ref$1.router;
-        if (onLeave && trigger) {
-            onLeave({ props: this.props, router: router });
-        }
-    };
-    Route.prototype.componentWillUnmount = function componentWillUnmount () {
-        this.onLeave(true);
-    };
-    Route.prototype.componentWillReceiveProps = function componentWillReceiveProps (nextProps) {
-        this.onLeave(this.props.path !== nextProps.path);
-    };
-    Route.prototype.render = function render (ref) {
-        var component = ref.component;
-        var children = ref.children;
-        var params = ref.params;
-
-        return createElement(component, {
-            params: params,
-            children: children
-        });
-    };
-
-    return Route;
-}(Component));
-
-var IndexRoute = (function (Route$$1) {
-    function IndexRoute(props, context) {
-        Route$$1.call(this, props, context);
-        props.path = '/';
-    }
-
-    if ( Route$$1 ) IndexRoute.__proto__ = Route$$1;
-    IndexRoute.prototype = Object.create( Route$$1 && Route$$1.prototype );
-    IndexRoute.prototype.constructor = IndexRoute;
-
-    return IndexRoute;
-}(Route));
 
 var ERROR_MSG = 'a runtime error occured! Use Inferno in development environment to find the error.';
 
@@ -187,6 +127,23 @@ function toPartialURL(fullURL, partURL) {
     return fullURL;
 }
 /**
+ * Simulates ... operator by returning first argument
+ * with the keys in the second argument excluded
+ * @param _args
+ * @param excluded
+ * @returns {{}}
+ */
+function rest(_args, excluded) {
+    var t = {};
+    for (var p in _args) {
+        if (excluded.indexOf(p) < 0) {
+            t[p] = _args[p];
+        }
+    }
+    return t;
+}
+
+/**
  * Sorts an array according to its `path` prop length
  * @param a
  * @param b
@@ -223,6 +180,67 @@ function flattenArray(oldArray, newArray) {
         }
     }
 }
+
+var Route = (function (Component$$1) {
+    function Route(props, context) {
+        Component$$1.call(this, props, context);
+    }
+
+    if ( Component$$1 ) Route.__proto__ = Component$$1;
+    Route.prototype = Object.create( Component$$1 && Component$$1.prototype );
+    Route.prototype.constructor = Route;
+    Route.prototype.componentWillMount = function componentWillMount () {
+        var this$1 = this;
+
+        var ref = this.props;
+        var onEnter = ref.onEnter;
+        var ref$1 = this.context;
+        var router = ref$1.router;
+        if (onEnter) {
+            Promise.resolve().then(function () {
+                onEnter({ props: this$1.props, router: router });
+            });
+        }
+    };
+    Route.prototype.onLeave = function onLeave (trigger) {
+        if ( trigger === void 0 ) trigger = false;
+
+        var ref = this.props;
+        var onLeave = ref.onLeave;
+        var ref$1 = this.context;
+        var router = ref$1.router;
+        if (onLeave && trigger) {
+            onLeave({ props: this.props, router: router });
+        }
+    };
+    Route.prototype.componentWillUnmount = function componentWillUnmount () {
+        this.onLeave(true);
+    };
+    Route.prototype.componentWillReceiveProps = function componentWillReceiveProps (nextProps) {
+        this.onLeave(this.props.path !== nextProps.path);
+    };
+    Route.prototype.render = function render (_args) {
+        var component = _args.component;
+        var children = _args.children;
+        var props = rest(_args, ['component', 'children', 'path']);
+        return createElement(component, props, children);
+    };
+
+    return Route;
+}(Component));
+
+var IndexRoute = (function (Route$$1) {
+    function IndexRoute(props, context) {
+        Route$$1.call(this, props, context);
+        props.path = '/';
+    }
+
+    if ( Route$$1 ) IndexRoute.__proto__ = Route$$1;
+    IndexRoute.prototype = Object.create( Route$$1 && Route$$1.prototype );
+    IndexRoute.prototype.constructor = IndexRoute;
+
+    return IndexRoute;
+}(Route));
 
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -694,16 +712,16 @@ function match(routes, currentURL) {
  * Go through every route and create a new node
  * with the matched components
  * @param _routes
- * @param urlToMatch
+ * @param currentURL
  * @param parentPath
  * @returns {object}
  */
-function matchRoutes(_routes, urlToMatch, parentPath) {
-    if ( urlToMatch === void 0 ) urlToMatch = '/';
+function matchRoutes(_routes, currentURL, parentPath) {
+    if ( currentURL === void 0 ) currentURL = '/';
     if ( parentPath === void 0 ) parentPath = '/';
 
     var routes = isArray(_routes) ? flatten(_routes) : toArray(_routes);
-    var ref = urlToMatch.split('?');
+    var ref = currentURL.split('?');
     var pathToMatch = ref[0]; if ( pathToMatch === void 0 ) pathToMatch = '/';
     var search = ref[1]; if ( search === void 0 ) search = '';
     var params = mapSearchParams(search);
@@ -715,21 +733,20 @@ function matchRoutes(_routes, urlToMatch, parentPath) {
         var isLast = !route.props || isEmpty(route.props.children);
         var matchBase = matchPath(isLast, location, pathToMatch);
         if (matchBase) {
-            var children = null;
             if (route.props && route.props.children) {
                 var matchChild = matchRoutes(route.props.children, pathToMatch, location);
+                route.props.children = null;
                 if (matchChild) {
-                    children = matchChild.matched;
+                    route.props.children = matchChild.matched;
                     Object.assign(params, matchChild.matched.props.params);
                 }
             }
+            var matched = Inferno.cloneVNode(route, {
+                params: Object.assign(params, matchBase.params)
+            });
             return {
                 location: location,
-                matched: Inferno.cloneVNode(route, {
-                    children: children,
-                    params: Object.assign(params, matchBase.params),
-                    component: route.props.component
-                })
+                matched: matched
             };
         }
     }
@@ -791,8 +808,12 @@ var RouterContext = (function (Component$$1) {
     };
     RouterContext.prototype.render = function render (ref) {
         var routes = ref.routes;
+        var matched = ref.matched;
         var location = ref.location;
 
+        if (matched) {
+            return matched;
+        }
         var route = match(routes, location);
         return route.matched;
     };

@@ -3,7 +3,6 @@ import {
 	createStatelessComponentInput,
 	replaceChild,
 } from './utils';
-import { EMPTY_OBJ } from 'inferno';
 import {
 	isArray,
 	isInvalid,
@@ -11,6 +10,7 @@ import {
 	isObject,
 	isUndefined,
 	throwError,
+	EMPTY_OBJ,
 } from '../shared';
 import {
 	mountElement,
@@ -33,7 +33,7 @@ import {
 import processElement from './wrappers/processElement';
 import { svgNS } from './constants';
 
-export function normaliseChildNodes(dom) {
+export function normalizeChildNodes(dom) {
 	const rawChildNodes = dom.childNodes;
 	let length = rawChildNodes.length;
 	let i = 0;
@@ -133,7 +133,7 @@ function hydrateElement(vNode, dom, lifecycle, context, isSVG) {
 }
 
 function hydrateChildren(children, dom, lifecycle, context, isSVG) {
-	normaliseChildNodes(dom);
+	normalizeChildNodes(dom);
 	const domNodes = Array.prototype.slice.call(dom.childNodes);
 	let childNodeIndex = 0;
 

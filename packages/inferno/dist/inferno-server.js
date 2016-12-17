@@ -1,5 +1,5 @@
 /*!
- * inferno-server v1.0.0-beta34
+ * inferno-server v1.0.0-beta36
  * (c) 2016 Dominic Gannaway
  * Released under the MIT License.
  */
@@ -160,6 +160,8 @@ var booleanProps = {};
 var namespaces = {};
 var isUnitlessNumber = {};
 var skipProps = {};
+
+
 
 var delegatedProps = {};
 constructDefaults('xlink:href,xlink:arcrole,xlink:actuate,xlink:role,xlink:titlef,xlink:type', namespaces, xlinkNS);

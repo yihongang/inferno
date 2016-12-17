@@ -41,15 +41,28 @@ export const enum VNodeFlags {
 	Component = ComponentFunction | ComponentClass | ComponentUnknown
 }
 
+export type Key = string | number | null;
+export type Ref = Function | null;
+export type InfernoChildren = string | number | VNode | Array<string | VNode> | null;
+export type Type = string | Function | null;
+
+export interface Props {
+	children?: InfernoChildren;
+	ref?: Ref;
+	key?: Key;
+	events?: Object | null;
+}
+
 export interface VNode {
-	children: string | Array<string | VNode> | VNode | null;
+	children: InfernoChildren;
 	dom: Node | null;
 	events: Object | null;
 	flags: VNodeFlags;
-	key: string | number | null;
-	props: Object | null;
-	ref: Function | null;
-	type: string | Function | null;
+	key: Key;
+	props: Props | null;
+	ref: Ref;
+	type: Type;
+	parentVNode?: VNode;
 }
 
 function normalizeProps(vNode, props, children) {
@@ -67,7 +80,7 @@ function normalizeProps(vNode, props, children) {
 	}
 }
 
-export function copyPropsTo(copyFrom, copyTo) {
+export function copyPropsTo(copyFrom: Props, copyTo: Props) {
 	for (let prop in copyFrom) {
 		if (isUndefined(copyTo[prop])) {
 			copyTo[prop] = copyFrom[prop];
@@ -75,7 +88,7 @@ export function copyPropsTo(copyFrom, copyTo) {
 	}
 }
 
-function normalizeElement(type, vNode) {
+function normalizeElement(type: string, vNode: VNode) {
 	if (type === 'svg') {
 		vNode.flags = VNodeFlags.SvgElement;
 	} else if (type === 'input') {
@@ -94,24 +107,32 @@ function normalizeElement(type, vNode) {
 	}
 }
 
-function normalize(vNode) {
+export function normalize(vNode: VNode): void {
 	const props = vNode.props;
 	const type = vNode.type;
 
 	// convert a wrongly created type back to element
 	if (isString(type) && (vNode.flags & VNodeFlags.Component)) {
-		normalizeElement(type, vNode);
+		normalizeElement((type as string), vNode);
 	}
 	if (props) {
 		normalizeProps(vNode, props, vNode.children);
 	}
 }
 
-export function createVNode(flags, type?, props?, children?, events?, key?, ref?): VNode {
+export function createVNode(
+	flags: VNodeFlags,
+	type?,
+	props?: Props,
+	children?: InfernoChildren,
+	events?,
+	key?: Key,
+	ref?: Ref
+): VNode {
 	if (flags & VNodeFlags.ComponentUnknown) {
 		flags = isStatefulComponent(type) ? VNodeFlags.ComponentClass : VNodeFlags.ComponentFunction;
 	}
-	const vNode = {
+	const vNode: VNode = {
 		children: isUndefined(children) ? null : children,
 		dom: null,
 		events: events || null,
@@ -125,11 +146,11 @@ export function createVNode(flags, type?, props?, children?, events?, key?, ref?
 	return vNode;
 }
 
-export function createVoidVNode() {
+export function createVoidVNode(): VNode {
 	return createVNode(VNodeFlags.Void);
 }
 
-export function createTextVNode(text) {
+export function createTextVNode(text: string | number): VNode {
 	return createVNode(VNodeFlags.Text, null, null, text);
 }
 
@@ -141,6 +162,6 @@ export function createFragmentVNode(children) {
 	};
 }
 
-export function isVNode(o: VType): boolean {
+export function isVNode(o: VNode): boolean {
 	return !!o.flags;
 }
