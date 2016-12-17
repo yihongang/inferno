@@ -65,7 +65,7 @@ export interface VNode {
 	parentVNode?: VNode;
 }
 
-function normalizeProps(vNode, props, children) {
+function normalizeProps(vNode: VNode, props: Props, children: InfernoChildren) {
 	if (!(vNode.flags & VNodeFlags.Component) && isNullOrUndef(children) && !isNullOrUndef(props.children)) {
 		vNode.children = props.children;
 	}
