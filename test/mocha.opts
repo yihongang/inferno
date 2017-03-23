@@ -6,4 +6,4 @@
 --recursive
 --timeout 15000
 
-packages/*/__tests__/**/*.js*
+packages/inferno-mobx/__tests__/**/*.js*

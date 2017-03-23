@@ -1,9 +1,11 @@
 import { expect } from 'chai';
 import Component from 'inferno-component';
-import { render } from 'inferno';
 import createElement from 'inferno-create-element';
 import { innerHTML } from 'inferno/test/utils';
-import { connect, inject, Provider } from '../dist-es';
+import { connect, Provider, inject } from '../dist-es';
+import * as Inferno from 'inferno';
+
+const render = Inferno.render
 
 describe('MobX connect()', () => {
 
@@ -27,27 +29,26 @@ describe('MobX connect()', () => {
 describe('MobX inject()', () => {
 	let container;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = document.createElement('div');
 		container.style.display = 'none';
 		document.body.appendChild(container);
 	});
 
-	afterEach(function () {
-		render(null, container);
+	afterEach(() => {
 		document.body.removeChild(container);
+		render(null, container);
 	});
 
-	class TestComponent extends Component {
+	class TestComponent extends Component  {
 		render({ testStore }) {
 			return createElement('span', null, testStore);
 		}
 	}
 
-	/*
-	it('should inject without second argument', () => {
+	/*it('should inject without second argument', () => {
 
-	 class TestComponent extends Component {
+	 class TestComponent extends Component  {
 	 static defaultProps = { hello: 'world' };
 	 render() {
 	 return 'Test';
@@ -64,7 +65,6 @@ describe('MobX inject()', () => {
 			return createElement(Provider, null, createElement(inject('hello')(createElement('span'))));
 		}
 
-		// eslint-disable-next-line
 		expect(() => render(App(), container)).to.throw(Error, /is not available!/);
 	});
 
@@ -76,7 +76,6 @@ describe('MobX inject()', () => {
 			}, createElement(inject('testStore')(TestComponent)));
 		}
 
-		// eslint-disable-next-line
 		render(App(), container);
 		expect(container.innerHTML).to.equal(innerHTML('<span>works!</span>'));
 	});
@@ -89,14 +88,13 @@ describe('MobX inject()', () => {
 			}, createElement(inject('testStore')(TestComponent), { testStore: 'works!' }));
 		}
 
-		// eslint-disable-next-line
 		render(App(), container);
 		expect(container.innerHTML).to.equal(innerHTML('<span>works!</span>'));
 	});
 
 	it('should create class with injected stores', () => {
 
-		class TestClass extends Component {
+		class TestClass extends Component  {
 			static defaultProps = {
 				world: 'world'
 			};
@@ -112,9 +110,7 @@ describe('MobX inject()', () => {
 			}, createElement(inject('hello')(TestClass)));
 		}
 
-		// eslint-disable-next-line
 		render(App(), container);
 		expect(container.innerHTML).to.equal(innerHTML('<span>hello world</span>'));
 	});
-
 });

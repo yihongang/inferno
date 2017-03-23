@@ -1,26 +1,26 @@
-import { expect } from 'chai';
-import { render } from 'inferno';
-import Component from 'inferno-component';
 import { observable } from 'mobx';
-import { innerHTML } from 'inferno/test/utils';
+import { expect } from 'chai';
 import { connect, Provider } from '../dist-es';
+import Component from 'inferno-component';
+import * as Inferno from 'inferno';
+const render = Inferno.render
 
 describe('MobX Provider', () => {
 	let container;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = document.createElement('div');
 		container.style.display = 'none';
 		document.body.appendChild(container);
 	});
 
-	afterEach(function () {
-		render(null, container);
+	afterEach(() => {
 		document.body.removeChild(container);
+		render(null, container);
 	});
 
 	describe('updating state', () => {
-		const stores = observable({
+		let stores = observable({
 			store1: {
 				data: 'one'
 			},
@@ -29,9 +29,8 @@ describe('MobX Provider', () => {
 			}
 		});
 
-		const Statefull = connect(['store1'], class extends Component {
+		const Statefull = connect(['store1'], class extends Component  {
 			render({ store1 }) {
-				// eslint-disable-next-line
 				const update = () => store1.data = 'Statefull';
 
 				return <article>
@@ -42,7 +41,6 @@ describe('MobX Provider', () => {
 		});
 
 		const Stateless = connect(() => {
-			// eslint-disable-next-line
 			const update = () => stores.store1.data = 'Stateless';
 
 			return <article>
@@ -52,7 +50,6 @@ describe('MobX Provider', () => {
 		});
 
 		const StatelessWithStores = connect(['store1'], (props) => {
-			// eslint-disable-next-line
 			const update = () => props.store1.data = 'hello world';
 
 			return <article>
@@ -73,7 +70,7 @@ describe('MobX Provider', () => {
 			const link = container.querySelector('#update');
 			link.click();
 
-			expect(container.innerHTML).to.equal(innerHTML('<article><a id="update">update</a><span>Statefull</span></article>'));
+			expect(container.innerHTML).to.equal('<article><a id="update">update</a><span>Statefull</span></article>');
 		});
 
 		it('should update a stateless component', () => {
@@ -82,7 +79,7 @@ describe('MobX Provider', () => {
 			const link = container.querySelector('#update');
 			link.click();
 
-			expect(container.innerHTML).to.equal(innerHTML('<article><a id="update">update</a><span>Stateless</span></article>'));
+			expect(container.innerHTML).to.equal('<article><a id="update">update</a><span>Stateless</span></article>');
 		});
 
 		it('should update a stateless component with stores', () => {
@@ -91,12 +88,12 @@ describe('MobX Provider', () => {
 			const link = container.querySelector('#update');
 			link.click();
 
-			expect(container.innerHTML).to.equal(innerHTML('<article><a id="update">update</a><span>hello world</span></article>'));
+			expect(container.innerHTML).to.equal('<article><a id="update">update</a><span>hello world</span></article>');
 		});
 	});
 
 	describe('providing/updating stores', () => {
-		const stores = observable({
+		let stores = observable({
 			store1: {
 				data: 'one'
 			},
@@ -106,7 +103,7 @@ describe('MobX Provider', () => {
 		});
 
 		it('should inherit stores from parent', () => {
-			const InheritComponent = connect([ 'store1', 'store2' ], (props) => {
+			const InheritComponent = connect(['store1', 'store2'], (props) => {
 				return <div>
 					<span>{props.store1.data}</span>
 					<span>{props.store2.data}</span>
@@ -119,7 +116,7 @@ describe('MobX Provider', () => {
 				</Provider>
 			</Provider>, container);
 
-			expect(container.innerHTML).to.equal(innerHTML('<div><span>one</span><span>two</span></div>'));
+			expect(container.innerHTML).to.equal('<div><span>one</span><span>two</span></div>');
 		});
 
 		// TODO: UNFINISHED
@@ -127,7 +124,7 @@ describe('MobX Provider', () => {
 		/*
 		it.skip('should warn if stores change', () => {
 
-			const TestComponent = connect(['store1'], class extends Component {
+			const TestComponent = connect(['store1'], class extends Component  {
 				componentDidMount() {
 					stores = observable({
 						newStore: 'newStore'
@@ -142,7 +139,7 @@ describe('MobX Provider', () => {
 				<TestComponent/>
 			</Provider>, container);
 
-			expect(container.innerHTML).to.equal(innerHTML('<div>one</div>'));
+			expect(container.innerHTML).to.equal('<div>one</div>');
 		});
 		*/
 	});
