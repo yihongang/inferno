@@ -19,7 +19,7 @@ describe('MobX observer()', () => {
 	let todoItemRenderings = 0;
 	const TodoItem = observer(function TodoItem(props) {
 		todoItemRenderings++;
-		return <li>|{ props.todo.title }</li>
+		return <li>|{ props.todo.title }</li>;
 	});
 
 	let todoListRenderings = 0;
@@ -37,12 +37,12 @@ describe('MobX observer()', () => {
 					<hi>{ todos.length }</hi>
 					{ todos.map((todo, idx) => <TodoItem key={ idx } todo={ todo } />) }
 				</div>
-			)
+			);
 		}
 	}));
 
-	const App = () => <TodoList />
-	const getDNode = (obj, prop) => obj.$mobx.values[prop]
+	const App = () => <TodoList />;
+	const getDNode = (obj, prop) => obj.$mobx.values[prop];
 	function query(q) {
 		return Array.prototype.slice.call(document.querySelectorAll(q));
 	}
@@ -59,7 +59,7 @@ describe('MobX observer()', () => {
 	});
 
 	it('Nested rendering should work', (done) => {
-		render(<App />, container)
+		render(<App />, container);
 		expect(todoListRenderings).to.equal(1); //, 'should have rendered list once');
 		expect(todoListWillReactCount).to.equal(0); //, 'should not have reacted yet')
 
