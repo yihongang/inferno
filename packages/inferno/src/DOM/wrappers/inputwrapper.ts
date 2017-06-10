@@ -10,7 +10,7 @@ const C = options.component;
 
 function onTextInputChange(e) {
 	C.rendering = true;
-	const vNode = this.vNode;
+	const vNode = this.input;
 	const props = vNode.props || EMPTY_OBJ;
 	const dom = vNode.dom;
 	const previousValue = props.value;
@@ -27,9 +27,9 @@ function onTextInputChange(e) {
 		props.oninput(e);
 	}
 
-	// the user may have updated the vNode from the above onInput events syncronously
+	// the user may have updated the input from the above onInput events syncronously
 	// so we need to get it from the context of `this` again
-	const newVNode = this.vNode;
+	const newVNode = this.input;
 	const newProps = newVNode.props || EMPTY_OBJ;
 
 	// If render is going async there is no value change yet, it will come back to process input soon
@@ -46,7 +46,7 @@ function onTextInputChange(e) {
 
 function wrappedOnChange(e) {
 	C.rendering = true;
-	const props = this.vNode.props || EMPTY_OBJ;
+	const props = this.input.props || EMPTY_OBJ;
 	const event = props.onChange;
 
 	if (event.event) {
@@ -63,7 +63,7 @@ function wrappedOnChange(e) {
 function onCheckboxChange(e) {
 	C.rendering = true;
 	e.stopPropagation(); // This click should not propagate its for internal use
-	const vNode = this.vNode;
+	const vNode = this.input;
 	const props = vNode.props || EMPTY_OBJ;
 	const dom = vNode.dom;
 
@@ -79,9 +79,9 @@ function onCheckboxChange(e) {
 		props.onclick(e);
 	}
 
-	// the user may have updated the vNode from the above onInput events syncronously
+	// the user may have updated the input from the above onInput events syncronously
 	// so we need to get it from the context of `this` again
-	const newVNode = this.vNode;
+	const newVNode = this.input;
 	const newProps = newVNode.props || EMPTY_OBJ;
 
 	// If render is going async there is no value change yet, it will come back to process input soon
@@ -95,7 +95,7 @@ function onCheckboxChange(e) {
 export function processInput(vNode, dom, nextPropsOrEmpty, mounting: boolean, isControlled): void {
 	applyValue(nextPropsOrEmpty, dom);
 	if (isControlled) {
-		dom.vNode = vNode; // TODO: Remove this when implementing Fiber's
+		dom.input = vNode; // TODO: Remove this when implementing Fiber's
 
 		if (mounting) {
 			if (isCheckedType(nextPropsOrEmpty.type)) {

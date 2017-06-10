@@ -12,12 +12,13 @@ import {
 } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
 import { options, Root } from '../core/options';
-import { directClone, InfernoChildren, InfernoInput, VNode } from '../core/VNodes';
+import { InfernoChildren, IVNode } from '../core/vnode';
 import { hydrateRoot } from './hydration';
 import { mount } from './mounting';
 import { patch } from './patching';
 import { unmount } from './unmounting';
 import { EMPTY_OBJ } from './utils';
+import { Fiber } from '../core/fiber';
 
 // rather than use a Map, like we did before, we can use an array here
 // given there shouldn't be THAT many roots on the page, the difference
@@ -42,36 +43,36 @@ export function findDOMNode(ref) {
 	return componentToDOMNodeMap.get(ref) || dom;
 }
 
-function getRoot(dom): Root | null {
-	for (let i = 0, len = roots.length; i < len; i++) {
-		const root = roots[ i ];
+// function getRoot(dom): Root | null {
+// 	for (let i = 0, len = roots.length; i < len; i++) {
+// 		const root = roots[ i ];
+//
+// 		if (root.dom === dom) {
+// 			return root;
+// 		}
+// 	}
+// 	return null;
+// }
+//
+// function setRoot(dom: Element | SVGAElement, input: InfernoInput, lifecycle: LifecycleClass): Root {
+// 	const root: Root = {
+// 		dom,
+// 		input,
+// 		lifecycle
+// 	};
+//
+// 	roots.push(root);
+// 	return root;
+// }
 
-		if (root.dom === dom) {
-			return root;
-		}
-	}
-	return null;
-}
-
-function setRoot(dom: Element | SVGAElement, input: InfernoInput, lifecycle: LifecycleClass): Root {
-	const root: Root = {
-		dom,
-		input,
-		lifecycle
-	};
-
-	roots.push(root);
-	return root;
-}
-
-function removeRoot(root: Root): void {
-	for (let i = 0, len = roots.length; i < len; i++) {
-		if (roots[ i ] === root) {
-			roots.splice(i, 1);
-			return;
-		}
-	}
-}
+// function removeRoot(root: Root): void {
+// 	for (let i = 0, len = roots.length; i < len; i++) {
+// 		if (roots[ i ] === root) {
+// 			roots.splice(i, 1);
+// 			return;
+// 		}
+// 	}
+// }
 
 if (process.env.NODE_ENV !== 'production') {
 	if (isBrowser && document.body === null) {
@@ -82,12 +83,12 @@ if (process.env.NODE_ENV !== 'production') {
 const documentBody = isBrowser ? document.body : null;
 /**
  * Renders virtual node tree into parent node.
- * @param {VNode | null | string | number} input vNode to be rendered
+ * @param {IVNode | null | string | number} input input to be rendered
  * @param {*} parentDom DOM node which content will be replaced by virtual node
  * @param {Function?} callback Callback to be called after rendering has finished
  * @returns {InfernoChildren} rendered virtual node
  */
-export function render(input: InfernoInput, parentDom: Element | SVGAElement | DocumentFragment | null | HTMLElement | Node, callback?: Function): InfernoChildren {
+export function render(input: IVNode|null|string|undefined, parentDom: Element | SVGAElement | DocumentFragment | null | HTMLElement | Node, callback?: Function): InfernoChildren {
 	if (documentBody === parentDom) {
 		if (process.env.NODE_ENV !== 'production') {
 			throwError('you cannot render() to the "document.body". Use an empty element as a container instead.');
@@ -98,35 +99,31 @@ export function render(input: InfernoInput, parentDom: Element | SVGAElement | D
 		return;
 	}
 	C.rendering = true;
-	let root = getRoot(parentDom);
+	let rootFiber = roots.get(parentDom);
 
-	if (isNull(root)) {
+	if (isNullOrUndef(rootFiber)) {
 		const lifecycle = new Lifecycle();
+		rootFiber = new Fiber(input as IVNode, 0, 0);
+		rootFiber.lifeCycle = lifecycle;
+		// if (!hydrateRoot(input, parentDom as any, lifecycle)) {
+		// 	mount(input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false);
+		// }
+		mount(rootFiber, input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false);
 
-		if (!isInvalid(input)) {
-			if ((input as VNode).dom) {
-				input = directClone(input as VNode);
-			}
-			if (!hydrateRoot(input, parentDom as any, lifecycle)) {
-				mount(input as VNode, parentDom as Element, lifecycle, EMPTY_OBJ, false);
-			}
-			root = setRoot(parentDom as any, input, lifecycle);
-			lifecycle.trigger();
-		}
+		// rootFiber = setRoot(parentDom as any, input, lifecycle);
+		roots.set(parentDom, rootFiber);
+		lifecycle.trigger();
 	} else {
-		const lifecycle = root.lifecycle;
+		const lifecycle = rootFiber.lifeCycle;
 
 		lifecycle.listeners = [];
 		if (isNullOrUndef(input)) {
-			unmount(root.input as VNode, parentDom as Element, lifecycle, false, false);
-			removeRoot(root);
+			unmount(rootFiber, parentDom as Element, lifecycle, false, false);
+			roots.delete(parentDom);
 		} else {
-			if ((input as VNode).dom) {
-				input = directClone(input as VNode);
-			}
-			patch(root.input as VNode, input as VNode, parentDom as Element, lifecycle, EMPTY_OBJ, false, false);
+			patch(rootFiber, input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false, false);
 		}
-		root.input = input;
+		rootFiber.input = input;
 		lifecycle.trigger();
 	}
 
@@ -138,8 +135,8 @@ export function render(input: InfernoInput, parentDom: Element | SVGAElement | D
 	}
 	C.rendering = false;
 
-	if (root) {
-		const rootInput: VNode = root.input as VNode;
+	if (rootFiber) {
+		const rootInput: IVNode = rootFiber.input as IVNode;
 
 		if (rootInput && (rootInput.flags & VNodeFlags.Component)) {
 			return rootInput.children;

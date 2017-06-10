@@ -12,58 +12,61 @@ import {
 } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
 import { options } from '../core/options';
-import { directClone, isVNode, VNode } from '../core/VNodes';
+import { isVNode, IVNode } from '../core/vnode';
 import { patchProp } from './patching';
 import { recycleComponent, recycleElement } from './recycling';
 import { componentToDOMNodeMap } from './rendering';
 import { appendChild, documentCreateElement, EMPTY_OBJ, handleComponentInput, setTextContent } from './utils';
-import { isControlledFormElement, processElement } from './wrappers/processElement';
+import { isControlledFormElement, processElement } from './wrappers/processelements';
+import { IFiber, Fiber } from '../core/fiber';
 
-export function mount(vNode: VNode, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
-	const flags = vNode.flags;
+export function mount(fiber: IFiber, input: IVNode|string|number|null|undefined|false|true, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
+	if (!isInvalid(input)) {
+		// Text - Number
+		if (isStringOrNumber(input)) {
+			mountText(fiber, input, parentDom);
+		} else {
+			// VNode
+			const flags = (input as IVNode).flags;
 
-	if (flags & VNodeFlags.Element) {
-		return mountElement(vNode, parentDom, lifecycle, context, isSVG);
-	} else if (flags & VNodeFlags.Component) {
-		return mountComponent(vNode, parentDom, lifecycle, context, isSVG, (flags & VNodeFlags.ComponentClass) > 0);
-	} else if (flags & VNodeFlags.Void) {
-		return mountVoid(vNode, parentDom);
-	} else if (flags & VNodeFlags.Text) {
-		return mountText(vNode, parentDom);
-	} else {
-		if (process.env.NODE_ENV !== 'production') {
-			if (typeof vNode === 'object') {
-				throwError(`mount() received an object that's not a valid VNode, you should stringify it first. Object: "${ JSON.stringify(vNode) }".`);
+			if (flags & VNodeFlags.Element) {
+				mountElement(fiber, input, parentDom, lifecycle, context, isSVG);
+			} else if (flags & VNodeFlags.Component) {
+				mountComponent(input, parentDom, lifecycle, context, isSVG, (flags & VNodeFlags.ComponentClass) > 0);
+			} else if (flags & VNodeFlags.Void) {
+				// TODO: Is this Void needed anymore?
+				mountVoid(fiber, parentDom);
 			} else {
-				throwError(`mount() expects a valid VNode, instead it received an object with the type "${ typeof vNode }".`);
+				if (process.env.NODE_ENV !== 'production') {
+					if (typeof input === 'object') {
+						throwError(`mount() received an object that's not a valid VNode, you should stringify it first. Object: "${ JSON.stringify(input) }".`);
+					} else {
+						throwError(`mount() expects a valid VNode, instead it received an object with the type "${ typeof input }".`);
+					}
+				}
+				throwError();
 			}
 		}
-		throwError();
 	}
 }
 
-export function mountText(vNode: VNode, parentDom: Element|null): any {
-	const dom = document.createTextNode(vNode.children as string);
+export function mountText(fiber: IFiber, text: string|number, parentDom: Element|null): any {
+	const dom = document.createTextNode(text as string);
 
-	vNode.dom = dom as any;
+	fiber.input = text;
 	if (!isNull(parentDom)) {
+		fiber.dom = dom as any;
 		appendChild(parentDom, dom);
 	}
 
 	return dom;
 }
 
-export function mountVoid(vNode: VNode, parentDom: Element|null) {
-	const dom = document.createTextNode('');
-
-	vNode.dom = dom as any;
-	if (!isNull(parentDom)) {
-		appendChild(parentDom, dom);
-	}
-	return dom;
+export function mountVoid(fiber: IFiber, parentDom: Element|null) {
+	return mountText(fiber, '', parentDom);
 }
 
-export function mountElement(vNode: VNode, parentDom: Element|null, lifecycle: LifecycleClass, context: {}, isSVG: boolean) {
+export function mountElement(fiber: IFiber, vNode: IVNode, parentDom: Element|null, lifecycle: LifecycleClass, context: {}, isSVG: boolean) {
 	if (options.recyclingEnabled) {
 		const dom = recycleElement(vNode, lifecycle, context, isSVG);
 
@@ -83,17 +86,24 @@ export function mountElement(vNode: VNode, parentDom: Element|null, lifecycle: L
 	const className = vNode.className;
 	const ref = vNode.ref;
 
-	vNode.dom = dom;
+	fiber.dom = dom; // Store DOM reference into fiber, to keep input stateless
 
 	if (!isInvalid(children)) {
 		if (isStringOrNumber(children)) {
+			// Text
 			setTextContent(dom, children as string | number);
 		} else {
 			const childrenIsSVG = isSVG === true && vNode.type !== 'foreignObject';
 			if (isArray(children)) {
-				mountArrayChildren(children, dom, lifecycle, context, childrenIsSVG);
-			} else if (isVNode(children as any)) {
-				mount(children as VNode, dom, lifecycle, context, childrenIsSVG);
+				// Array
+				mountArrayChildren(fiber, children, dom, lifecycle, context, childrenIsSVG, 0);
+			} else {
+				// VNode
+				const childFiber = new Fiber(children as IVNode, 0, 0);
+
+				fiber.children = childFiber;
+
+				mount(childFiber, children as IVNode, dom, lifecycle, context, childrenIsSVG);
 			}
 		}
 	}
@@ -129,65 +139,72 @@ export function mountElement(vNode: VNode, parentDom: Element|null, lifecycle: L
 	return dom;
 }
 
-export function mountArrayChildren(children, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
+export function mountArrayChildren(fiber, children, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, nestingLevel: number) {
 	for (let i = 0, len = children.length; i < len; i++) {
-		let child = children[ i ];
+		const child = children[ i ];
 
 		// Verify can string/number be here. might cause de-opt. - Normalization takes care of it.
 		if (!isInvalid(child)) {
-			if (child.dom) {
-				children[ i ] = child = directClone(child);
+			if (fiber.children === null) {
+				fiber.children = [];
 			}
-			mount(children[ i ], dom, lifecycle, context, isSVG);
+			if (isArray(child)) {
+				// TODO: Add warning about nested arrays?
+				mountArrayChildren(fiber, child, dom, lifecycle, context, isSVG, nestingLevel++);
+			} else {
+				const childFiber = new Fiber(child, i, nestingLevel);
+				fiber.children.push(childFiber);
+				mount(childFiber, child, dom, lifecycle, context, isSVG);
+			}
 		}
 	}
 }
 
 const C = options.component;
 
-export function mountComponent(vNode: VNode, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isClass: boolean) {
-	if (options.recyclingEnabled) {
-		const dom = recycleComponent(vNode, lifecycle, context, isSVG);
-
-		if (!isNull(dom)) {
-			if (!isNull(parentDom)) {
-				appendChild(parentDom, dom);
-			}
-			return dom;
-		}
-	}
-	const type = vNode.type as Function;
-	const props = vNode.props || EMPTY_OBJ;
-	const ref = vNode.ref;
-	let dom;
-	if (isClass) {
-		const instance = (C.create as Function)(vNode, type, props, context, isSVG, lifecycle);
-		const input = instance._lastInput;
-
-		vNode.dom = dom = mount(input, null, lifecycle, instance._childContext, isSVG);
-		if (!isNull(parentDom)) {
-			appendChild(parentDom, dom);
-		}
-		mountClassComponentCallbacks(vNode, ref, instance, lifecycle);
-		instance._updating = false;
-		if (options.findDOMNodeEnabled) {
-			componentToDOMNodeMap.set(instance, dom);
-		}
-	} else {
-		const renderOutput = type(props, context);
-		const input = handleComponentInput(renderOutput, vNode);
-
-		vNode.dom = dom = mount(input, null, lifecycle, context, isSVG);
-		vNode.children = input;
-		mountFunctionalComponentCallbacks(ref, dom, lifecycle);
-		if (!isNull(parentDom)) {
-			appendChild(parentDom, dom);
-		}
-	}
-	return dom;
+export function mountComponent(vNode: IVNode, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isClass: boolean) {
+	// if (options.recyclingEnabled) {
+	// 	const dom = recycleComponent(vNode, lifecycle, context, isSVG);
+	//
+	// 	if (!isNull(dom)) {
+	// 		if (!isNull(parentDom)) {
+	// 			appendChild(parentDom, dom);
+	// 		}
+	// 		return dom;
+	// 	}
+	// }
+	// const type = vNode.type as Function;
+	// const props = vNode.props || EMPTY_OBJ;
+	// const ref = vNode.ref;
+	// let dom;
+	// if (isClass) {
+	// 	const instance = (C.create as Function)(vNode, type, props, context, isSVG, lifecycle);
+	// 	const input = instance._lastInput;
+	//
+	// 	vNode.dom = dom = mount(input, null, lifecycle, instance._childContext, isSVG);
+	// 	if (!isNull(parentDom)) {
+	// 		appendChild(parentDom, dom);
+	// 	}
+	// 	mountClassComponentCallbacks(vNode, ref, instance, lifecycle);
+	// 	instance._updating = false;
+	// 	if (options.findDOMNodeEnabled) {
+	// 		componentToDOMNodeMap.set(instance, dom);
+	// 	}
+	// } else {
+	// 	const renderOutput = type(props, context);
+	// 	const input = handleComponentInput(renderOutput, vNode);
+	//
+	// 	vNode.dom = dom = mount(input, null, lifecycle, context, isSVG);
+	// 	vNode.children = input;
+	// 	mountFunctionalComponentCallbacks(ref, dom, lifecycle);
+	// 	if (!isNull(parentDom)) {
+	// 		appendChild(parentDom, dom);
+	// 	}
+	// }
+	// return dom;
 }
 
-export function mountClassComponentCallbacks(vNode: VNode, ref, instance, lifecycle: LifecycleClass) {
+export function mountClassComponentCallbacks(vNode: IVNode, ref, instance, lifecycle: LifecycleClass) {
 	if (ref) {
 		if (isFunction(ref)) {
 			ref(instance);

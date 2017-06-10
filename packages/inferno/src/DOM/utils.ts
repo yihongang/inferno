@@ -1,10 +1,11 @@
 import { isArray, isInvalid, isNullOrUndef, isStringOrNumber, LifecycleClass, throwError } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
 import { options } from '../core/options';
-import { createTextVNode, createVoidVNode, directClone, VNode } from '../core/VNodes';
+import { createTextVNode, createVoidVNode, IVNode } from '../core/vnode';
 import { svgNS } from './constants';
 import { mount } from './mounting';
 import { unmount } from './unmounting';
+import { IFiber } from '../core/fiber';
 
 // We need EMPTY_OBJ defined in one place.
 // Its used for comparison so we cant inline it into shared
@@ -15,15 +16,15 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export function replaceLastChildAndUnmount(lastInput, nextInput, parentDom, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
-	replaceVNode(parentDom, mount(nextInput, null, lifecycle, context, isSVG), lastInput, lifecycle, isRecycling);
+	replaceDOM(parentDom, mount(nextInput, null, lifecycle, context, isSVG), lastInput, lifecycle, isRecycling);
 }
 
-export function replaceVNode(parentDom, dom, vNode, lifecycle: LifecycleClass, isRecycling) {
-	unmount(vNode, null, lifecycle, false, isRecycling);
-	replaceChild(parentDom, dom, vNode.dom);
+export function replaceDOM(fiber: IFiber, parentDom, newDOM, lifecycle: LifecycleClass, isRecycling) {
+	unmount(fiber, null, lifecycle, false, isRecycling);
+	replaceChild(parentDom, newDOM, fiber.dom);
 }
 
-export function handleComponentInput(input, parentVNode: VNode) {
+export function handleComponentInput(input, parentVNode) {
 	let out;
 
 	if (isInvalid(input)) {
@@ -32,20 +33,16 @@ export function handleComponentInput(input, parentVNode: VNode) {
 		out = createTextVNode(input, null);
 	} else if (isArray(input)) {
 		if (process.env.NODE_ENV !== 'production') {
-			throwError('a valid Inferno VNode (or null) must be returned from a component render. You may have returned an array or an invalid object.');
+			throwError('a valid Inferno IVNode (or null) must be returned from a component render. You may have returned an array or an invalid object.');
 		}
 		throwError();
 	} else {
-		// It's vNode
-		if (input.dom) {
-			out = directClone(input);
-		} else {
-			out = input;
-		}
+		// It's input
+		out = input;
 		if ((out.flags & VNodeFlags.Component) > 0) {
 			// if we have an input that is also a component, we run into a tricky situation
-			// where the root vNode needs to always have the correct DOM entry
-			// so we break monomorphism on our input and supply it our vNode as parentVNode
+			// where the root input needs to always have the correct DOM entry
+			// so we break monomorphism on our input and supply it our input as parentVNode
 			// we can optimise this in the future, but this gets us out of a lot of issues
 			out.parentVNode = parentVNode;
 		}
@@ -104,14 +101,14 @@ export function removeChild(parentDom: Element, dom: Element) {
 	parentDom.removeChild(dom);
 }
 
-export function removeAllChildren(dom: Element, children, lifecycle: LifecycleClass, isRecycling: boolean) {
+export function removeAllChildren(dom: Element, children: IFiber[], lifecycle: LifecycleClass, isRecycling: boolean) {
 	if (!options.recyclingEnabled || (options.recyclingEnabled && !isRecycling)) {
 		removeChildren(null, children, lifecycle, isRecycling);
 	}
 	dom.textContent = '';
 }
 
-export function removeChildren(dom: Element | null, children, lifecycle: LifecycleClass, isRecycling: boolean) {
+export function removeChildren(dom: Element | null, children: IFiber[], lifecycle: LifecycleClass, isRecycling: boolean) {
 	for (let i = 0, len = children.length; i < len; i++) {
 		const child = children[i];
 
@@ -121,7 +118,7 @@ export function removeChildren(dom: Element | null, children, lifecycle: Lifecyc
 	}
 }
 
-export function isKeyed(lastChildren: VNode[], nextChildren: VNode[]): boolean {
+export function isKeyed(lastChildren: IVNode[], nextChildren: IVNode[]): boolean {
 	return nextChildren.length > 0 && !isNullOrUndef(nextChildren[0]) && !isNullOrUndef(nextChildren[0].key)
 		&& lastChildren.length > 0 && !isNullOrUndef(lastChildren[0]) && !isNullOrUndef(lastChildren[0].key);
 }

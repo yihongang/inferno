@@ -188,7 +188,7 @@ export function createDevToolsBridge() {
 		// the devtools
 		prevRenderedChildren.forEach((childInst) => {
 			if (!document.body.contains(childInst.node)) {
-				deleteInstanceForVNode(childInst.vNode);
+				deleteInstanceForVNode(childInst.input);
 				queueUnmountComponent(childInst);
 			}
 		});
@@ -199,7 +199,7 @@ export function createDevToolsBridge() {
 		const instance = updateReactComponent(vNode, null);
 
 		visitNonCompositeChildren((childInst) => {
-			deleteInstanceForVNode(childInst.vNode);
+			deleteInstanceForVNode(childInst.input);
 			queueUnmountComponent(childInst);
 		});
 		queueUnmountComponent(instance);

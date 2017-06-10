@@ -16,7 +16,7 @@ componentHooks.add('onComponentDidUpdate');
  * @param {string|Function|Component<any, any>} type Type of node
  * @param {object=} props Optional props for virtual node
  * @param {...{object}=} _children Optional children for virtual node
- * @returns {VNode} new virtual ndoe
+ * @returns {IVNode} new virtual ndoe
  */
 export default function createElement<T>(type: string | Function | Component<any, any>, props?: T & Props|null, ..._children: Array<InfernoChildren | any>): VNode {
 	if (isInvalid(type) || isObject(type)) {

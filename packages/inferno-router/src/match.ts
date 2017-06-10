@@ -1,4 +1,4 @@
-import Inferno from 'inferno';
+import { createVNode } from 'inferno';
 import { combineFrom, isArray, toArray } from 'inferno-shared';
 import pathToRegExp from 'path-to-regexp-es6';
 import {
@@ -75,7 +75,7 @@ function matchRoutes(_routes, currentURL = '/', parentPath = '/', redirect = fal
 				}
 			}
 
-			const matched = Inferno.cloneVNode(route, {
+			const matched = createVNode(route.flags, route.type, route.className, null, {
 				children,
 				params: combineFrom(params, matchBase.params)
 			});

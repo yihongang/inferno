@@ -1,5 +1,5 @@
 const enum VNodeFlags {
-	Text = 1,
+	// TODO: 1 is free text is gone.
 	HtmlElement = 1 << 1,
 
 	ComponentClass = 1 << 2,

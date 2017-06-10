@@ -1,142 +1,12 @@
 import {
-	isArray,
 	isInvalid,
-	isNull,
 	isNullOrUndef,
-	isNumber,
 	isString,
-	isStringOrNumber,
 	isUndefined,
 	warning
 } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
-import { createTextVNode, directClone, InfernoChildren, isVNode, Props, VNode } from './VNodes';
-
-function applyKey(key: string, vNode: VNode) {
-	vNode.key = key;
-
-	return vNode;
-}
-
-function applyKeyIfMissing(key: string | number, vNode: VNode): VNode {
-	if (isNumber(key)) {
-		key = `.${ key }`;
-	}
-	if (isNull(vNode.key) || vNode.key[ 0 ] === '.') {
-		return applyKey(key as string, vNode);
-	}
-	return vNode;
-}
-
-function applyKeyPrefix(key: string, vNode: VNode): VNode {
-	vNode.key = key + vNode.key;
-
-	return vNode;
-}
-
-function _normalizeVNodes(nodes: any[], result: VNode[], index: number, currentKey) {
-	for (const len = nodes.length; index < len; index++) {
-		let n = nodes[ index ];
-
-		if (!isInvalid(n)) {
-			const key = `${ currentKey }.${ index }`;
-
-			if (isStringOrNumber(n)) {
-				// String
-				n = createTextVNode(n, null);
-			} else if (isArray(n)) {
-				// Array
-				_normalizeVNodes(n, result, 0, key);
-
-				continue;
-			}
-
-			// vNode
-			const emptyKey = isNull(n.key) || n.key[ 0 ] === '.';
-
-			if (emptyKey || n.dom) {
-				n = directClone(n);
-			}
-			if (emptyKey) {
-				n = applyKey(key, n as VNode);
-			} else {
-				n = applyKeyPrefix(currentKey, n as VNode);
-			}
-
-			result.push(n);
-		}
-	}
-}
-
-export function normalizeVNodes(nodes: any[]): VNode[] {
-	let newNodes;
-
-	// we assign $ which basically means we've flagged this array for future note
-	// if it comes back again, we need to clone it, as people are using it
-	// in an immutable way
-	// tslint:disable
-	if (nodes[ '$' ] === true) {
-		nodes = nodes.slice();
-	} else {
-		nodes[ '$' ] = true;
-	}
-	// tslint:enable
-	for (let i = 0, len = nodes.length; i < len; i++) {
-		const n = nodes[ i ];
-
-		if (isStringOrNumber(n)) {
-			if (!newNodes) {
-				newNodes = nodes.slice(0, i) as VNode[];
-			}
-			newNodes.push(applyKeyIfMissing(i, createTextVNode(n, null)));
-		} else if (isInvalid(n) || isArray(n)) {
-			const result = (newNodes || nodes).slice(0, i) as VNode[];
-
-			_normalizeVNodes(nodes, result, i, ``);
-			return result;
-		} else if ((isVNode(n) && n.dom !== null) || (isNull(n.key) && (n.flags & VNodeFlags.HasNonKeyedChildren) === 0)) {
-			if (!newNodes) {
-				newNodes = nodes.slice(0, i) as VNode[];
-			}
-			newNodes.push(applyKeyIfMissing(i, directClone(n)));
-		} else if (newNodes) {
-			newNodes.push(applyKeyIfMissing(i, directClone(n)));
-		}
-	}
-
-	return newNodes || nodes as VNode[];
-}
-
-function normalizeChildren(children) {
-	if (isStringOrNumber(children)) {
-		return children;
-	} else if (isArray(children)) {
-		return normalizeVNodes(children as any[]);
-	} else if (/* must be vNode */children.dom !== null) {
-		return directClone(children as VNode);
-	}
-	return children;
-}
-
-function normalizeProps(vNode: VNode, props: Props, children: InfernoChildren) {
-	if (vNode.flags & VNodeFlags.Element) {
-		if (isNullOrUndef(children) && !isNullOrUndef(props.children)) {
-			vNode.children = props.children;
-		}
-		if (!isNullOrUndef(props.className)) {
-			vNode.className = props.className;
-			delete props.className;
-		}
-	}
-	if (props.ref) {
-		vNode.ref = props.ref;
-		delete props.ref;
-	}
-	if (!isNullOrUndef(props.key)) {
-		vNode.key = props.key;
-		delete props.key;
-	}
-}
+import { IVNode } from './vnode';
 
 export function getFlagsForElementVnode(type: string): number {
 	if (type === 'svg') {
@@ -156,7 +26,7 @@ export function getFlagsForElementVnode(type: string): number {
 // tslint:disable-next-line
 let validateChildren: Function = function() {};
 if (process.env.NODE_ENV !== 'production') {
-	validateChildren = function validateChildren(vNode: VNode, children) {
+	validateChildren = function validateChildren(vNode: IVNode, children) {
 		if (vNode.flags & VNodeFlags.InputElement) {
 			throw new Error('Failed to set children, input elements can\'t have children.');
 		}
@@ -169,7 +39,7 @@ if (process.env.NODE_ENV !== 'production') {
 	};
 }
 
-export function normalize(vNode: VNode): void {
+export function normalize(vNode: IVNode): void {
 	let props = vNode.props;
 	let children = vNode.children;
 
@@ -201,23 +71,21 @@ export function normalize(vNode: VNode): void {
 		}
 	}
 
-	if (props) {
-		normalizeProps(vNode, props, children);
-		if (!isInvalid(props.children)) {
-			if (process.env.NODE_ENV !== 'production') {
-				validateChildren(vNode, props.children);
-			}
-			props.children = normalizeChildren(props.children);
-		}
-	}
-	if (!isInvalid(children)) {
-		if (process.env.NODE_ENV !== 'production') {
-			validateChildren(vNode, children);
-		}
-		vNode.children = normalizeChildren(children);
-	}
-
 	if (process.env.NODE_ENV !== 'production') {
+		if (props) {
+			// TODO: Add validation for ref / key in props className in props
+			// TODO: + children being in props if element
+			if (!isInvalid(props.children)) {
+				if (process.env.NODE_ENV !== 'production') {
+					validateChildren(vNode, props.children);
+				}
+			}
+		}
+		if (!isInvalid(children)) {
+			if (process.env.NODE_ENV !== 'production') {
+				validateChildren(vNode, children);
+			}
+		}
 
 		// This code will be stripped out from production CODE
 		// It helps users to track errors in their applications.

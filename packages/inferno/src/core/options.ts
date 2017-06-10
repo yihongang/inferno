@@ -1,12 +1,4 @@
-import { LifecycleClass } from 'inferno-shared';
-import { handleComponentInput } from '../DOM/utils';
-import { InfernoInput } from './VNodes';
-
-export interface Root {
-	dom: Element | SVGAElement;
-	input: InfernoInput;
-	lifecycle: LifecycleClass;
-}
+import { IFiber } from './fiber';
 
 export const options: {
 	afterMount: null|Function
@@ -18,13 +10,13 @@ export const options: {
 	component: {
 		create: null|Function
 		flush: null|Function
-		handleInput: Function
+		handleInput: null|Function
 		patch: null|Function
 		rendering: boolean
 	},
 	findDOMNodeEnabled: boolean
 	recyclingEnabled: boolean
-	roots: Root[]
+	roots: Map<any, IFiber>
 } = {
 	afterMount: null,
 	afterRender: null,
@@ -34,12 +26,12 @@ export const options: {
 	component: {
 		create: null,
 		flush: null,
-		handleInput: handleComponentInput,
+		handleInput: null,
 		patch: null,
 		rendering: false
 	},
 	createVNode: null,
 	findDOMNodeEnabled: false,
 	recyclingEnabled: false,
-	roots: []
+	roots: new Map()
 };

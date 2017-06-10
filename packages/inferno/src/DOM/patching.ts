@@ -5,7 +5,6 @@ import {
 	isNull,
 	isNullOrUndef,
 	isNumber,
-	isObject,
 	isString,
 	isStringOrNumber,
 	isUndefined,
@@ -14,12 +13,12 @@ import {
 	throwError
 } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
+import { IFiber, Fiber } from '../core/fiber';
 import { options } from '../core/options';
-import { Styles } from '../core/structures';
-import { createTextVNode, createVoidVNode, directClone, VNode } from '../core/VNodes';
+import { createTextVNode, createVoidVNode, isVNode, IVNode } from '../core/vnode';
 import { booleanProps, delegatedEvents, isUnitlessNumber, namespaces, skipProps, strictProps } from './constants';
 import { handleEvent } from './events/delegation';
-import { mount, mountArrayChildren, mountComponent, mountElement, mountRef, mountText, mountVoid } from './mounting';
+import { mount, mountArrayChildren, mountComponent, mountElement, mountRef, mountText } from './mounting';
 import { unmount } from './unmounting';
 import {
 	appendChild,
@@ -28,105 +27,107 @@ import {
 	isKeyed,
 	removeAllChildren,
 	replaceChild,
-	replaceLastChildAndUnmount,
-	replaceVNode,
+	replaceDOM,
 	replaceWithNewNode,
 	setTextContent,
 	updateTextContent
 } from './utils';
-import { isControlledFormElement, processElement } from './wrappers/processElement';
+import { isControlledFormElement, processElement } from './wrappers/processelements';
+import { next } from 'most-subject';
 
-export function patch(lastVNode: VNode, nextVNode: VNode, parentDom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
-	if (lastVNode !== nextVNode) {
-		const lastFlags = lastVNode.flags;
-		const nextFlags = nextVNode.flags;
+export function patch(fiber: IFiber, nextInput: IVNode | string | number, parentDom: Element, lifecycle: LifecycleClass, context, isSVG: boolean, isRecycling: boolean) {
+	// LastInput cannot be null or undef or invalid, because they have been filtered out
+	const lastInput = fiber.input;
+	// Next should never come here being invalid, filter outside
 
-		if (nextFlags & VNodeFlags.Component) {
-			const isClass = (nextFlags & VNodeFlags.ComponentClass) > 0;
-
-			if (lastFlags & VNodeFlags.Component) {
-				patchComponent(
-					lastVNode,
-					nextVNode,
-					parentDom,
-					lifecycle,
-					context,
-					isSVG,
-					isClass,
-					isRecycling
-				);
+	if (lastInput !== nextInput) {
+		if (isStringOrNumber(nextInput)) {
+			if (isStringOrNumber(lastInput)) {
+				patchText(fiber, nextInput);
 			} else {
-				replaceVNode(
-					parentDom,
-					mountComponent(
-						nextVNode,
-						null,
-						lifecycle,
-						context,
-						isSVG,
-						isClass
-					),
-					lastVNode,
-					lifecycle,
-					isRecycling
-				);
+				replaceDOM(fiber, parentDom, mountText(fiber, nextInput, null), lifecycle, isRecycling);
 			}
-		} else if (nextFlags & VNodeFlags.Element) {
-			if (lastFlags & VNodeFlags.Element) {
-				patchElement(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling);
-			} else {
-				replaceVNode(
-					parentDom,
-					mountElement(
-						nextVNode,
-						null,
-						lifecycle,
-						context,
-						isSVG
-					),
-					lastVNode,
-					lifecycle,
-					isRecycling
-				);
-			}
-		} else if (nextFlags & VNodeFlags.Text) {
-			if (lastFlags & VNodeFlags.Text) {
-				patchText(lastVNode, nextVNode);
-			} else {
-				replaceVNode(parentDom, mountText(nextVNode, null), lastVNode, lifecycle, isRecycling);
-			}
-		} else if (nextFlags & VNodeFlags.Void) {
-			if (lastFlags & VNodeFlags.Void) {
-				patchVoid(lastVNode, nextVNode);
-			} else {
-				replaceVNode(parentDom, mountVoid(nextVNode, null), lastVNode, lifecycle, isRecycling);
-			}
+		} else if (isStringOrNumber(lastInput)) {
+			replaceDOM(fiber, parentDom, mount(fiber, nextInput, null, lifecycle, context, isSVG), lifecycle, isRecycling);
 		} else {
-			// Error case: mount new one replacing old one
-			replaceLastChildAndUnmount(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling);
+			const lastFlags = lastInput.flags;
+			const nextFlags = nextInput.flags;
+
+			if (nextFlags & VNodeFlags.Element) {
+				if (lastFlags & VNodeFlags.Element) {
+					patchElement(fiber, lastInput, nextInput, parentDom, lifecycle, context, isSVG, isRecycling);
+				} else {
+					replaceDOM(
+						fiber,
+						parentDom,
+						mountElement(
+							fiber,
+							nextInput,
+							null,
+							lifecycle,
+							context,
+							isSVG
+						),
+						lifecycle,
+						isRecycling
+					);
+				}
+			} else if (nextFlags & VNodeFlags.Component) {
+				const isClass = (nextFlags & VNodeFlags.ComponentClass) > 0;
+
+				if (lastFlags & VNodeFlags.Component) {
+					// patchComponent(
+					// 	lastVNode,
+					// 	nextVNode,
+					// 	parentDom,
+					// 	lifecycle,
+					// 	context,
+					// 	isSVG,
+					// 	isClass,
+					// 	isRecycling
+					// );
+				} else {
+					// replaceDOM(
+					// 	fiber,
+					// 	parentDom,
+					// 	mountComponent(
+					// 		nextVNode,
+					// 		null,
+					// 		lifecycle,
+					// 		context,
+					// 		isSVG,
+					// 		isClass
+					// 	),
+					// 	lastVNode,
+					// 	lifecycle,
+					// 	isRecycling
+					// );
+				}
+			}
 		}
 	}
 }
 
-function unmountChildren(children, dom: Element, lifecycle: LifecycleClass, isRecycling: boolean) {
+function unmountChildren(fiber: IFiber, children, dom: Element, lifecycle: LifecycleClass, isRecycling: boolean) {
 	// TODO: Check this
 	if (children.flags > 0) {
-		unmount(children, dom, lifecycle, true, isRecycling);
+		unmount(fiber, dom, lifecycle, true, isRecycling);
 	} else if (isArray(children)) {
 		removeAllChildren(dom, children, lifecycle, isRecycling);
 	} else {
 		dom.textContent = '';
 	}
+	fiber.children = null;
 }
 
-export function patchElement(lastVNode: VNode, nextVNode: VNode, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
+export function patchElement(fiber: IFiber, lastVNode: IVNode, nextVNode: IVNode, parentDom: Element | null, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
 	const nextTag = nextVNode.type;
 	const lastTag = lastVNode.type;
 
 	if (lastTag !== nextTag) {
 		replaceWithNewNode(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling);
 	} else {
-		const dom = lastVNode.dom as Element;
+		const dom = fiber.dom as Element;
 		const lastProps = lastVNode.props;
 		const nextProps = nextVNode.props;
 		const lastChildren = lastVNode.children;
@@ -137,11 +138,10 @@ export function patchElement(lastVNode: VNode, nextVNode: VNode, parentDom: Elem
 		const lastClassName = lastVNode.className;
 		const nextClassName = nextVNode.className;
 
-		nextVNode.dom = dom;
 		isSVG = isSVG || (nextFlags & VNodeFlags.SvgElement) > 0;
 		if (lastChildren !== nextChildren) {
 			const childrenIsSVG = isSVG === true && nextVNode.type !== 'foreignObject';
-			patchChildren(lastFlags, nextFlags, lastChildren, nextChildren, dom, lifecycle, context, childrenIsSVG, isRecycling);
+			patchChildren(fiber, lastFlags, nextFlags, fiber.children, nextChildren, dom, lifecycle, context, childrenIsSVG, isRecycling);
 		}
 
 		// inlined patchProps  -- starts --
@@ -158,8 +158,8 @@ export function patchElement(lastVNode: VNode, nextVNode: VNode, parentDom: Elem
 
 				for (const prop in nextPropsOrEmpty) {
 					// do not add a hasOwnProperty check here, it affects performance
-					const nextValue = nextPropsOrEmpty[ prop ];
-					const lastValue = lastPropsOrEmpty[ prop ];
+					const nextValue = nextPropsOrEmpty[prop];
+					const lastValue = lastPropsOrEmpty[prop];
 
 					patchProp(prop, lastValue, nextValue, dom, isSVG, hasControlledValue);
 				}
@@ -172,8 +172,8 @@ export function patchElement(lastVNode: VNode, nextVNode: VNode, parentDom: Elem
 			if (lastPropsOrEmpty !== EMPTY_OBJ) {
 				for (const prop in lastPropsOrEmpty) {
 					// do not add a hasOwnProperty check here, it affects performance
-					if (isNullOrUndef(nextPropsOrEmpty[ prop ]) && !isNullOrUndef(lastPropsOrEmpty[ prop ])) {
-						removeProp(prop, lastPropsOrEmpty[ prop ], dom, nextFlags);
+					if (isNullOrUndef(nextPropsOrEmpty[prop]) && !isNullOrUndef(lastPropsOrEmpty[prop])) {
+						removeProp(prop, lastPropsOrEmpty[prop], dom, nextFlags);
 					}
 				}
 			}
@@ -198,7 +198,7 @@ export function patchElement(lastVNode: VNode, nextVNode: VNode, parentDom: Elem
 	}
 }
 
-function patchChildren(lastFlags: VNodeFlags, nextFlags: VNodeFlags, lastChildren, nextChildren, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
+function patchChildren(fiber: IFiber, lastFlags: VNodeFlags, nextFlags: VNodeFlags, lastChildFibers: IFiber[], nextChildren, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
 	let patchArray = false;
 	let patchKeyed = false;
 
@@ -208,53 +208,69 @@ function patchChildren(lastFlags: VNodeFlags, nextFlags: VNodeFlags, lastChildre
 		patchKeyed = true;
 		patchArray = true;
 	} else if (isInvalid(nextChildren)) {
-		unmountChildren(lastChildren, dom, lifecycle, isRecycling);
-	} else if (isInvalid(lastChildren)) {
+		unmountChildren(fiber, lastChildFibers, dom, lifecycle, isRecycling);
+	} else if (isInvalid(lastChildFibers)) {
 		if (isStringOrNumber(nextChildren)) {
 			setTextContent(dom, nextChildren);
 		} else {
 			if (isArray(nextChildren)) {
-				mountArrayChildren(nextChildren, dom, lifecycle, context, isSVG);
+				mountArrayChildren(fiber, nextChildren, dom, lifecycle, context, isSVG, 0);
 			} else {
-				mount(nextChildren, dom, lifecycle, context, isSVG);
+				mount(fiber, nextChildren, dom, lifecycle, context, isSVG);
 			}
 		}
 	} else if (isStringOrNumber(nextChildren)) {
-		if (isStringOrNumber(lastChildren)) {
+		if (isStringOrNumber(lastChildFibers)) {
 			updateTextContent(dom, nextChildren);
 		} else {
-			unmountChildren(lastChildren, dom, lifecycle, isRecycling);
+			unmountChildren(fiber, lastChildFibers, dom, lifecycle, isRecycling);
 			setTextContent(dom, nextChildren);
 		}
-	} else if (isStringOrNumber(lastChildren)) {
-		unmountChildren(lastChildren, dom, lifecycle, isRecycling);
+	} else if (isStringOrNumber(lastChildFibers)) {
+		unmountChildren(fiber, lastChildFibers, dom, lifecycle, isRecycling);
 		if (isArray(nextChildren)) {
-			mountArrayChildren(nextChildren, dom, lifecycle, context, isSVG);
+			mountArrayChildren(fiber, nextChildren, dom, lifecycle, context, isSVG, 0);
 		} else {
-			mount(nextChildren, dom, lifecycle, context, isSVG);
+			mount(fiber, nextChildren, dom, lifecycle, context, isSVG);
 		}
 	} else if (isArray(nextChildren)) {
-		if (isArray(lastChildren)) {
+		if (isArray(lastChildFibers)) {
 			patchArray = true;
-			if (isKeyed(lastChildren, nextChildren)) {
-				patchKeyed = true;
-			}
+			// TODO: Keyed children fiber
+			// if (isKeyed(lastChildren, nextChildren)) {
+			// 	patchKeyed = true;
+			// }
 		} else {
-			unmountChildren(lastChildren, dom, lifecycle, isRecycling);
-			mountArrayChildren(nextChildren, dom, lifecycle, context, isSVG);
+			unmountChildren(fiber, lastChildFibers, dom, lifecycle, isRecycling);
+			mountArrayChildren(fiber, nextChildren, dom, lifecycle, context, isSVG, 0);
 		}
-	} else if (isArray(lastChildren)) {
-		removeAllChildren(dom, lastChildren, lifecycle, isRecycling);
-		mount(nextChildren, dom, lifecycle, context, isSVG);
+	} else if (isArray(lastChildFibers)) {
+		removeAllChildren(dom, lastChildFibers, lifecycle, isRecycling);
+		mount(fiber, nextChildren, dom, lifecycle, context, isSVG);
 	} else {
-		// next is vNode, last is vNode
-		patch(lastChildren, nextChildren, dom, lifecycle, context, isSVG, isRecycling);
+		// next is input, last is input
+		patch(lastChildFibers, nextChildren, dom, lifecycle, context, isSVG, isRecycling);
 	}
 	if (patchArray) {
+		// Common optimizations for arrays
+		const lastLength = (fiber.children as any[]).length;
+		const nextLength = nextChildren.length;
+
+		if (lastLength === 0) {
+			if (nextLength > 0) {
+				mountArrayChildren(fiber, nextChildren, dom, lifecycle, context, isSVG, 0);
+			}
+			return;
+		} else if (nextLength === 0) {
+			removeAllChildren(dom, lastChildFibers, lifecycle, isRecycling);
+			return;
+		}
+
+
 		if (patchKeyed) {
-			patchKeyedChildren(lastChildren, nextChildren, dom, lifecycle, context, isSVG, isRecycling);
+			// patchKeyedChildren(lastChildFibers, nextChildren, dom, lifecycle, context, isSVG, isRecycling, lastLength, nextLength);
 		} else {
-			patchNonKeyedChildren(lastChildren, nextChildren, dom, lifecycle, context, isSVG, isRecycling);
+			patchNonKeyedChildren(fiber, lastChildFibers, nextChildren, dom, lifecycle, context, isSVG, isRecycling, lastLength);
 		}
 	}
 }
@@ -320,13 +336,9 @@ export function patchComponent(lastVNode, nextVNode, parentDom, lifecycle: Lifec
 					nextInput = createTextVNode(nextInput, null);
 				} else if (isArray(nextInput)) {
 					if (process.env.NODE_ENV !== 'production') {
-						throwError('a valid Inferno VNode (or null) must be returned from a component render. You may have returned an array or an invalid object.');
+						throwError('a valid Inferno IVNode (or null) must be returned from a component render. You may have returned an array or an invalid object.');
 					}
 					throwError();
-				} else if (isObject(nextInput)) {
-					if (!isNull((nextInput as VNode).dom)) {
-						nextInput = directClone((nextInput as VNode));
-					}
 				}
 				if (nextInput !== NO_OP) {
 					patch(lastInput, nextInput, parentDom, lifecycle, context, isSVG, isRecycling);
@@ -347,56 +359,140 @@ export function patchComponent(lastVNode, nextVNode, parentDom, lifecycle: Lifec
 	return false;
 }
 
-export function patchText(lastVNode: VNode, nextVNode: VNode) {
-	const nextText = nextVNode.children as string;
-	const dom = lastVNode.dom as Element;
-
-	nextVNode.dom = dom;
-
-	if (lastVNode.children !== nextText) {
-		dom.nodeValue = nextText;
-	}
+export function patchText(fiber: IFiber, text: string | number) {
+	(fiber.dom as any).nodeValue = text as string;
 }
 
-export function patchVoid(lastVNode: VNode, nextVNode: VNode) {
-	nextVNode.dom = lastVNode.dom;
-}
+// export function patchVoid(lastVNode: IVNode, nextVNode: IVNode) {
+// 	nextVNode.dom = lastVNode.dom;
+// }
 
-export function patchNonKeyedChildren(lastChildren, nextChildren, dom, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
-	const lastChildrenLength = lastChildren.length;
-	const nextChildrenLength = nextChildren.length;
-	const commonLength = lastChildrenLength > nextChildrenLength ? nextChildrenLength : lastChildrenLength;
-	let i = 0;
+function loop(parentDOM, context, lifecycle, isSVG, isRecycling, nextChildren: any[], childFibers: IFiber[], index: number, currentKey, currentFiberNr, fiberCount) {
+	for (const len = nextChildren.length; index < len; index++) {
+		const child = nextChildren[ index ];
 
-	for (; i < commonLength; i++) {
-		let nextChild = nextChildren[ i ];
+		if (!isInvalid(child)) {
+			const key = `${ currentKey }.${ index }`;
 
-		if (nextChild.dom) {
-			nextChild = nextChildren[ i ] = directClone(nextChild);
-		}
-		patch(lastChildren[ i ], nextChild, dom, lifecycle, context, isSVG, isRecycling);
-	}
-	if (lastChildrenLength < nextChildrenLength) {
-		for (i = commonLength; i < nextChildrenLength; i++) {
-			let nextChild = nextChildren[ i ];
+			if (isStringOrNumber(child) || isVNode(child)) {
 
-			if (nextChild.dom) {
-				nextChild = nextChildren[ i ] = directClone(nextChild);
+				if (fiberCount > currentFiberNr) {
+					const childFiber = childFibers[currentFiberNr++];
+					if (childFiber.pos !== key) {
+						replaceDOM(childFiber, parentDOM, )
+					} else {
+						patch(, child, parentDOM, lifecycle, context, isSVG, isRecycling);
+					}
+				} else {
+					const newFiber = new Fiber(child, key);
+
+					childFibers.push(newFiber);
+					mount(newFiber, child, parentDOM, lifecycle, context, isSVG);
+				}
+			} else {
+				// Array
+				loop(parentDOM, context, lifecycle, isSVG, isRecycling, child, childFibers, 0, key, currentFiberNr, fiberCount);
 			}
-			appendChild(dom, mount(nextChild, null, lifecycle, context, isSVG));
-		}
-	} else if (nextChildrenLength === 0) {
-		removeAllChildren(dom, lastChildren, lifecycle, isRecycling);
-	} else if (lastChildrenLength > nextChildrenLength) {
-		for (i = commonLength; i < lastChildrenLength; i++) {
-			unmount(lastChildren[ i ], dom, lifecycle, false, isRecycling);
+			// if (isStringOrNumber(n)) {
+			// 	// String
+			// 	n = createTextVNode(n, null);
+			// } else if (isArray(n)) {
+			// 	// Array
+			// 	_normalizeVNodes(n, result, 0, key);
+			//
+			// 	continue;
+			// }
+			//
+			// if (emptyKey) {
+			// 	n = applyKey(key, n as VNode);
+			// } else {
+			// 	n = applyKeyPrefix(currentKey, n as VNode);
+			// }
+			//
+			// result.push(n);
 		}
 	}
 }
 
-export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: LifecycleClass, context, isSVG: boolean, isRecycling: boolean) {
-	let aLength = a.length;
-	let bLength = b.length;
+export function patchNonKeyedChildren(fiber: IFiber, childFibers, nextChildren, dom, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean, lastFibersLength: number) {
+	let fiberX = -1;
+	let fiberY = 0;
+	let prefix = '';
+	let child = null;
+
+	while (nextChildren.length > fiberX) {
+		child = nextChildren[fiberX++];
+
+		if (!isInvalid(child)) {
+			if (isStringOrNumber(child) || isVNode(child)) {
+				if (lastFibersLength > fiberCnt) {
+					patch(childFibers[fiberCnt++], child, dom, lifecycle, context, isSVG, isRecycling);
+				} else {
+					const newFiber = new Fiber(child, prefix + );
+
+					childFibers.push(newFiber);
+					mount(newFiber, child, dom, lifecycle, context, isSVG);
+				}
+			} else {
+				// Its' array
+				prefix = `.${++fiberY}`;
+				// Expensive
+				// Array.prototype.splice.apply(nextChildren, [0, 1].concat(child));
+			}
+		}
+	}
+
+	if (fiberCnt < lastFibersLength) {
+		const firstIndex = fiberCnt;
+
+		for (; fiberCnt < lastFibersLength; fiberCnt++) {
+			unmount(childFibers[fiberCnt], dom, lifecycle, false, isRecycling);
+		}
+
+		childFibers.splice(firstIndex, lastFibersLength - firstIndex); // Remove dead Fibers
+	}
+
+	// fiber.children = childFibers;
+	// Fiber children contain only last valid nodes
+	// last: [1, 2, null, null, null, 3, 4]
+	// => [1, 2, 3, 4]
+	// next: [1, 2, null, 5, 6, 7]
+	// => [1, 2, 5 (mount), 6(mount); 7patch, 4remove]
+
+
+	// let fiberCntr = -1;
+	// for (; i < commonLength; i++) {
+	// 	const nextChild = nextChildren[i];
+	//
+	// 	if (!isInvalid(nextChild)) {
+	// 		if (isStringOrNumber(nextChild)) {
+	// 			patch(childFibers[fiberCntr++], nextChild, dom, lifecycle, context, isSVG, isRecycling);
+	// 		} else	if (isArray) {
+	// 			patch(childFibers[fiberCntr++], nextChild, dom, lifecycle, context, isSVG, isRecycling);
+	// 		} else {
+	//
+	// 		}
+	// 	}
+	// }
+	//
+	// if (lastChildrenLength < nextChildrenLength) {
+	// 	for (i = commonLength; i < nextChildrenLength; i++) {
+	// 		const nextChild = nextChildren[i];
+	//
+	// 		appendChild(dom, mount(nextChild, null, lifecycle, context, isSVG));
+	// 	}
+	// } else if (nextChildrenLength === 0) {
+	// 	removeAllChildren(dom, lastChildren, lifecycle, isRecycling);
+	// } else if (lastChildrenLength > nextChildrenLength) {
+	// 	for (i = commonLength; i < lastChildrenLength; i++) {
+	// 		unmount(lastChildren[i], dom, lifecycle, false, isRecycling);
+	// 	}
+	// }
+}
+
+
+// TODO: Should compare fibers by key
+export function patchKeyedChildren(a: IVNode[], b: IVNode[], dom, lifecycle: LifecycleClass, context, isSVG: boolean, isRecycling: boolean, aLength: number, bLength: number) {
 	let aEnd = aLength - 1;
 	let bEnd = bLength - 1;
 	let aStart = 0;
@@ -409,26 +505,20 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 	let nextPos;
 	let node;
 
-	if (aLength === 0) {
-		if (bLength > 0) {
-			mountArrayChildren(b, dom, lifecycle, context, isSVG);
-		}
-		return;
-	} else if (bLength === 0) {
-		removeAllChildren(dom, a, lifecycle, isRecycling);
-		return;
-	}
-	let aStartNode = a[ aStart ];
-	let bStartNode = b[ bStart ];
-	let aEndNode = a[ aEnd ];
-	let bEndNode = b[ bEnd ];
+	// if (aLength === 0) {
+	// 	if (bLength > 0) {
+	// 		mountArrayChildren(b, dom, lifecycle, context, isSVG, 0);
+	// 	}
+	// 	return;
+	// } else if (bLength === 0) {
+	// 	removeAllChildren(dom, a, lifecycle, isRecycling);
+	// 	return;
+	// }
+	let aStartNode = a[aStart];
+	let bStartNode = b[bStart];
+	let aEndNode = a[aEnd];
+	let bEndNode = b[bEnd];
 
-	if (bStartNode.dom) {
-		b[ bStart ] = bStartNode = directClone(bStartNode);
-	}
-	if (bEndNode.dom) {
-		b[ bEnd ] = bEndNode = directClone(bEndNode);
-	}
 	// Step 1
 	/* eslint no-constant-condition: 0 */
 	outer: while (true) {
@@ -440,11 +530,8 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 			if (aStart > aEnd || bStart > bEnd) {
 				break outer;
 			}
-			aStartNode = a[ aStart ];
-			bStartNode = b[ bStart ];
-			if (bStartNode.dom) {
-				b[ bStart ] = bStartNode = directClone(bStartNode);
-			}
+			aStartNode = a[aStart];
+			bStartNode = b[bStart];
 		}
 
 		// Sync nodes with the same key at the end.
@@ -455,11 +542,8 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 			if (aStart > aEnd || bStart > bEnd) {
 				break outer;
 			}
-			aEndNode = a[ aEnd ];
-			bEndNode = b[ bEnd ];
-			if (bEndNode.dom) {
-				b[ bEnd ] = bEndNode = directClone(bEndNode);
-			}
+			aEndNode = a[aEnd];
+			bEndNode = b[bEnd];
 		}
 
 		// Move and sync nodes from right to left.
@@ -468,11 +552,8 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 			insertOrAppend(dom, bStartNode.dom, aStartNode.dom);
 			aEnd--;
 			bStart++;
-			aEndNode = a[ aEnd ];
-			bStartNode = b[ bStart ];
-			if (bStartNode.dom) {
-				b[ bStart ] = bStartNode = directClone(bStartNode);
-			}
+			aEndNode = a[aEnd];
+			bStartNode = b[bStart];
 			continue;
 		}
 
@@ -480,15 +561,12 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 		if (aStartNode.key === bEndNode.key) {
 			patch(aStartNode, bEndNode, dom, lifecycle, context, isSVG, isRecycling);
 			nextPos = bEnd + 1;
-			nextNode = nextPos < b.length ? b[ nextPos ].dom : null;
+			nextNode = nextPos < b.length ? b[nextPos].dom : null;
 			insertOrAppend(dom, bEndNode.dom, nextNode);
 			aStart++;
 			bEnd--;
-			aStartNode = a[ aStart ];
-			bEndNode = b[ bEnd ];
-			if (bEndNode.dom) {
-				b[ bEnd ] = bEndNode = directClone(bEndNode);
-			}
+			aStartNode = a[aStart];
+			bEndNode = b[bEnd];
 			continue;
 		}
 		break;
@@ -497,19 +575,16 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 	if (aStart > aEnd) {
 		if (bStart <= bEnd) {
 			nextPos = bEnd + 1;
-			nextNode = nextPos < b.length ? b[ nextPos ].dom : null;
+			nextNode = nextPos < b.length ? b[nextPos].dom : null;
 			while (bStart <= bEnd) {
-				node = b[ bStart ];
-				if (node.dom) {
-					b[ bStart ] = node = directClone(node);
-				}
+				node = b[bStart];
 				bStart++;
 				insertOrAppend(dom, mount(node, null, lifecycle, context, isSVG), nextNode);
 			}
 		}
 	} else if (bStart > bEnd) {
 		while (aStart <= aEnd) {
-			unmount(a[ aStart++ ], dom, lifecycle, false, isRecycling);
+			unmount(a[aStart++], dom, lifecycle, false, isRecycling);
 		}
 	} else {
 		aLength = aEnd - aStart + 1;
@@ -518,7 +593,7 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 
 		// Mark all nodes as inserted.
 		for (i = 0; i < bLength; i++) {
-			sources[ i ] = -1;
+			sources[i] = -1;
 		}
 		let moved = false;
 		let pos = 0;
@@ -527,24 +602,21 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 		// When sizes are small, just loop them through
 		if ((bLength <= 4) || (aLength * bLength <= 16)) {
 			for (i = aStart; i <= aEnd; i++) {
-				aNode = a[ i ];
+				aNode = a[i];
 				if (patched < bLength) {
 					for (j = bStart; j <= bEnd; j++) {
-						bNode = b[ j ];
+						bNode = b[j];
 						if (aNode.key === bNode.key) {
-							sources[ j - bStart ] = i;
+							sources[j - bStart] = i;
 
 							if (pos > j) {
 								moved = true;
 							} else {
 								pos = j;
 							}
-							if (bNode.dom) {
-								b[ j ] = bNode = directClone(bNode);
-							}
 							patch(aNode, bNode, dom, lifecycle, context, isSVG, isRecycling);
 							patched++;
-							a[ i ] = null as any;
+							a[i] = null as any;
 							break;
 						}
 					}
@@ -555,30 +627,27 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 
 			// Map keys by their index in array
 			for (i = bStart; i <= bEnd; i++) {
-				keyIndex.set(b[ i ].key, i);
+				keyIndex.set(b[i].key, i);
 			}
 
 			// Try to patch same keys
 			for (i = aStart; i <= aEnd; i++) {
-				aNode = a[ i ];
+				aNode = a[i];
 
 				if (patched < bLength) {
 					j = keyIndex.get(aNode.key);
 
 					if (!isUndefined(j)) {
-						bNode = b[ j ];
-						sources[ j - bStart ] = i;
+						bNode = b[j];
+						sources[j - bStart] = i;
 						if (pos > j) {
 							moved = true;
 						} else {
 							pos = j;
 						}
-						if (bNode.dom) {
-							b[ j ] = bNode = directClone(bNode);
-						}
 						patch(aNode, bNode, dom, lifecycle, context, isSVG, isRecycling);
 						patched++;
-						a[ i ] = null as any;
+						a[i] = null as any;
 					}
 				}
 			}
@@ -587,17 +656,14 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 		if (aLength === a.length && patched === 0) {
 			removeAllChildren(dom, a, lifecycle, isRecycling);
 			while (bStart < bLength) {
-				node = b[ bStart ];
-				if (node.dom) {
-					b[ bStart ] = node = directClone(node);
-				}
+				node = b[bStart];
 				bStart++;
 				insertOrAppend(dom, mount(node, null, lifecycle, context, isSVG), null);
 			}
 		} else {
 			i = aLength - patched;
 			while (i > 0) {
-				aNode = a[ aStart++ ];
+				aNode = a[aStart++];
 				if (!isNull(aNode)) {
 					unmount(aNode, dom, lifecycle, true, isRecycling);
 					i--;
@@ -607,21 +673,18 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 				const seq = lis_algorithm(sources);
 				j = seq.length - 1;
 				for (i = bLength - 1; i >= 0; i--) {
-					if (sources[ i ] === -1) {
+					if (sources[i] === -1) {
 						pos = i + bStart;
-						node = b[ pos ];
-						if (node.dom) {
-							b[ pos ] = node = directClone(node);
-						}
+						node = b[pos];
 						nextPos = pos + 1;
-						nextNode = nextPos < b.length ? b[ nextPos ].dom : null;
+						nextNode = nextPos < b.length ? b[nextPos].dom : null;
 						insertOrAppend(dom, mount(node, dom, lifecycle, context, isSVG), nextNode);
 					} else {
-						if (j < 0 || i !== seq[ j ]) {
+						if (j < 0 || i !== seq[j]) {
 							pos = i + bStart;
-							node = b[ pos ];
+							node = b[pos];
 							nextPos = pos + 1;
-							nextNode = nextPos < b.length ? b[ nextPos ].dom : null;
+							nextNode = nextPos < b.length ? b[nextPos].dom : null;
 							insertOrAppend(dom, node.dom, nextNode);
 						} else {
 							j--;
@@ -632,14 +695,11 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 				// when patched count doesn't match b length we need to insert those new ones
 				// loop backwards so we can use insertBefore
 				for (i = bLength - 1; i >= 0; i--) {
-					if (sources[ i ] === -1) {
+					if (sources[i] === -1) {
 						pos = i + bStart;
-						node = b[ pos ];
-						if (node.dom) {
-							b[ pos ] = node = directClone(node);
-						}
+						node = b[pos];
 						nextPos = pos + 1;
-						nextNode = nextPos < b.length ? b[ nextPos ].dom : null;
+						nextNode = nextPos < b.length ? b[nextPos].dom : null;
 						insertOrAppend(dom, mount(node, null, lifecycle, context, isSVG), nextNode);
 					}
 				}
@@ -651,7 +711,7 @@ export function patchKeyedChildren(a: VNode[], b: VNode[], dom, lifecycle: Lifec
 // // https://en.wikipedia.org/wiki/Longest_increasing_subsequence
 function lis_algorithm(arr: number[]): number[] {
 	const p = arr.slice(0);
-	const result: number[] = [ 0 ];
+	const result: number[] = [0];
 	let i;
 	let j;
 	let u;
@@ -660,15 +720,15 @@ function lis_algorithm(arr: number[]): number[] {
 	const len = arr.length;
 
 	for (i = 0; i < len; i++) {
-		const arrI = arr[ i ];
+		const arrI = arr[i];
 
 		if (arrI === -1) {
 			continue;
 		}
 
-		j = result[ result.length - 1 ];
-		if (arr[ j ] < arrI) {
-			p[ i ] = j;
+		j = result[result.length - 1];
+		if (arr[j] < arrI) {
+			p[i] = j;
 			result.push(i);
 			continue;
 		}
@@ -678,34 +738,34 @@ function lis_algorithm(arr: number[]): number[] {
 
 		while (u < v) {
 			c = ((u + v) / 2) | 0;
-			if (arr[ result[ c ] ] < arrI) {
+			if (arr[result[c]] < arrI) {
 				u = c + 1;
 			} else {
 				v = c;
 			}
 		}
 
-		if (arrI < arr[ result[ u ] ]) {
+		if (arrI < arr[result[u]]) {
 			if (u > 0) {
-				p[ i ] = result[ u - 1 ];
+				p[i] = result[u - 1];
 			}
-			result[ u ] = i;
+			result[u] = i;
 		}
 	}
 
 	u = result.length;
-	v = result[ u - 1 ];
+	v = result[u - 1];
 
 	while (u-- > 0) {
-		result[ u ] = v;
-		v = p[ v ];
+		result[u] = v;
+		v = p[v];
 	}
 
 	return result;
 }
 
 export function isAttrAnEvent(attr: string): boolean {
-	return attr[ 0 ] === 'o' && attr[ 1 ] === 'n';
+	return attr[0] === 'o' && attr[1] === 'n';
 }
 
 export function patchProp(prop, lastValue, nextValue, dom: Element, isSVG: boolean, hasControlledValue: boolean) {
@@ -714,12 +774,12 @@ export function patchProp(prop, lastValue, nextValue, dom: Element, isSVG: boole
 			return;
 		} else if (booleanProps.has(prop)) {
 			prop = prop === 'autoFocus' ? prop.toLowerCase() : prop;
-			dom[ prop ] = !!nextValue;
+			dom[prop] = !!nextValue;
 		} else if (strictProps.has(prop)) {
 			const value = isNullOrUndef(nextValue) ? '' : nextValue;
 
-			if (dom[ prop ] !== value) {
-				dom[ prop ] = value;
+			if (dom[prop] !== value) {
+				dom[prop] = value;
 			}
 		} else if (isAttrAnEvent(prop)) {
 			patchEvent(prop, lastValue, nextValue, dom);
@@ -754,7 +814,7 @@ export function patchEvent(name: string, lastValue, nextValue, dom) {
 			handleEvent(name, lastValue, nextValue, dom);
 		} else {
 			const nameLowerCase = name.toLowerCase();
-			const domEvent = dom[ nameLowerCase ];
+			const domEvent = dom[nameLowerCase];
 			// if the function is wrapped, that means it's been controlled by a wrapper
 			if (domEvent && domEvent.wrapped) {
 				return;
@@ -763,7 +823,7 @@ export function patchEvent(name: string, lastValue, nextValue, dom) {
 				const linkEvent = nextValue.event;
 
 				if (linkEvent && isFunction(linkEvent)) {
-					dom[ nameLowerCase ] = function(e) {
+					dom[nameLowerCase] = function (e) {
 						C.rendering = true;
 						linkEvent(nextValue.data, e);
 						if (isFunction(C.flush)) {
@@ -778,7 +838,7 @@ export function patchEvent(name: string, lastValue, nextValue, dom) {
 					throwError();
 				}
 			} else {
-				dom[ nameLowerCase ] = function(event) {
+				dom[nameLowerCase] = function (event) {
 					C.rendering = true;
 					nextValue(event);
 					if (isFunction(C.flush)) {
@@ -793,7 +853,7 @@ export function patchEvent(name: string, lastValue, nextValue, dom) {
 
 // We are assuming here that we come from patchProp routine
 // -nextAttrValue cannot be null or undefined
-export function patchStyle(lastAttrValue: string | Styles, nextAttrValue: string | Styles, dom) {
+export function patchStyle(lastAttrValue: string | {}, nextAttrValue: string | {}, dom) {
 	const domStyle = dom.style;
 
 	if (isString(nextAttrValue)) {
@@ -801,21 +861,21 @@ export function patchStyle(lastAttrValue: string | Styles, nextAttrValue: string
 		return;
 	}
 
-	for (const style in nextAttrValue as Styles) {
+	for (const style in nextAttrValue) {
 		// do not add a hasOwnProperty check here, it affects performance
-		const value = nextAttrValue[ style ];
+		const value = nextAttrValue[style];
 
 		if (!isNumber(value) || isUnitlessNumber.has(style)) {
-			domStyle[ style ] = value;
+			domStyle[style] = value;
 		} else {
-			domStyle[ style ] = value + 'px';
+			domStyle[style] = value + 'px';
 		}
 	}
 
-	if (!isNullOrUndef(lastAttrValue)) {
-		for (const style in lastAttrValue as Styles) {
-			if (isNullOrUndef(nextAttrValue[ style ])) {
-				domStyle[ style ] = '';
+	if (!isNullOrUndef(lastAttrValue) && !isString(lastAttrValue)) {
+		for (const style in lastAttrValue) {
+			if (isNullOrUndef(nextAttrValue[style])) {
+				domStyle[style] = '';
 			}
 		}
 	}

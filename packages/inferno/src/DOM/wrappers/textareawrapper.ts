@@ -2,7 +2,7 @@ import { isNullOrUndef } from 'inferno-shared';
 import { EMPTY_OBJ } from '../utils';
 
 function wrappedOnChange(e) {
-	const props = this.vNode.props || EMPTY_OBJ;
+	const props = this.input.props || EMPTY_OBJ;
 	const event = props.onChange;
 
 	if (event.event) {
@@ -13,7 +13,7 @@ function wrappedOnChange(e) {
 }
 
 function onTextareaInputChange(e) {
-	const vNode = this.vNode;
+	const vNode = this.input;
 	const props = vNode.props || EMPTY_OBJ;
 	const previousValue = props.value;
 
@@ -29,9 +29,9 @@ function onTextareaInputChange(e) {
 		props.oninput(e);
 	}
 
-	// the user may have updated the vNode from the above onInput events syncronously
+	// the user may have updated the input from the above onInput events syncronously
 	// so we need to get it from the context of `this` again
-	const newVNode = this.vNode;
+	const newVNode = this.input;
 	const newProps = newVNode.props || EMPTY_OBJ;
 
 	// If render is going async there is no value change yet, it will come back to process input soon
@@ -46,7 +46,7 @@ export function processTextarea(vNode, dom, nextPropsOrEmpty, mounting: boolean,
 	applyValue(nextPropsOrEmpty, dom, mounting);
 
 	if (isControlled) {
-		dom.vNode = vNode; // TODO: Remove this when implementing Fiber's
+		dom.input = vNode; // TODO: Remove this when implementing Fiber's
 
 		if (mounting) {
 			dom.oninput = onTextareaInputChange;

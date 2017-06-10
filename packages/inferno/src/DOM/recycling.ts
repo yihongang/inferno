@@ -1,17 +1,17 @@
 import { isNull, isUndefined, LifecycleClass } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
-import { VNode } from '../core/VNodes';
+import { IVNode } from '../core/vnode';
 import { patchComponent, patchElement } from './patching';
 
 export class Pools {
-	public nonKeyed: VNode[] = [];
-	public keyed: Map<string | number, VNode[]> = new Map();
+	public nonKeyed: IVNode[] = [];
+	public keyed: Map<string | number, IVNode[]> = new Map();
 }
 
 export const componentPools = new Map<Function | null, Pools>();
 export const elementPools = new Map<string | null, Pools>();
 
-function recycle(tagPools: Map<any, Pools>, vNode): VNode|undefined {
+function recycle(tagPools: Map<any, Pools>, vNode): IVNode|undefined {
 	const pools = tagPools.get(vNode.type);
 
 	if (!isUndefined(pools)) {
@@ -25,7 +25,7 @@ function recycle(tagPools: Map<any, Pools>, vNode): VNode|undefined {
 	return void 0;
 }
 
-export function recycleElement(vNode: VNode, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
+export function recycleElement(vNode: IVNode, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
 	const recycledVNode = recycle(elementPools, vNode);
 	if (recycledVNode !== void 0) {
 		patchElement(recycledVNode, vNode, null, lifecycle, context, isSVG, true);
@@ -35,7 +35,7 @@ export function recycleElement(vNode: VNode, lifecycle: LifecycleClass, context:
 	return null;
 }
 
-export function recycleComponent(vNode: VNode, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
+export function recycleComponent(vNode: IVNode, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
 	const recycledVNode = recycle(componentPools, vNode);
 	if (recycledVNode !== void 0) {
 		const flags = vNode.flags;
@@ -58,7 +58,7 @@ export function recycleComponent(vNode: VNode, lifecycle: LifecycleClass, contex
 	return null;
 }
 
-export function pool(vNode: VNode, tagPools: Map<any, Pools>) {
+export function pool(vNode: IVNode, tagPools: Map<any, Pools>) {
 	const tag = vNode.type;
 	const key = vNode.key;
 	let pools = tagPools.get(tag);

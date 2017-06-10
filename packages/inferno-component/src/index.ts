@@ -198,8 +198,8 @@ function patchComponent(lastVNode, nextVNode, parentDom, lifecycle: LifecycleCla
 const resolvedPromise = Promise.resolve();
 const componentFlushQueue: any[] = [];
 
-// when a components root VNode is also a component, we can run into issues
-// this will recursively look for vNode.parentNode if the VNode is a component
+// when a components root IVNode is also a component, we can run into issues
+// this will recursively look for input.parentNode if the IVNode is a component
 function updateParentComponentVNodes(vNode: VNode, dom: Element) {
 	if (vNode.flags & VNodeFlags.Component) {
 		const parentVNode = vNode.parentVNode;

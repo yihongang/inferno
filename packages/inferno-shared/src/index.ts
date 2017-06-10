@@ -106,6 +106,7 @@ Lifecycle.prototype.trigger = function trigger() {
 
 	let listener;
 	// We need to remove current listener from array when calling it, because more listeners might be added
+	// TODO: Performance - Check if this can be converted to for loop
 	while (listener = listeners.shift()) {
 		listener();
 	}

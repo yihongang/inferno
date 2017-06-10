@@ -3,12 +3,12 @@ import { LifecycleClass as _LifecycleClass, NO_OP, warning } from 'inferno-share
 import _VNodeFlags from 'inferno-vnode-flags';
 import { getFlagsForElementVnode, normalize as internal_normalize } from './core/normalization';
 import { options, Root as _Root } from './core/options';
-import { cloneVNode, createVNode, InfernoChildren, InfernoInput, Props, VNode } from './core/VNodes';
+import { createVNode, InfernoChildren, Props, IVNode } from './core/vnode';
 import { isUnitlessNumber as internal_isUnitlessNumber } from './DOM/constants';
 import { linkEvent } from './DOM/events/linkEvent';
 import { patch as internal_patch } from './DOM/patching';
 import { componentToDOMNodeMap as internal_DOMNodeMap, createRenderer, findDOMNode, render } from './DOM/rendering';
-import { EMPTY_OBJ } from './DOM/utils';
+import { EMPTY_OBJ, handleComponentInput } from './DOM/utils';
 
 if (process.env.NODE_ENV !== 'production') {
 	/* tslint:disable-next-line:no-empty */
@@ -30,11 +30,12 @@ export declare const LifecycleClass: _LifecycleClass;
 
 const version = '4.0.0';
 
+options.component.handleInput = handleComponentInput;
+
 // we duplicate it so it plays nicely with different module loading systems
 export default {
 	EMPTY_OBJ,
 	NO_OP,
-	cloneVNode,
 	createRenderer,
 	createVNode,
 	findDOMNode,
@@ -52,11 +53,9 @@ export default {
 export {
 	EMPTY_OBJ,
 	InfernoChildren,
-	InfernoInput,
 	NO_OP,
 	Props,
-	VNode,
-	cloneVNode,
+	IVNode,
 	createRenderer,
 	createVNode,
 	findDOMNode,

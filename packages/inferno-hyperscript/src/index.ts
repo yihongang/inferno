@@ -84,10 +84,10 @@ function extractProps(_props: any, isElement: boolean, _tag: string | VNode): an
 
 /**
  * Creates virtual node
- * @param {string|VNode|Function} _tag Name for virtual node
+ * @param {string|IVNode|Function} _tag Name for virtual node
  * @param {object=} _props Additional properties for virtual node
- * @param {string|number|VNode|Array<string|number|VNode>|null=} _children Optional children for virtual node
- * @returns {VNode} returns new virtual node
+ * @param {string|number|IVNode|Array<string|number|VNode>|null=} _children Optional children for virtual node
+ * @returns {IVNode} returns new virtual node
  */
 export default function hyperscript(_tag: string | VNode | Function, _props?: any, _children?: InfernoChildren): VNode {
 	// If a child array or text node are passed as the second argument, shift them

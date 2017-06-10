@@ -1,5 +1,5 @@
 import { isArray, isInvalid, isNullOrUndef } from 'inferno-shared';
-import { isVNode } from '../../core/VNodes';
+import { isVNode } from '../../core/vnode';
 import { EMPTY_OBJ } from '../utils';
 
 function updateChildOptionGroup(vNode, value) {
@@ -34,7 +34,7 @@ function updateChildOption(vNode, value) {
 }
 
 function onSelectChange(e) {
-	const vNode = this.vNode;
+	const vNode = this.input;
 	const props = vNode.props || EMPTY_OBJ;
 	const dom = vNode.dom;
 	const previousValue = props.value;
@@ -50,9 +50,9 @@ function onSelectChange(e) {
 	} else if (props.onchange) {
 		props.onchange(e);
 	}
-	// the user may have updated the vNode from the above onInput events syncronously
+	// the user may have updated the input from the above onInput events syncronously
 	// so we need to get it from the context of `this` again
-	const newVNode = this.vNode;
+	const newVNode = this.input;
 	const newProps = newVNode.props || EMPTY_OBJ;
 
 	// If render is going async there is no value change yet, it will come back to process input soon
@@ -67,7 +67,7 @@ export function processSelect(vNode, dom, nextPropsOrEmpty, mounting: boolean, i
 	applyValue(vNode, dom, nextPropsOrEmpty, mounting);
 
 	if (isControlled) {
-		dom.vNode = vNode; // TODO: Remove this when implementing Fiber's
+		dom.input = vNode; // TODO: Remove this when implementing Fiber's
 
 		if (mounting) {
 			dom.onchange = onSelectChange;
