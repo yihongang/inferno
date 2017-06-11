@@ -78,14 +78,6 @@ export function createVNode(flags: VNodeFlags, type: Type, className?: string | 
 	return vNode;
 }
 
-export function createVoidVNode(): IVNode {
-	return createVNode(VNodeFlags.Void, null);
-}
-
-export function createTextVNode(text: string | number, key): IVNode {
-	return createVNode(VNodeFlags.Text, null, null, text, null, key);
-}
-
 export function isVNode(o: IVNode): boolean {
 	return !!o.flags;
 }
