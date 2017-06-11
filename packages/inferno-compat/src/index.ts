@@ -175,6 +175,14 @@
 // 				}
 // 			}
 // 		}
+		const vnode = originalFunction(name, props, ...children);
+
+		if (vnode.className) {
+			vnode.props = vnode.props || {};
+			vnode.props.className = vnode.className;
+		}
+
+		return vnode;
 // 		return originalFunction(name, props, ...children);
 // 	};
 // };

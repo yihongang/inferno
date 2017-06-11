@@ -8,6 +8,7 @@
 // import { createStore } from 'redux';
 // import { IndexRoute, Route, Router } from 'inferno-router';
 // import { Provider } from '../dist-es';
+// import { connect, Provider } from '../dist-es';
 // import { innerHTML } from 'inferno/test/utils';
 //
 // const render = Inferno.render;
@@ -40,10 +41,9 @@
 // 		}
 // 	}
 //
-// 	class BasicComponent1 extends Component {
+//	const BasicComponent1 = connect((state) => ({ name: state.name }))(class extends Component {
 // 		render() {
 // 			const store = this.context.store;
-// 			const state = store.getState();
 //
 // 			const onClick = (e) => {
 // 				e.preventDefault();
@@ -56,25 +56,22 @@
 // 			return (
 // 				<div className="basic">
 // 					<a id="dispatch" onClick={onClick}>
-// 						<span>Hello { state.name || 'Tom' }</span>
+//						<span>Hello { this.props.name || 'Tom' }</span>
 // 					</a>
 // 				</div>
 // 			);
 // 		}
 // 	}
 //
-// 	class BasicComponent2 extends Component {
+//	const BasicComponent2 = connect((state) => ({ name: state.name }))(class extends Component {
 // 		render() {
-// 			const store = this.context.store;
-// 			const state = store.getState();
-//
 // 			return (
 // 				<div className="basic2">
-// 					{ state.name === 'Jerry' ? 'You\'re a mouse!' : 'You\'re a cat!' }
+//					{ this.props.name === 'Jerry' ? 'You\'re a mouse!' : 'You\'re a cat!' }
 // 				</div>
 // 			);
 // 		}
-// 	}
+//	});
 //
 // 	it('should enforce a single child', () => {
 // 		const store = createStore(() => ({}));

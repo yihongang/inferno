@@ -76,11 +76,11 @@
 // }
 //
 // describe('Test Utils', () => {
-//
-// 	describe('isVNode', () => {
-//
-// 		it('should return true for VNodes', () => {
-// 			expect(isVNode(createElement('div'))).to.be.true;
+//	const DivProto = Object.getPrototypeOf(document.createElement('div')).constructor;
+//	const AnchorProto = Object.getPrototypeOf(document.createElement('a')).constructor;
+//	const SpanProto = Object.getPrototypeOf(document.createElement('span')).constructor;
+//	const H1Proto = Object.getPrototypeOf(document.createElement('h1')).constructor;
+//	const ParagraphProto = Object.getPrototypeOf(document.createElement('p')).constructor;
 // 			expect(isVNode(createElement(CreateClassComponent))).to.be.true;
 // 			expect(isVNode(createElement(ExtendClassComponent))).to.be.true;
 // 			expect(isVNode(createElement(FunctionalComponent))).to.be.true;
@@ -486,7 +486,7 @@
 //
 // 			const result2 = scryRenderedDOMElementsWithClass(tree, 'two');
 // 			expect(result2).to.be.instanceof(Array);
-// 			expect(result2).to.have.lengthOf(2);
+//				expect(result instanceof DivProto).to.be.true;
 // 			expect(result2[ 0 ]).to.be.instanceof(window.HTMLDivElement);
 // 			expect(result2[ 1 ]).to.be.instanceof(window.HTMLSpanElement);
 //
