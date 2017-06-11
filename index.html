@@ -1,0 +1,769 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Inferno</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">Inferno</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> Inferno</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<p align="center"><img src="https://www.infernojs.org/assets/infernojs-logo.png"></p>
+				<p>&nbsp;</p>
+				<p><a href="https://travis-ci.org/infernojs/inferno/branches"><img src="https://img.shields.io/travis/infernojs/inferno/master.svg?style=flat-square" alt="Build Status"></a>
+					<a href="https://coveralls.io/github/infernojs/inferno?branch=master"><img src="https://img.shields.io/coveralls/infernojs/inferno/master.svg?style=flat-square" alt="Coverage Status"></a>
+					<a href="https://david-dm.org/infernojs/inferno"><img src="https://img.shields.io/david/infernojs/inferno.svg?style=flat-square" alt="Dependencies"></a>
+					<a href="https://david-dm.org/infernojs/inferno#info=devDependencies"><img src="https://david-dm.org/infernojs/inferno/dev-status.svg?style=flat-square" alt="devDependency Status"></a>
+					<a href="https://github.com/infernojs/inferno/blob/master/LICENSE.md"><img src="https://img.shields.io/npm/l/inferno.svg?style=flat-square" alt="MIT"></a>
+					<a href="https://www.npmjs.com/package/inferno"><img src="https://img.shields.io/npm/v/inferno.svg?style=flat-square" alt="NPM Version"></a>
+					<a href="https://www.npmjs.org/package/inferno"><img src="https://img.shields.io/npm/dm/inferno.svg?style=flat-square" alt="npm downloads"></a>
+				<a href="https://inferno-slack.herokuapp.com/"><img src="https://inferno-slack.herokuapp.com/badge.svg" alt="Slack Status"></a></p>
+				<p><a href="https://saucelabs.com/u/LukeSheard"><img src="https://saucelabs.com/browser-matrix/LukeSheard.svg" alt="Sauce Test Status"></a></p>
+				<p>Inferno is an insanely fast, <code>9kb</code> React-like library for building high-performance user interfaces on both the client and server.</p>
+				<p>To quote a member of the React core team at Facebook:</p>
+				<blockquote>
+					<p>Inferno 1.0 is really well written. It&#39;s how I would&#39;ve rewritten React. I&#39;d recommend reading its source to learn.</p>
+				</blockquote>
+				<p>Inferno aims to provide all the great benefits that React does, plus other great features for people already familiar with the React ecosystem, such as: lifecycle events on functional components, server side render streams, better real-world performance, lower memory consumption and faster parse/load times. Furthermore, Inferno allows people to switch their <strong>existing React projects</strong> to Inferno in a few lines of code using <a href="https://github.com/infernojs/inferno/tree/master/packages/inferno-compat"><code>inferno-compat</code></a>.</p>
+				<p>For those not familiar with React, Inferno is a JavaScript library for building user interfaces in a <strong>declarative</strong> manner. Rather than working with MVC/MVVM style patterns, Inferno uses a <strong>component-based</strong> approach where data flows in one direction, making coding predictable, re-usable and highly testable. Based on the concept of <em>learn once, write anywhere</em>, Inferno doesn&#39;t impose any restrictions on how you create components. You literally write JavaScript to state how you&#39;d like your UI to look – Inferno does all the rest. Inferno also renders content on the server via <code>inferno-server</code> and NodeJS, so you can write awesome UIs that get rendered full-stack.</p>
+				<p>In terms of performance, Inferno is currently the <strong>fastest</strong> JavaScript UI library there is – both in benchmarks and actual real-world scenarios. It excels on the browser at initial page load, parse times, render times and update times. Inferno&#39;s server-side rendering is around 5x faster than React, around 3x faster than Angular 2 and around 1.5x faster than Preact and Vue.</p>
+				<h2 id="but-why-">But why?</h2>
+				<p>Inferno started as an idea two years ago, to see if a UI library could really improve the experience, battery, memory usage and performance on mobile devices. At the time we really struggled to get good performance on <em>any</em> UI library/framework – it simply wasn&#39;t happening, we spent a huge amount of time writing lots of vanilla JavaScript code and it did the job – but it was a mess.</p>
+				<p>Since then, things haven&#39;t really improved much in the mobile space. Libraries have gotten smaller, but the time to parse a 2mb app can result in 5+ seconds time before the user can even see anything. Frameworks and libraries need to lose bloat, they need to care about performance. Developing on a MacBook Pro and seeing animations, routing, complex UIs instantly appear is <em>not</em> going to happen on an average mobile device (especially in emerging countries).</p>
+				<p>Inferno proves that it is possible to be fast on mobile. Parse-time, load-time, rendering complex UIs and all the normal things you&#39;d expect to just work. How Inferno does that is based on many factors, but ultimately Inferno&#39;s code is much better understood by modern JavaScript engines and can be highly optimised to perform far better than other libraries/frameworks.</p>
+				<h2 id="summary">Summary</h2>
+				<ul>
+					<li>Component driven + one-way data flow architecture</li>
+					<li>One of the fastest front-end frameworks for rendering UI in the DOM</li>
+					<li>React-like API, concepts and component lifecycle events</li>
+					<li>Partial synthetic event system, providing delegation to certain events for better performance</li>
+					<li>Inferno&#39;s <a href="https://github.com/infernojs/inferno/blob/master/README.md#linkevent-package-inferno"><code>linkEvent</code></a> feature removes the need to use arrow functions or binding event callbacks</li>
+					<li>Lightweight filesize of only 9kb</li>
+					<li>Isomorphic rendering on both client and server with <code>inferno-server</code></li>
+					<li>Highly modular with very few opinions on how things should be done</li>
+					<li>Unlike React and Preact, Inferno has lifecycle events on functional components</li>
+					<li>Supports asynchronous component rendering using <code>requestIdleCallback</code></li>
+					<li>Unlike Preact and other React-like libraries, Inferno has controlled components for input/select/textarea elements</li>
+				</ul>
+				<h2 id="benchmarks">Benchmarks</h2>
+				<ul>
+					<li><a href="http://vdom-benchmark.github.io/vdom-benchmark/">Virtual DOM Benchmark</a></li>
+					<li><a href="https://localvoid.github.io/uibench/">UI Bench</a></li>
+					<li><a href="https://rawgit.com/infernojs/dbmonster-inferno/master/index.html">dbmonster</a></li>
+					<li><a href="http://stefankrause.net/js-frameworks-benchmark4/webdriver-ts/table.html">JS Web Frameworks Benchmark - Round 4</a></li>
+				</ul>
+				<h2 id="code-example">Code Example</h2>
+				<p>Let&#39;s start with some code. As you can see, Inferno intentionally keeps the same, good, design ideas as React regarding components: one-way data flow and separation of concerns.</p>
+				<p>In these examples, JSX is used via the <a href="https://github.com/infernojs/babel-plugin-inferno">Inferno JSX Babel Plugin</a> to provide a simple way to express Inferno virtual DOM. You do not need to use JSX, it&#39;s completely <strong>optional</strong>, you can use <a href="https://github.com/infernojs/inferno/tree/master/packages/inferno-hyperscript">hyperscript</a> or <a href="https://github.com/infernojs/inferno/tree/master/packages/inferno-create-element">createElement</a> (like React does).</p>
+				<pre><code class="lang-jsx"><span class="hljs-keyword">import</span> Inferno <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+
+<span class="hljs-keyword">const</span> message = <span class="hljs-string">"Hello world"</span>;
+
+Inferno.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">message</span>=<span class="hljs-string">{</span> <span class="hljs-attr">message</span> } /&gt;</span>,
+  document.getElementById("app")
+);</span>
+</code></pre>
+				<p>Furthermore, Inferno also uses ES6 components like React:</p>
+				<pre><code class="lang-jsx"><span class="hljs-keyword">import</span> Inferno <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+<span class="hljs-keyword">import</span> Component <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno-component'</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-keyword">constructor</span>(props) {
+    <span class="hljs-keyword">super</span>(props);
+    <span class="hljs-keyword">this</span>.state = {
+      <span class="hljs-attr">counter</span>: <span class="hljs-number">0</span>
+    }
+  }
+  render() {
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Header!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Counter is at: { this.state.counter }<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    )
+  }
+}
+
+Inferno.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> /&gt;</span>,
+  document.getElementById("app")
+);</span>
+</code></pre>
+				<h3 id="more-examples">More Examples</h3>
+				<ul>
+					<li><a href="https://jsfiddle.net/wt5vL603/"><strong>Simple Clock</strong> (@JSFiddle)</a></li>
+				</ul>
+				<h2 id="getting-started">Getting Started</h2>
+				<p>The best way to start to use Inferno is by using <a href="https://github.com/infernojs/create-inferno-app">Create Inferno App</a>. You can get setup and running within a few minutes.</p>
+				<p>Alternatively, you can get started with Inferno using the <a href="https://github.com/infernojs/inferno-boilerplate">Inferno Boilerplate</a> for a very simple setup. For a more advanced example demonstrating how Inferno might be used, we recommend trying out <a href="https://github.com/nightwolfz/inferno-starter">Inferno Starter Project</a> by <a href="https://github.com/nightwolfz/">nightwolfz</a>. For using inferno to build a mobile app <a href="https://github.com/Rudy-Zidan/inferno-mobile">Inferno Mobile Starter Project</a> by <a href="https://github.com/Rudy-Zidan">Rudy-Zidan</a>.</p>
+				<p>Core package:</p>
+				<pre><code class="lang-sh">npm install --save inferno
+</code></pre>
+				<p>Addons:</p>
+				<pre><code class="lang-sh"><span class="hljs-comment"># ES2015 class components</span>
+npm install --save inferno-component
+<span class="hljs-comment"># server-side rendering</span>
+npm install --save inferno-server
+<span class="hljs-comment"># routing</span>
+npm install --save inferno-router
+</code></pre>
+				<p>Pre-bundled files for browser consumption can be found on <a href="https://cdnjs.com/libraries/inferno">our cdnjs</a>:</p>
+				<p>Or on unpkg.com:</p>
+				<pre><code>http<span class="hljs-variable">s:</span>//unpkg.<span class="hljs-keyword">com</span>/inferno@latest/dist/inferno.<span class="hljs-built_in">min</span>.js
+</code></pre><h3 id="creating-virtual-dom">Creating Virtual DOM</h3>
+				<h4 id="jsx-">JSX:</h4>
+				<pre><code class="lang-sh">npm install --save-dev babel-plugin-inferno
+</code></pre>
+				<h4 id="hyperscript-">Hyperscript:</h4>
+				<pre><code class="lang-sh">npm install --save inferno-hyperscript
+</code></pre>
+				<h4 id="createelement-">createElement:</h4>
+				<pre><code class="lang-sh">npm install --save inferno-create-element
+</code></pre>
+				<h3 id="compatibility-with-existing-react-apps">Compatibility with existing React apps</h3>
+				<pre><code class="lang-sh">npm install --save-dev inferno-compat
+</code></pre>
+				<p>Note: Make sure you read more about <a href="https://github.com/infernojs/inferno/tree/master/packages/inferno-compat"><code>inferno-compat</code></a> before using it.</p>
+				<h2 id="third-party-state-libraries">Third-party state libraries</h2>
+				<p>Inferno now has bindings available for some of the major state management libraries out there:</p>
+				<ul>
+					<li>Redux via <a href="https://github.com/infernojs/inferno/tree/dev/packages/inferno-redux"><code>inferno-redux</code></a></li>
+					<li>MobX via <a href="https://github.com/infernojs/inferno/tree/dev/packages/inferno-mobx"><code>inferno-mobx</code></a></li>
+					<li>Cerebral via <a href="https://github.com/cerebral/cerebral-view-inferno"><code>cerebral-view-inferno</code></a></li>
+				</ul>
+				<h2 id="jsx">JSX</h2>
+				<p>Inferno has its own <a href="https://github.com/trueadm/babel-plugin-inferno">JSX Babel plugin</a>.</p>
+				<h2 id="differences-from-react">Differences from React</h2>
+				<ul>
+					<li>Inferno is much smaller in size, <code>9kb</code> vs <code>45kb</code> gzip. This means Inferno is faster to transfer over the network but more importantly, is <em>much</em> faster to parse – this makes a big impact on mobile.</li>
+					<li>Inferno is considerably faster than React. This doesn&#39;t apply to only benchmarks, but real-world applications that companies have converted to Inferno from React. Ranging from 40% - 110% performance improvement with Inferno <code>1.0</code>. No other React-like library gets close to this performance gain over React.</li>
+					<li>Inferno doesn&#39;t have a fully synthetic event system like React does. Inferno has a partially synthetic event system, instead opting to only delegate certain events (such as <code>onClick</code>).</li>
+					<li>Inferno doesn&#39;t support React Native. Inferno was only designed for the browser/server with the DOM in mind.</li>
+					<li>Inferno doesn&#39;t support string refs – although this can be enabled using <code>inferno-compat</code>. We don&#39;t recommend using them, they are the source of many memory leaks and performance issues in real-world apps. Stick with function callback refs instead.</li>
+					<li>Inferno includes <code>render</code> on the main core package, rather than have an <code>InfernoDOM</code> package like React does. We used to do it that way, but we found people simply didn&#39;t like it given we don&#39;t support native. Furthermore, by not splitting them, we improved performance and bundle sizes.</li>
+					<li>Inferno provides lifecycle events on functional components. This is a major win for people who prefer lightweight components rather than bloated ES2015 classes.</li>
+					<li>Inferno is able to use the React Dev Tools extensions for Chrome/Firefox/etc to provide the same level of debugging experience to user of Inferno via <code>inferno-devtools</code>.</li>
+				</ul>
+				<h2 id="differences-from-preact">Differences from Preact</h2>
+				<ul>
+					<li>Inferno is larger in size, <code>9kb</code> vs <code>3kb</code> gzip. This means that Preact should parse faster than Inferno – if only slightly.</li>
+					<li>Inferno has a partial synthetic event system, resulting in better performance via delegation of certain events.</li>
+					<li>Inferno is <em>much</em> faster than Preact in rendering, updating and removing elements from the DOM. Inferno diffs against virtual DOM, rather than the real DOM (except for when loading from server-side rendered content) which means it can make drastic improvements. Unfortunately, diffing against the real DOM has a 30-40% overhead cost in operations.</li>
+					<li>Inferno fully supports controlled components for <code>input</code>/<code>select</code>/<code>textarea</code> elements. This prevents lots of edgecases where the virtual DOM is not the source of truth (it should always be). Preact pushes the source of truth to the DOM itself.</li>
+					<li>Inferno provides lifecycle events on functional components. This is a major win for people who prefer lightweight components rather than bloated ES2015 classes.</li>
+				</ul>
+				<h2 id="event-system">Event System</h2>
+				<p>Like React, Inferno also uses a light-weight synthetic event system in certain places (although both event systems differ massively). Inferno&#39;s event system provides highly efficient delegation and an event helper called <a href="https://github.com/infernojs/inferno/blob/master/README.md#linkevent-package-inferno"><code>linkEvent</code></a>.</p>
+				<p>One major difference between Inferno and React is that Inferno does not rename events or change how they work by default. Inferno only specifies that events should be camel cased, rather than lower case. Lower case events will bypass
+					Inferno&#39;s event system in favour of using the native event system supplied by the browser. For example, when detecting changes on an <code>&lt;input&gt;</code> element, in React you&#39;d use <code>onChange</code>, with Inferno you&#39;d use <code>onInput</code> instead (the
+				native DOM event is <code>oninput</code>).</p>
+				<p>This feature is a very recent addition to Inferno, so there are only a handful of events that use Inferno&#39;s event system:</p>
+				<ul>
+					<li><code>onClick</code></li>
+					<li><code>onDblClick</code></li>
+					<li><code>onMouseMove</code></li>
+					<li><code>onMouseDown</code></li>
+					<li><code>onMouseUp</code></li>
+					<li><code>onSubmit</code></li>
+					<li><code>onKeyPress</code></li>
+					<li><code>onKeyDown</code></li>
+					<li><code>onKeyUp</code></li>
+					<li><code>onInput</code></li>
+					<li><code>onChange</code></li>
+				</ul>
+				<p>More events are expected to be supported in future versions.</p>
+				<h2 id="controlled-components">Controlled Components</h2>
+				<p>In HTML, form elements such as <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, and <code>&lt;select&gt;</code> typically maintain their own state and update it based on user input.
+				In Inferno, mutable state is typically kept in the state property of components, and only updated with <code>setState()</code>.</p>
+				<p>We can combine the two by making the Inferno state be the &quot;single source of truth&quot;. Then the Inferno component that renders a form also
+					controls what happens in that form on subsequent user input. An input form element whose value is controlled by
+				Inferno in this way is called a &quot;controlled component&quot;.</p>
+				<h2 id="inferno-top-level-api">Inferno Top-Level API</h2>
+				<h3 id="-render-package-inferno-"><code>render</code> (package: <code>inferno</code>)</h3>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Inferno <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+
+Inferno.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> /&gt;</span>, document.getElementById("app"));</span>
+</code></pre>
+				<p>Render a virtual node into the DOM in the supplied container given the supplied virtual DOM. If the virtual node was previously rendered
+				into the container, this will perform an update on it and only mutate the DOM as necessary, to reflect the latest Inferno virtual node.</p>
+				<p>Warning: If the container element is not empty before rendering, the content of the container will be overwritten on the initial render.</p>
+				<h3 id="-createrenderer-package-inferno-"><code>createRenderer</code> (package: <code>inferno</code>)</h3>
+				<p><code>createRenderer</code> creates an alternative render function with a signature matching that of the first argument passed to a reduce/scan function. This allows for easier integration with reactive programming libraries, like <a href="https://github.com/ReactiveX/rxjs">RxJS</a> and <a href="https://github.com/cujojs/most">Most</a>.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Inferno <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+<span class="hljs-keyword">import</span> { scan, map } <span class="hljs-keyword">from</span> <span class="hljs-string">'most'</span>;
+
+<span class="hljs-keyword">const</span> renderer = Inferno.createRenderer();
+
+...
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> vNodes$ represents a stream of virtual DOM node updates</span>
+scan(renderer, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"app"</span>), vNodes$);
+</code></pre>
+				<p>See <a href="https://github.com/joshburgess/inferno-most-fp-demo">inferno-most-fp-demo</a> for an example of how to build an app architecture around this.</p>
+				<h3 id="-createelement-package-inferno-create-element-"><code>createElement</code> (package: <code>inferno-create-element</code>)</h3>
+				<p>Creates an Inferno VNode using a similar API to that found with React&#39;s <code>createElement()</code></p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Component <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno-component'</span>;
+<span class="hljs-keyword">import</span> createElement <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno-create-element'</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BasicComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> createElement(<span class="hljs-string">'div'</span>, {
+        <span class="hljs-attr">className</span>: <span class="hljs-string">'basic'</span>
+      },
+      createElement(<span class="hljs-string">'span'</span>, {
+        <span class="hljs-attr">className</span>: <span class="hljs-keyword">this</span>.props.name
+      }, <span class="hljs-string">'The title is '</span>, <span class="hljs-keyword">this</span>.props.title)
+    )
+  }
+}
+
+Inferno.render(
+  createElement(BasicComponent, { <span class="hljs-attr">title</span>: <span class="hljs-string">'abc'</span> }),
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"app"</span>)
+);
+</code></pre>
+				<h3 id="-component-package-inferno-component-"><code>Component</code> (package: <code>inferno-component</code>)</h3>
+				<p><strong>Class component:</strong></p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Component <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno-component'</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  render() {
+    ...
+  }
+}
+</code></pre>
+				<p>This is the base class for Inferno Components when they&#39;re defined using ES6 classes.</p>
+				<p><strong>Functional component:</strong></p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Inferno <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+
+<span class="hljs-keyword">const</span> MyComponent = <span class="hljs-function">(<span class="hljs-params">{ name, age }</span>) =&gt;</span> (
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>My name is: { name } and my age is: {age}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+);
+</code></pre>
+				<p>Functional components are first-class functions where their first argument is the <code>props</code> passed through from their parent.</p>
+				<h3 id="-createvnode-package-inferno-"><code>createVNode</code> (package: <code>inferno</code>)</h3>
+				<pre><code class="lang-js">Inferno.createVNode(
+  flags,
+  type,
+  [className],
+  [...children],
+  [props],
+  [key],
+  [ref],
+  [noNormalise]
+)
+</code></pre>
+				<p>Create a new Inferno <code>VNode</code> using <code>createVNode()</code>. A <code>VNode</code> is a virtual DOM object that is used to
+					describe a single element of the UI. Typically <code>createElement()</code> (package: <code>inferno-create-element</code>), <code>h()</code> (package: <code>inferno-hyperscript</code>) or JSX are used to create
+					<code>VNode</code>s for Inferno, but under the hood they all use <code>createVNode()</code>. Below is an example of using
+				of <code>createVNode</code> usage:</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Inferno <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+
+<span class="hljs-keyword">const</span> vNode = Inferno.createVNode(<span class="hljs-number">2</span>, <span class="hljs-string">'div'</span>, <span class="hljs-string">'example'</span>, <span class="hljs-string">'Hello world!'</span>);
+
+Inferno.render(vNode, container);
+</code></pre>
+				<p>The first argument for <code>createVNode()</code> is a value from <a href="https://github.com/infernojs/inferno/tree/master/packages/inferno-vnode-flags"><code>VNodeFlags</code></a>, this is a numerical value that tells Inferno what the VNode describes on the page.</p>
+				<h3 id="-clonevnode-package-inferno-"><code>cloneVNode</code> (package: <code>inferno</code>)</h3>
+				<pre><code class="lang-javascript">Inferno.cloneVNode(
+  vNode,
+  [props],
+  [...children]
+)
+</code></pre>
+				<p>Clone and return a new Inferno <code>VNode</code> using a <code>VNode</code> as the starting point. The resulting <code>VNode</code> will have the original <code>VNode</code>&#39;s props with the new props merged in shallowly. New children will replace existing children. key and ref from the original <code>VNode</code> will be preserved.</p>
+				<p><code>cloneVNode()</code> is almost equivalent to:</p>
+				<pre><code class="lang-jsx">&lt;VNode.type {...VNode.props} {...props}&gt;{children}&lt;<span class="hljs-regexp">/VNode.type&gt;</span>
+</code></pre>
+				<p>An example of using <code>cloneVNode</code>:</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Inferno <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+
+<span class="hljs-keyword">const</span> vNode = Inferno.createVNode(<span class="hljs-number">2</span>, <span class="hljs-string">'div'</span>, <span class="hljs-string">'example'</span>, <span class="hljs-string">'Hello world!'</span>);
+<span class="hljs-keyword">const</span> newVNode = Inferno.cloneVNode(vNode, { <span class="hljs-attr">id</span>: <span class="hljs-string">'new'</span> }); <span class="hljs-comment">// we are adding an id prop to the VNode</span>
+
+Inferno.render(newVNode, container);
+</code></pre>
+				<p>If you&#39;re using JSX:</p>
+				<pre><code class="lang-jsx"><span class="hljs-keyword">import</span> Inferno <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+
+<span class="hljs-keyword">const</span> vNode = <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"example"</span>&gt;</span>Hello world<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+<span class="hljs-keyword">const</span> newVNode = Inferno.cloneVNode(vNode, { <span class="hljs-attr">id</span>: <span class="hljs-string">'new'</span> }); <span class="hljs-comment">// we are adding an id prop to the VNode</span>
+
+Inferno.render(newVNode, container);
+</code></pre>
+				<h3 id="-finddomnode-package-inferno-"><code>findDOMNode</code> (package: <code>inferno</code>)</h3>
+				<p>Once enabled via <code>Inferno.options.findDOMNodeEnabled = true;</code> at the start of an application, <code>findDOMNode()</code> is enabled.</p>
+				<p>Note: we recommend using a <code>ref</code> callback on a component to find its instance, rather than using <code>findDOMNode()</code>. <code>findDOMNode()</code> cannot be used on functional components and it introduces a significant performance impact.</p>
+				<p>If a component has been mounted into the DOM, this returns the corresponding native browser DOM element. This method is useful for reading values out of the DOM, such as form field values and performing DOM measurements.
+				In most cases, you can attach a ref to the DOM node and avoid using <code>findDOMNode()</code> at all. When render returns null or false, <code>findDOMNode()</code> returns null.</p>
+				<h3 id="-linkevent-package-inferno-"><code>linkEvent</code> (package: <code>inferno</code>)</h3>
+				<p><code>linkEvent()</code> is a helper function that allows attachment of <code>props</code>/<code>state</code>/<code>context</code> or other data to events without needing to <code>bind()</code> them or use arrow functions/closures. This is extremely useful when dealing with events in functional components. Below is an example:</p>
+				<pre><code class="lang-jsx"><span class="hljs-keyword">import</span> Inferno, { linkEvent } <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleClick</span>(<span class="hljs-params">props, event</span>) </span>{
+  props.validateValue(event.target.value);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyComponent</span>(<span class="hljs-params">props</span>) </span>{
+  <span class="hljs-keyword">return</span> &lt;div&gt;&lt;input type="text" onClick={ linkEvent(props, handleClick) } /&gt;&lt;div&gt;;
+}
+</code></pre>
+				<p>This is an example of using it with ES2015 classes:</p>
+				<pre><code class="lang-jsx"><span class="hljs-keyword">import</span> Inferno, { linkEvent } <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+<span class="hljs-keyword">import</span> Component <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno-component'</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleClick</span>(<span class="hljs-params">instance, event</span>) </span>{
+  instance.setState({ <span class="hljs-attr">data</span>: event.target.value });
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  render () {
+    <span class="hljs-keyword">return</span> &lt;div&gt;&lt;input type="text" onClick={ linkEvent(this, handleClick) } /&gt;&lt;div&gt;;
+  }
+}
+</code></pre>
+				<p><code>linkEvent()</code> offers better performance than binding an event in a class constructor and using arrow functions, so use it where possible.</p>
+				<h3 id="-rendertostring-package-inferno-server-"><code>renderToString</code> (package: <code>inferno-server</code>)</h3>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> Inferno <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno'</span>;
+<span class="hljs-keyword">import</span> InfernoServer <span class="hljs-keyword">from</span> <span class="hljs-string">'inferno-server'</span>;
+
+InfernoServer.renderToString(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> /&gt;</span>);</span>
+</code></pre>
+				<p>Render a virtual node into an HTML string, given the supplied virtual DOM.</p>
+				<h3 id="-options-package-inferno-"><code>options</code> (package: <code>inferno</code>)</h3>
+				<p>You can set default options for Inferno using <code>Inferno.options</code>. Below are the following options:</p>
+				<h4 id="-finddomnodeenabled-default-false-">- <code>findDOMNodeEnabled</code> (default: <code>false</code>)</h4>
+				<p>This enables <code>findDOMNode()</code>. We strongly recommend against using this API as it introduces a significant impact to performance. In the future this API command will be removed, along with <code>findDOMNode()</code>;</p>
+				<h4 id="-recyclingenabled-default-v1-3-false-">- <code>recyclingEnabled</code> (default: v1.3+ <code>false</code>)</h4>
+				<p>This enables DOM node recycling within Inferno, so that DOM nodes are re-used upon disposal. It can have significant performance benefits, but may also cause side-effects with custom elements.</p>
+				<h2 id="functional-component-lifecycle-events">Functional component lifecycle events</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Triggered when</th>
+							<th>Arguments to callback</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>onComponentWillMount</code></td>
+							<td>a functional component is about to mount</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><code>onComponentDidMount</code></td>
+							<td>a functional component has mounted successfully</td>
+							<td><code>domNode</code></td>
+						</tr>
+						<tr>
+							<td><code>onComponentShouldUpdate</code></td>
+							<td>a functional component has been triggered to updated</td>
+							<td><code>lastProps, nextProps</code></td>
+						</tr>
+						<tr>
+							<td><code>onComponentWillUpdate</code></td>
+							<td>a functional component is about to perform an update</td>
+							<td><code>lastProps, nextProps</code></td>
+						</tr>
+						<tr>
+							<td><code>onComponentDidUpdate</code></td>
+							<td>a functional component has performed an updated</td>
+							<td><code>lastProps, nextProps</code></td>
+						</tr>
+						<tr>
+							<td><code>onComponentWillUnmount</code></td>
+							<td>a functional component is about to be unmounted</td>
+							<td><code>domNode</code></td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="using-functional-lifecycle-events">Using functional lifecycle events</h3>
+				<p>Functional lifecycle events must be explicitly assigned via props onto a functional component like shown below:</p>
+				<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mounted</span>(<span class="hljs-params">domNode</span>) </span>{
+  <span class="hljs-comment">// [domNode] will be available for DOM nodes and components (if the component has mounted to the DOM)</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">FunctionalComponent</span>(<span class="hljs-params">{ props }</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Hello world<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+
+Inferno.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">FunctionalComponent</span> <span class="hljs-attr">onComponentDidMount</span>=<span class="hljs-string">{</span> <span class="hljs-attr">mounted</span> } /&gt;</span>,
+  document.getElementById("app")
+);</span>
+</code></pre>
+				<p>Please note: class components (ES2015 classes) from <code>inferno-component</code> <strong>do not</strong> support the same lifecycle events (they have their own lifecycle events that work as methods on the class itself).</p>
+				<h2 id="development-vs-production-modes">Development vs Production modes</h2>
+				<p>By default, Inferno will run in development mode. Development mode provides extra checks and better error messages at the cost of slower performance and larger code to parse.
+				When using Inferno in a production environment, it is highly recommended that you turn off development mode.</p>
+				<h3 id="running-inferno-on-node-js">Running Inferno on Node JS</h3>
+				<p>Ensure the environment variable <code>process.env.NODE_ENV</code> is set to <code>production</code>.</p>
+				<h3 id="building-inferno-for-use-in-a-browser">Building Inferno for use in a browser</h3>
+				<p>When running Inferno on the browser using Webpack or Rollup, a replacement will need to occur during your build.</p>
+				<h4 id="webpack">Webpack</h4>
+				<p>Use the following configuration in your Webpack build:</p>
+				<pre><code class="lang-js">  ...
+  plugins: [
+    <span class="hljs-keyword">new</span> webpack.DefinePlugin({
+      <span class="hljs-string">'process.env'</span>: {
+        <span class="hljs-string">'NODE_ENV'</span>: <span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-string">'production'</span>)
+      }
+    })
+  ]
+</code></pre>
+				<h4 id="rollup">Rollup</h4>
+				<p>Use the following configuration in your Rollup build:</p>
+				<pre><code class="lang-js"><span class="hljs-keyword">const</span> replace = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rollup-plugin-replace'</span>);
+</code></pre>
+				<pre><code class="lang-js">  ...
+  plugins: [
+    replace({
+      <span class="hljs-string">'process.env.NODE_ENV'</span>: <span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-string">'production'</span>),
+    })
+  ]
+</code></pre>
+				<h2 id="browser-support">Browser Support</h2>
+				<p>Inferno supports Edge, Chrome, Firefox and Safari 8+. In order to support IE8-11, Inferno may require polyfills for the following JavaScript features:</p>
+				<ul>
+					<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise object</a></li>
+					<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map object</a></li>
+					<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap">WeakMap object</a></li>
+					<li><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/keys">Object.keys</a></li>
+				</ul>
+				<p>Potential solutions include using the <a href="https://github.com/es-shims/es5-shim">es5-shim</a> for ES5 features and <a href="https://github.com/paulmillr/es6-shim">es6-shim</a> from ES2015 features.</p>
+				<p>As a quick drop-in solution, you may also use the <a href="https://polyfill.io">Polyfill.io</a> service to pull in the required polyfills for the user&#39;s browser automatically by including the following line in your page:</p>
+				<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise,Map,WeakMap,Object.keys"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre><h3 id="custom-namespaces">Custom namespaces</h3>
+				<p>Inferno wants to always deliver great performance. In order to do so, it has to make intelligent assumptions about the state of the DOM and the elements available to mutate. Custom namespaces conflict with this idea and change the schema of how different elements and attributes might work, so Inferno makes no attempt to support namespaces. Instead, SVG namespaces are automatically applied to elements and attributes based on their <code>tag name</code>.</p>
+				<h2 id="community">Community</h2>
+				<p>There is an <a href="https://infernojs.slack.com">Inferno Slack</a>. You can join via <a href="https://inferno-slack.herokuapp.com">inferno-slack.herokuapp.com</a>.</p>
+				<h3 id="inferno-is-supported-by-browserstack">Inferno is supported by BrowserStack</h3>
+				<p><img src="http://infernojs.org/browserstack.svg" height="50px" alt="Supported by Browserstack" />
+					<img src="https://saucelabs.com/content/images/logo@3x.png" height="50px" alt="Supported by Sauce Labs" />
+				<img src="https://www.digitalocean.com/assets/media/logos-badges/png/DO_Powered_by_Badge_black-a35c64eb.png" height="50px" alt="Supported by Digital Ocean" /></p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_compat_src_proptypes_.html">"inferno-<wbr>compat/src/<wbr>Prop<wbr>Types"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_compat_src_svgdompropertyconfig_.html">"inferno-<wbr>compat/src/SVGDOMProperty<wbr>Config"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_compat_src_index_.html">"inferno-<wbr>compat/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_compat_src_isvalidelement_.html">"inferno-<wbr>compat/src/is<wbr>Valid<wbr>Element"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_component_src_index_.html">"inferno-<wbr>component/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_create_class_src_index_.html">"inferno-<wbr>create-<wbr>class/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_create_element_src_index_.html">"inferno-<wbr>create-<wbr>element/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_devtools_src_bridge_.html">"inferno-<wbr>devtools/src/bridge"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_devtools_src_index_.html">"inferno-<wbr>devtools/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_devtools_src_init_.html">"inferno-<wbr>devtools/src/init"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_hyperscript_src_index_.html">"inferno-<wbr>hyperscript/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_mobx_src_eventemitter_.html">"inferno-<wbr>mobx/src/<wbr>Event<wbr>Emitter"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_mobx_src_provider_.html">"inferno-<wbr>mobx/src/<wbr>Provider"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_mobx_src_connect_.html">"inferno-<wbr>mobx/src/connect"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_mobx_src_index_.html">"inferno-<wbr>mobx/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_mobx_src_inject_.html">"inferno-<wbr>mobx/src/inject"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_mobx_src_makereactive_.html">"inferno-<wbr>mobx/src/make<wbr>Reactive"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_redux_src_provider_.html">"inferno-<wbr>redux/src/<wbr>Provider"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_redux_src_connect_.html">"inferno-<wbr>redux/src/connect"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_redux_src_helpers_.html">"inferno-<wbr>redux/src/helpers"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_redux_src_index_.html">"inferno-<wbr>redux/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_redux_src_utils_.html">"inferno-<wbr>redux/src/utils"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_indexlink_.html">"inferno-<wbr>router/src/<wbr>Index<wbr>Link"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_indexroute_.html">"inferno-<wbr>router/src/<wbr>Index<wbr>Route"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_link_.html">"inferno-<wbr>router/src/<wbr>Link"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_redirect_.html">"inferno-<wbr>router/src/<wbr>Redirect"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_route_.html">"inferno-<wbr>router/src/<wbr>Route"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_router_.html">"inferno-<wbr>router/src/<wbr>Router"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_routercontext_.html">"inferno-<wbr>router/src/<wbr>Router<wbr>Context"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_createroutes_.html">"inferno-<wbr>router/src/create<wbr>Routes"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_index_.html">"inferno-<wbr>router/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_match_.html">"inferno-<wbr>router/src/match"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_router_src_utils_.html">"inferno-<wbr>router/src/utils"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_server_src_index_.html">"inferno-<wbr>server/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_server_src_prop_renderers_.html">"inferno-<wbr>server/src/prop-<wbr>renderers"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_server_src_rendertostring_.html">"inferno-<wbr>server/src/render<wbr>ToString"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_server_src_rendertostring_queuestream_.html">"inferno-<wbr>server/src/render<wbr>ToString.queuestream"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_server_src_rendertostring_stream_.html">"inferno-<wbr>server/src/render<wbr>ToString.stream"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_server_src_utils_.html">"inferno-<wbr>server/src/utils"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_shared_src_index_.html">"inferno-<wbr>shared/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_test_utils_src_index_.html">"inferno-<wbr>test-<wbr>utils/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_test_utils_src_jest_.html">"inferno-<wbr>test-<wbr>utils/src/jest"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_utils_src_index_.html">"inferno-<wbr>utils/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_vnode_flags_src_index_.html">"inferno-<wbr>vnode-<wbr>flags/src/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_constants_.html">"inferno/src/DOM/constants"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_events_delegation_.html">"inferno/src/DOM/events/delegation"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_events_linkevent_.html">"inferno/src/DOM/events/link<wbr>Event"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_hydration_.html">"inferno/src/DOM/hydration"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_mounting_.html">"inferno/src/DOM/mounting"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_patching_.html">"inferno/src/DOM/patching"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_recycling_.html">"inferno/src/DOM/recycling"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_rendering_.html">"inferno/src/DOM/rendering"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_unmounting_.html">"inferno/src/DOM/unmounting"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_utils_.html">"inferno/src/DOM/utils"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_wrappers_inputwrapper_.html">"inferno/src/DOM/wrappers/<wbr>Input<wbr>Wrapper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_wrappers_selectwrapper_.html">"inferno/src/DOM/wrappers/<wbr>Select<wbr>Wrapper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_wrappers_textareawrapper_.html">"inferno/src/DOM/wrappers/<wbr>Textarea<wbr>Wrapper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_dom_wrappers_processelement_.html">"inferno/src/DOM/wrappers/process<wbr>Element"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_core_vnodes_.html">"inferno/src/core/VNodes"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_core_normalization_.html">"inferno/src/core/normalization"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_core_options_.html">"inferno/src/core/options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_core_structures_.html">"inferno/src/core/structures"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_inferno_src_index_.html">"inferno/src/index"</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
