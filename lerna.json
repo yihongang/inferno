@@ -1,7 +1,10 @@
 {
   "lerna": "2.0.0-rc.5",
   "packages": [
-    "packages/*"
+		"packages/inferno-vnode-flags",
+		"packages/inferno-shared",
+    "packages/inferno",
+		"packages/inferno-create-element"
   ],
   "version": "4.0.0",
   "changelog": {

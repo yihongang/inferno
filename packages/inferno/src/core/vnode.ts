@@ -54,7 +54,7 @@ function VNode(children, className, flags, key, props, ref, type) {
  * @param {object|Function=} ref
  * @returns {VNode} returns new virtual node
  */
-export function createVNode(flags: VNodeFlags, type: Type, className?: string | null, children?: InfernoChildren, props?: Props | null, key?: any, ref?: Ref) {
+export function createVNode(flags: VNodeFlags, type: Type, className?: string | null, children?: InfernoChildren, props?: Props | null, key?: any, ref?: Ref|Refs) {
 	if (flags & VNodeFlags.ComponentUnknown) {
 		flags = isStatefulComponent(type) ? VNodeFlags.ComponentClass : VNodeFlags.ComponentFunction;
 	}

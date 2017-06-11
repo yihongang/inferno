@@ -1,5 +1,5 @@
 // Make sure u use EMPTY_OBJ from 'inferno', otherwise it'll be a different reference
-import { EMPTY_OBJ, internal_DOMNodeMap, internal_patch, options, Props, VNode} from 'inferno';
+import { EMPTY_OBJ, internal_DOMNodeMap, internal_patch, options, Props, IVNode} from 'inferno';
 import {
 	combineFrom,
 	ERROR_MSG,
@@ -70,7 +70,7 @@ function queueStateChanges<P, S>(component: Component<P, S>, newState: S, callba
 	}
 }
 
-function createInstance(vNode: VNode, Component, props: Props, context: Object, isSVG: boolean, lifecycle: LifecycleClass) {
+function createInstance(vNode: IVNode, Component, props: Props, context: Object, isSVG: boolean, lifecycle: LifecycleClass) {
 	const instance = new Component(props, context) as Component<any, any>;
 	vNode.children = instance as any;
 	instance._blockSetState = false;
@@ -115,7 +115,7 @@ function createInstance(vNode: VNode, Component, props: Props, context: Object, 
 	return instance;
 }
 
-function updateComponent<P, S>(component: Component<P, S>, prevState: S, nextState: S, prevProps: P & Props, nextProps: P & Props, context: any, force: boolean, fromSetState: boolean): VNode|string {
+function updateComponent<P, S>(component: Component<P, S>, prevState: S, nextState: S, prevProps: P & Props, nextProps: P & Props, context: any, force: boolean, fromSetState: boolean): IVNode|string {
 	if (component._unmounted === true) {
 		if (process.env.NODE_ENV !== 'production') {
 			throwError(noOp);
@@ -200,7 +200,7 @@ const componentFlushQueue: any[] = [];
 
 // when a components root IVNode is also a component, we can run into issues
 // this will recursively look for input.parentNode if the IVNode is a component
-function updateParentComponentVNodes(vNode: VNode, dom: Element) {
+function updateParentComponentVNodes(vNode: IVNode, dom: Element) {
 	if (vNode.flags & VNodeFlags.Component) {
 		const parentVNode = vNode.parentVNode;
 
@@ -216,12 +216,11 @@ function handleUpdate(component, nextState, nextProps, context, force: boolean, 
 	const hasComponentDidUpdateIsFunction = isFunction(component.componentDidUpdate);
 	// When component has componentDidUpdate hook, we need to clone lastState or will be modified by reference during update
 	const prevState = hasComponentDidUpdateIsFunction ? combineFrom(nextState, null) : component.state;
-	const lastInput = component._lastInput as VNode;
+	const lastInput = component._lastInput as IVNode;
 	const prevProps = component.props;
 	const renderOutput = updateComponent(component, prevState, nextState, prevProps, nextProps, context, force, fromSetState);
-	const vNode = component._vNode as VNode;
+	const vNode = component._vNode as IVNode;
 
-	// debugger;
 	if (renderOutput !== NO_OP) {
 		nextInput = handleInput(renderOutput, vNode);
 		let childContext;
@@ -243,7 +242,7 @@ function handleUpdate(component, nextState, nextProps, context, force: boolean, 
 		}
 
 		// lastVNode: nextVNode: parentDom, lifecycle, context, isSVG, isRecycling
-		internal_patch(lastInput, nextInput as VNode, parentDom as Element, lifeCycle, childContext, isSVG, isRecycling);
+		internal_patch(lastInput, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG, isRecycling);
 		if (fromSetState) {
 			lifeCycle.trigger();
 		}
@@ -267,11 +266,11 @@ function handleUpdate(component, nextState, nextProps, context, force: boolean, 
 		lastInput.parentVNode = vNode;
 	}
 
-	component._lastInput = nextInput as VNode;
-	const dom = vNode.dom = (nextInput as VNode).dom as Element;
+	component._lastInput = nextInput as IVNode;
+	const dom = vNode.dom = (nextInput as IVNode).dom as Element;
 
 	if (options.findDOMNodeEnabled) {
-		internal_DOMNodeMap.set(component, (nextInput as VNode).dom);
+		internal_DOMNodeMap.set(component, (nextInput as IVNode).dom);
 	}
 
 	return dom;
@@ -377,7 +376,7 @@ export default class Component<P, S> implements ComponentLifecycle<P, S> {
 	public _pendingSetState = false;
 	public _pendingState: S|null = null;
 	public _lastInput: any = null;
-	public _vNode: VNode;
+	public _vNode: IVNode;
 	public _unmounted: boolean = false;
 	public _lifecycle: LifecycleClass;
 	public _childContext: object|null = null;

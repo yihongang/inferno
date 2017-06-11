@@ -2,10 +2,8 @@ import {
 	isInvalid,
 	isNullOrUndef,
 	isString,
-	isUndefined,
-	warning
+	isUndefined
 } from 'inferno-shared';
-import { throwError } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
 import { IVNode } from './vnode';
 

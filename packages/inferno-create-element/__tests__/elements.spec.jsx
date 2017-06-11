@@ -1,8 +1,6 @@
-//
 // import { render } from 'inferno';
 // import createElement from '../dist-es';
 // import { assert, spy } from 'sinon';
-// import { createTextVNode } from 'inferno/core/VNodes';
 // import { innerHTML } from 'inferno/test/utils';
 //
 // describe('Elements (JSX)', () => {
@@ -116,13 +114,14 @@
 // 	it('should render a simple div with dynamic span child', () => {
 //
 // 		const child = <span/>;
-//
+// debugger;
 // 		render(<div>{undefined}</div>, container);
 // 		render(<div>{child}</div>, container);
 // 		expect(container.firstChild.nodeName).to.equal('DIV');
 // 		expect(container.firstChild.childNodes.length).to.equal(1);
 // 		expect(container.firstChild.firstChild.nodeName).to.equal('SPAN');
 // 		render(<div>{null}</div>, container);
+// 		debugger;
 // 		render(<div>{child}</div>, container);
 // 		expect(container.firstChild.nodeName).to.equal('DIV');
 // 		expect(container.firstChild.childNodes.length).to.equal(1);
@@ -833,8 +832,8 @@
 // 	});
 //
 // 	describe('should correctly handle TEXT VNodes as quasi-immutable objects, like ReactElement does', () => {
-// 		const a = createTextVNode('Hello world');
-// 		const b = createTextVNode('This works!');
+// 		const a = 'Hello world';
+// 		const b = 'This works!';
 // 		const C = ({ children }) => <div>{children}{children}{children}</div>;
 //
 // 		it('basic example ', () => {

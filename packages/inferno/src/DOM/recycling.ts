@@ -1,7 +1,5 @@
 import { isNull, isUndefined, LifecycleClass } from 'inferno-shared';
-import VNodeFlags from 'inferno-vnode-flags';
 import { IVNode } from '../core/vnode';
-import { patchComponent, patchElement } from './patching';
 
 export class Pools {
 	public nonKeyed: IVNode[] = [];
@@ -11,51 +9,51 @@ export class Pools {
 export const componentPools = new Map<Function | null, Pools>();
 export const elementPools = new Map<string | null, Pools>();
 
-function recycle(tagPools: Map<any, Pools>, vNode): IVNode|undefined {
-	const pools = tagPools.get(vNode.type);
-
-	if (!isUndefined(pools)) {
-		const key = vNode.key;
-		const pool = key === null ? pools.nonKeyed : pools.keyed.get(key);
-
-		if (!isUndefined(pool)) {
-			return pool.pop();
-		}
-	}
-	return void 0;
-}
+// function recycle(tagPools: Map<any, Pools>, vNode): IVNode|undefined {
+// 	const pools = tagPools.get(vNode.type);
+//
+// 	if (!isUndefined(pools)) {
+// 		const key = vNode.key;
+// 		const pool = key === null ? pools.nonKeyed : pools.keyed.get(key);
+//
+// 		if (!isUndefined(pool)) {
+// 			return pool.pop();
+// 		}
+// 	}
+// 	return void 0;
+// }
 
 export function recycleElement(vNode: IVNode, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
-	const recycledVNode = recycle(elementPools, vNode);
-	if (recycledVNode !== void 0) {
-		patchElement(recycledVNode, vNode, null, lifecycle, context, isSVG, true);
-		return vNode.dom;
-	}
+	// const recycledVNode = recycle(elementPools, vNode);
+	// if (recycledVNode !== void 0) {
+	// 	patchElement(recycledVNode, vNode, null, lifecycle, context, isSVG, true);
+	// 	return vNode.dom;
+	// }
 
 	return null;
 }
 
 export function recycleComponent(vNode: IVNode, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
-	const recycledVNode = recycle(componentPools, vNode);
-	if (recycledVNode !== void 0) {
-		const flags = vNode.flags;
-		const failed = patchComponent(
-			recycledVNode,
-			vNode,
-			null,
-			lifecycle,
-			context,
-			isSVG,
-			(flags & VNodeFlags.ComponentClass) > 0,
-			true
-		);
-
-		if (!failed) {
-			return vNode.dom;
-		}
-	}
-
-	return null;
+	// const recycledVNode = recycle(componentPools, vNode);
+	// if (recycledVNode !== void 0) {
+	// 	const flags = vNode.flags;
+	// 	const failed = patchComponent(
+	// 		recycledVNode,
+	// 		vNode,
+	// 		null,
+	// 		lifecycle,
+	// 		context,
+	// 		isSVG,
+	// 		(flags & VNodeFlags.ComponentClass) > 0,
+	// 		true
+	// 	);
+	//
+	// 	if (!failed) {
+	// 		return vNode.dom;
+	// 	}
+	// }
+	//
+	// return null;
 }
 
 export function pool(vNode: IVNode, tagPools: Map<any, Pools>) {

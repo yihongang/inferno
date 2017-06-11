@@ -1,4 +1,3 @@
-//
 // import { render } from 'inferno';
 // import createElement from '../dist-es';
 //

@@ -9,6 +9,9 @@
 
 	var createVNode = Inferno.createVNode;
 
+	var arrow = createVNode(2, 'div', 'arrow', null, null, null, null, true);
+
+
 	function renderBenchmark(dbs) {
 		var length = dbs.length;
 		var databases = new Array(length);
@@ -30,7 +33,7 @@
 					createVNode(2, 'div', 'foo', query.formatElapsed, null, null, null, true),
 					createVNode(66, 'div', 'popover left', [
 						createVNode(2, 'div', 'popover-content', query.query, null, null, null, true),
-						createVNode(2, 'div', 'arrow', null, null, null, null, true)
+						arrow
 					], null, null, null, true)
 				], null, null, null, true);
 			}

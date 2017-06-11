@@ -47,7 +47,6 @@
 			var start = window.performance.now();
 			console.log("Iteration", i);
 
-			debugger;
 			Inferno.render(createElement(List), container);
 
 			var end = window.performance.now();

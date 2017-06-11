@@ -1,8 +1,9 @@
 /* tslint:disable:object-literal-sort-keys */
 import { LifecycleClass as _LifecycleClass, NO_OP, warning } from 'inferno-shared';
 import _VNodeFlags from 'inferno-vnode-flags';
+import { IFiber as _IFiber } from './core/fiber';
 import { getFlagsForElementVnode, normalize as internal_normalize } from './core/normalization';
-import { options, Root as _Root } from './core/options';
+import { options } from './core/options';
 import { createVNode, InfernoChildren, Props, IVNode } from './core/vnode';
 import { isUnitlessNumber as internal_isUnitlessNumber } from './DOM/constants';
 import { linkEvent } from './DOM/events/linkEvent';
@@ -25,7 +26,8 @@ if (process.env.NODE_ENV !== 'production') {
 // To please the TS God
 // https://github.com/Microsoft/TypeScript/issues/6307
 export declare const VNodeFlags: _VNodeFlags;
-export declare const Root: _Root;
+export declare const IFiber: _IFiber;
+// export declare const IVNode: _IVNode;
 export declare const LifecycleClass: _LifecycleClass;
 
 const version = '4.0.0';
@@ -33,29 +35,29 @@ const version = '4.0.0';
 options.component.handleInput = handleComponentInput;
 
 // we duplicate it so it plays nicely with different module loading systems
-export default {
-	EMPTY_OBJ,
-	NO_OP,
-	createRenderer,
-	createVNode,
-	findDOMNode,
-	getFlagsForElementVnode,
-	internal_DOMNodeMap,
-	internal_isUnitlessNumber,
-	internal_normalize,
-	internal_patch,
-	linkEvent,
-	options,
-	render,
-	version
-};
+// export default {
+// 	EMPTY_OBJ,
+// 	NO_OP,
+// 	createRenderer,
+// 	createVNode,
+// 	findDOMNode,
+// 	getFlagsForElementVnode,
+// 	internal_DOMNodeMap,
+// 	internal_isUnitlessNumber,
+// 	internal_normalize,
+// 	internal_patch,
+// 	linkEvent,
+// 	options,
+// 	render,
+// 	version
+// };
 
 export {
 	EMPTY_OBJ,
 	InfernoChildren,
+	IVNode,
 	NO_OP,
 	Props,
-	IVNode,
 	createRenderer,
 	createVNode,
 	findDOMNode,

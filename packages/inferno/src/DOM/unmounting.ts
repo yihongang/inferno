@@ -1,10 +1,9 @@
-import { isArray,  isFunction, isInvalid, isNull, isNullOrUndef, isObject, isStringOrNumber, LifecycleClass, throwError } from 'inferno-shared';
+import { isArray,  isFunction, isInvalid, isNull, isStringOrNumber, LifecycleClass, throwError } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
 import { options } from '../core/options';
 import { Ref, IVNode } from '../core/vnode';
 import { isAttrAnEvent, patchEvent } from './patching';
-import { componentPools, elementPools, pool } from './recycling';
-import { componentToDOMNodeMap } from './rendering';
+import { elementPools, pool } from './recycling';
 import { removeChild } from './utils';
 import { IFiber } from '../core/fiber';
 

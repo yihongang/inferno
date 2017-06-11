@@ -1,4 +1,3 @@
-//
 // import { render } from 'inferno';
 // import { innerHTML } from 'inferno/test/utils';
 //

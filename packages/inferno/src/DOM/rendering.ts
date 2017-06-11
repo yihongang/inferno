@@ -2,23 +2,21 @@ import {
 	isBrowser,
 	isFunction,
 	isInvalid,
-	isNull,
 	isNullOrUndef,
 	Lifecycle,
-	LifecycleClass,
 	NO_OP,
 	throwError,
 	warning
 } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
-import { options, Root } from '../core/options';
+import { options } from '../core/options';
 import { InfernoChildren, IVNode } from '../core/vnode';
-import { hydrateRoot } from './hydration';
+// import { hydrateRoot } from './hydration';
 import { mount } from './mounting';
 import { patch } from './patching';
 import { unmount } from './unmounting';
 import { EMPTY_OBJ } from './utils';
-import { Fiber } from '../core/fiber';
+import { Fiber, IFiber } from '../core/fiber';
 
 // rather than use a Map, like we did before, we can use an array here
 // given there shouldn't be THAT many roots on the page, the difference
@@ -101,16 +99,16 @@ export function render(input: IVNode|null|string|undefined, parentDom: Element |
 	C.rendering = true;
 	let rootFiber = roots.get(parentDom);
 	let lifecycle;
-	if (isNullOrUndef(rootFiber)) {
+	if (rootFiber === undefined) {
 		if (isInvalid(input)) {
 			return;
 		}
-		rootFiber = new Fiber(input as IVNode, '0');
+		rootFiber  = new Fiber(input, '0') as IFiber; // Stupid typescript... why casting needed???
 		rootFiber.lifeCycle = lifecycle = new Lifecycle();
 		// if (!hydrateRoot(input, parentDom as any, lifecycle)) {
 		// 	mount(input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false);
 		// }
-		mount(rootFiber, input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false);
+		mount(rootFiber, input, parentDom as Element, lifecycle, EMPTY_OBJ, false);
 
 		// rootFiber = setRoot(parentDom as any, input, lifecycle);
 		roots.set(parentDom, rootFiber);
@@ -125,8 +123,6 @@ export function render(input: IVNode|null|string|undefined, parentDom: Element |
 		} else {
 			patch(rootFiber, input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false, false);
 		}
-		rootFiber.input = input;
-
 	}
 	lifecycle.trigger();
 	if (!isNullOrUndef(callback)) {

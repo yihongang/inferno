@@ -1,7 +1,7 @@
 import { isArray, isInvalid, isNullOrUndef, isStringOrNumber, LifecycleClass, throwError } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
 import { options } from '../core/options';
-import { createTextVNode, createVoidVNode, IVNode } from '../core/vnode';
+import { IVNode } from '../core/vnode';
 import { svgNS } from './constants';
 import { mount } from './mounting';
 import { unmount } from './unmounting';
@@ -15,22 +15,23 @@ if (process.env.NODE_ENV !== 'production') {
 	Object.freeze(EMPTY_OBJ);
 }
 
-export function replaceLastChildAndUnmount(lastInput, nextInput, parentDom, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
-	replaceDOM(parentDom, mount(nextInput, null, lifecycle, context, isSVG), lastInput, lifecycle, isRecycling);
-}
+// export function replaceLastChildAndUnmount(lastInput, nextInput, parentDom, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
+// 	replaceDOM(parentDom, mount(nextInput, null, lifecycle, context, isSVG), lastInput, lifecycle, isRecycling);
+// }
 
 export function replaceDOM(fiber: IFiber, parentDom, newDOM, lifecycle: LifecycleClass, isRecycling) {
 	unmount(fiber, null, lifecycle, false, isRecycling);
 	replaceChild(parentDom, newDOM, fiber.dom);
+	fiber.dom = newDOM;
 }
 
 export function handleComponentInput(input, parentVNode) {
 	let out;
 
 	if (isInvalid(input)) {
-		out = createVoidVNode();
+		// out = createVoidVNode();
 	} else if (isStringOrNumber(input)) {
-		out = createTextVNode(input, null);
+		// out = createTextVNode(input, null);
 	} else if (isArray(input)) {
 		if (process.env.NODE_ENV !== 'production') {
 			throwError('a valid Inferno IVNode (or null) must be returned from a component render. You may have returned an array or an invalid object.');
@@ -82,12 +83,11 @@ export function documentCreateElement(tag, isSVG: boolean): Element {
 	}
 }
 
-export function replaceWithNewNode(lastNode, nextNode, parentDom, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
-	unmount(lastNode, null, lifecycle, false, isRecycling);
-	const dom = mount(nextNode, null, lifecycle, context, isSVG);
-
-	nextNode.dom = dom;
-	replaceChild(parentDom, dom, lastNode.dom);
+export function replaceWithNewNode(fiber: IFiber, nextNode: IVNode, parentDom, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
+	const oldNode = fiber.dom;
+	unmount(fiber, null, lifecycle, false, isRecycling);
+	mount(fiber, nextNode, null, lifecycle, context, isSVG);
+	replaceChild(parentDom, fiber.dom, oldNode);
 }
 
 export function replaceChild(parentDom, nextDom, lastDom) {
