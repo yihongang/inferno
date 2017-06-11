@@ -21,7 +21,7 @@ import { isControlledFormElement, processElement } from './wrappers/processeleme
 import { IFiber, Fiber } from '../core/fiber';
 
 export function mount(fiber: IFiber, input: IVNode|string|number|null|undefined|false|true, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
-	if (!isInvalid(input)) {
+	// if (!isInvalid(input)) {
 		// Text - Number
 		if (isStringOrNumber(input)) {
 			mountText(fiber, input, parentDom);
@@ -47,7 +47,7 @@ export function mount(fiber: IFiber, input: IVNode|string|number|null|undefined|
 				throwError();
 			}
 		}
-	}
+	// }
 }
 
 export function mountText(fiber: IFiber, text: string|number, parentDom: Element|null): any {
@@ -96,10 +96,10 @@ export function mountElement(fiber: IFiber, vNode: IVNode, parentDom: Element|nu
 			const childrenIsSVG = isSVG === true && vNode.type !== 'foreignObject';
 			if (isArray(children)) {
 				// Array
-				mountArrayChildren(fiber, children, dom, lifecycle, context, childrenIsSVG, 0);
+				mountArrayChildren(fiber, children, dom, lifecycle, context, childrenIsSVG, '');
 			} else {
 				// VNode
-				const childFiber = new Fiber(children as IVNode, 0, 0);
+				const childFiber = new Fiber(children as IVNode, '0');
 
 				fiber.children = childFiber;
 
@@ -139,7 +139,7 @@ export function mountElement(fiber: IFiber, vNode: IVNode, parentDom: Element|nu
 	return dom;
 }
 
-export function mountArrayChildren(fiber, children, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, nestingLevel: number) {
+export function mountArrayChildren(fiber, children, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, prefix: string) {
 	for (let i = 0, len = children.length; i < len; i++) {
 		const child = children[ i ];
 
@@ -150,9 +150,9 @@ export function mountArrayChildren(fiber, children, dom: Element, lifecycle: Lif
 			}
 			if (isArray(child)) {
 				// TODO: Add warning about nested arrays?
-				mountArrayChildren(fiber, child, dom, lifecycle, context, isSVG, nestingLevel++);
+				mountArrayChildren(fiber, child, dom, lifecycle, context, isSVG, prefix + (i + 1) + '.');
 			} else {
-				const childFiber = new Fiber(child, i, nestingLevel);
+				const childFiber = new Fiber(child, prefix + (i + 1));
 				fiber.children.push(childFiber);
 				mount(childFiber, child, dom, lifecycle, context, isSVG);
 			}

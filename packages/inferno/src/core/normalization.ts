@@ -5,6 +5,7 @@ import {
 	isUndefined,
 	warning
 } from 'inferno-shared';
+import { throwError } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
 import { IVNode } from './vnode';
 
@@ -90,23 +91,51 @@ export function normalize(vNode: IVNode): void {
 		// This code will be stripped out from production CODE
 		// It helps users to track errors in their applications.
 
-		const verifyKeys = function(vNodes) {
-			const keyValues = vNodes.map(function(vnode) {
-				return vnode.key;
-			});
-			keyValues.some(function(item, idx) {
-				const hasDuplicate = keyValues.indexOf(item) !== idx;
-
-				if (hasDuplicate) {
-					warning('Inferno normalisation(...): Encountered two children with same key, all keys must be unique within its siblings. Duplicated key is:' + item);
-				}
-
-				return hasDuplicate;
-			});
-		};
-
-		if (vNode.children && Array.isArray(vNode.children)) {
-			verifyKeys(vNode.children);
+		const vNodeChildren = vNode.children;
+		if (vNodeChildren && Array.isArray(vNodeChildren)) {
+			// TODO: ADD VAlidations for these cases:
+			// - When there is invalid children of any kind - dont allow keys
+			// - When there are no invalid children, verify keys are unique
+			//
+			// let hasAnyInvalidValue = false;
+			//
+			// const nullIndex = vNodeChildren.indexOf(null);
+			// const falseIndex = vNodeChildren.indexOf(false);
+			// const trueIndex = vNodeChildren.indexOf(true);
+			// const undefIndex = vNodeChildren.indexOf(void 0);
+			//
+			// hasAnyInvalidValue = nullIndex >= 0 || falseIndex >= 0 || trueIndex >= 0 || undefIndex >= 0;
+			//
+			// if (hasAnyInvalidValue) {
+			// 	const result = [];
+			// 	let item;
+			// 	while (vNodeChildren.length > 0) {
+			// 		item = array.shift();
+			// 		if (!Array.isArray(item)){
+			// 			result.push(item);
+			// 		} else {
+			// 			array = item.concat(array);
+			// 		}
+			// 	}
+			//
+			// 	// There should not be any keys
+			// 	throwError();
+			// } else {
+			// 	throwError();
+			// }
+			//
+			// const keyValues = vNodeChildren.map(function(vnode) {
+			// 	return vnode.key;
+			// });
+			// keyValues.some(function(item, idx) {
+			// 	const hasDuplicate = keyValues.indexOf(item) !== idx;
+			//
+			// 	if (hasDuplicate) {
+			// 		warning('Inferno normalisation(...): Encountered two children with same key, all keys must be unique within its siblings. Duplicated key is:' + item);
+			// 	}
+			//
+			// 	return hasDuplicate;
+			// });
 		}
 	}
 }

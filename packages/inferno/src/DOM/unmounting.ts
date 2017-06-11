@@ -93,21 +93,34 @@ export function unmountElement(fiber: IFiber, parentDom: Element|null, lifecycle
 	if (ref && !isRecycling) {
 		unmountRef(ref);
 	}
-	const children = vNode.children;
 
-	if (!isNullOrUndef(children) && !isStringOrNumber(children)) {
-		if (isArray(children)) {
-			for (let i = 0, len = (children as Array<string | number | IVNode>).length; i < len; i++) {
-				const child = children[ i ];
+	const childFibers = fiber.children;
 
-				if (!isInvalid(child) && isObject(child)) {
-					unmount(fiber, null, lifecycle, false, isRecycling);
-				}
+	if (childFibers !== null) {
+		if (isArray(childFibers)) {
+			for (let i = 0, len = childFibers.length; i < len; i++) {
+				unmount(childFibers[i], null, lifecycle, false, isRecycling);
 			}
 		} else {
-			unmount(fiber, null, lifecycle, false, isRecycling);
+			unmount(childFibers, null, lifecycle, false, isRecycling);
 		}
 	}
+
+	// const children = vNode.children;
+	//
+	// if (!isNullOrUndef(children) && !isStringOrNumber(children)) {
+	// 	if (isArray(children)) {
+	// 		for (let i = 0, len = (children as Array<string | number | IVNode>).length; i < len; i++) {
+	// 			const child = children[ i ];
+	//
+	// 			if (!isInvalid(child) && isObject(child)) {
+	// 				unmount(fiber, null, lifecycle, false, isRecycling);
+	// 			}
+	// 		}
+	// 	} else {
+	// 		unmount(fiber, null, lifecycle, false, isRecycling);
+	// 	}
+	// }
 
 	if (!isNull(props)) {
 		for (const name in props) {

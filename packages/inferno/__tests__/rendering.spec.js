@@ -42,7 +42,7 @@
 // 		render(foo, container);
 // 		expect(container.innerHTML).to.eql('<div><div>123</div></div>');
 // 	});
+// 		it('Should have same version number string as package.json', () => {
+// 			expect(pkgJSON.version).to.equal(version);
+// 		});
 // });
-
-	it('Should have same version number string as package.json', () => {
-		expect(pkgJSON.version).to.equal(version);

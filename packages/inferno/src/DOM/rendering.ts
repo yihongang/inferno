@@ -100,11 +100,13 @@ export function render(input: IVNode|null|string|undefined, parentDom: Element |
 	}
 	C.rendering = true;
 	let rootFiber = roots.get(parentDom);
-
+	let lifecycle;
 	if (isNullOrUndef(rootFiber)) {
-		const lifecycle = new Lifecycle();
-		rootFiber = new Fiber(input as IVNode, 0, 0);
-		rootFiber.lifeCycle = lifecycle;
+		if (isInvalid(input)) {
+			return;
+		}
+		rootFiber = new Fiber(input as IVNode, '0');
+		rootFiber.lifeCycle = lifecycle = new Lifecycle();
 		// if (!hydrateRoot(input, parentDom as any, lifecycle)) {
 		// 	mount(input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false);
 		// }
@@ -114,7 +116,7 @@ export function render(input: IVNode|null|string|undefined, parentDom: Element |
 		roots.set(parentDom, rootFiber);
 		lifecycle.trigger();
 	} else {
-		const lifecycle = rootFiber.lifeCycle;
+		lifecycle = rootFiber.lifeCycle;
 
 		lifecycle.listeners = [];
 		if (isNullOrUndef(input)) {
@@ -124,9 +126,9 @@ export function render(input: IVNode|null|string|undefined, parentDom: Element |
 			patch(rootFiber, input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false, false);
 		}
 		rootFiber.input = input;
-		lifecycle.trigger();
-	}
 
+	}
+	lifecycle.trigger();
 	if (!isNullOrUndef(callback)) {
 		callback();
 	}
