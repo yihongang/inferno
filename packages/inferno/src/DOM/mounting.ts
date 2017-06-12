@@ -14,10 +14,11 @@ import VNodeFlags from 'inferno-vnode-flags';
 import { options } from '../core/options';
 import { IVNode } from '../core/vnode';
 import { patchProp } from './patching';
-import { recycleElement } from './recycling';
+import { recycleComponent, recycleElement } from './recycling';
 import { appendChild, documentCreateElement, EMPTY_OBJ, handleComponentInput, setTextContent } from './utils';
 import { isControlledFormElement, processElement } from './wrappers/processelements';
 import { IFiber, Fiber } from '../core/fiber';
+import { componentToDOMNodeMap } from './rendering';
 
 export function mount(fiber: IFiber, input: IVNode|string|number, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
 	// Text - Number
@@ -149,46 +150,57 @@ export function mountArrayChildren(fiber, children, dom: Element, lifecycle: Lif
 	}
 }
 
-// const C = options.component;
+const C = options.component;
 
 export function mountComponent(fiber: IFiber, vNode: IVNode, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isClass: boolean) {
+	let dom;
 	if (options.recyclingEnabled) {
-		// const dom = recycleComponent(vNode, lifecycle, context, isSVG);
-		//
-		// if (!isNull(dom)) {
-		// 	if (!isNull(parentDom)) {
-		// 		appendChild(parentDom, dom);
-		// 	}
-		// 	return dom;
-		// }
+		dom = recycleComponent(vNode, lifecycle, context, isSVG);
+
+		if (!isNull(dom)) {
+			if (!isNull(parentDom)) {
+				appendChild(parentDom, dom);
+			}
+
+			return dom;
+		}
 	}
 	const type = vNode.type as Function;
 	const props = vNode.props || EMPTY_OBJ;
 	const ref = vNode.ref;
+	// let childFiber;
+
 	if (isClass) {
-		// const instance = (C.create as Function)(vNode, type, props, context, isSVG, lifecycle);
+		// childFiber = fiber.children = new Fiber(child, '0');
+
+		const instance = (C.create as Function)(fiber, vNode, type, props, context, isSVG, lifecycle);
 		// const input = instance._lastInput;
-		//
-		// vNode.dom = dom = mount(input, null, lifecycle, instance._childContext, isSVG);
-		// if (!isNull(parentDom)) {
-		// 	appendChild(parentDom, dom);
-		// }
-		// mountClassComponentCallbacks(vNode, ref, instance, lifecycle);
-		// instance._updating = false;
-		// if (options.findDOMNodeEnabled) {
-		// 	componentToDOMNodeMap.set(instance, dom);
-		// }
+		fiber.c = instance;
+		const childFiber = fiber.children;
+		if (!isInvalid(childFiber.input)) {
+			fiber.dom = childFiber.dom = dom = mount(childFiber, childFiber.input, null, lifecycle, instance._childContext, isSVG);
+			if (!isNull(parentDom)) {
+				appendChild(parentDom, dom);
+			}
+		}
+		mountClassComponentCallbacks(vNode, ref, instance, lifecycle);
+		instance._updating = false;
+		if (options.findDOMNodeEnabled) {
+			componentToDOMNodeMap.set(instance, dom);
+		}
 	} else {
 		const renderOutput = type(props, context);
 		const input = handleComponentInput(renderOutput, vNode);
 
-		mount(fiber, input, null, lifecycle, context, isSVG);
-		vNode.children = input;
+		fiber.dom = mount(fiber, input, null, lifecycle, context, isSVG);
+		fiber.input = input;
 		mountFunctionalComponentCallbacks(ref, fiber.dom, lifecycle);
 		if (!isNull(parentDom)) {
 			appendChild(parentDom, fiber.dom);
 		}
 	}
+
+	return dom;
 }
 
 export function mountClassComponentCallbacks(vNode: IVNode, ref, instance, lifecycle: LifecycleClass) {

@@ -292,7 +292,7 @@ function createReactDOMComponent(vNode, parentDom) {
 	const children = vNode.children === 0 ? vNode.children.toString() : vNode.children;
 	const props = vNode.props;
 	const dom = vNode.dom;
-	const isText = (flags & VNodeFlags.Text) || isStringOrNumber(vNode);
+	const isText = isStringOrNumber(vNode);
 
 	return {
 		_currentElement: isText ? (children || vNode) : {

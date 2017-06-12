@@ -1,7 +1,7 @@
 /* tslint:disable:object-literal-sort-keys */
 import { LifecycleClass as _LifecycleClass, NO_OP, warning } from 'inferno-shared';
 import _VNodeFlags from 'inferno-vnode-flags';
-import { IFiber as _IFiber } from './core/fiber';
+import { IFiber, Fiber } from './core/fiber';
 import { getFlagsForElementVnode, normalize as internal_normalize } from './core/normalization';
 import { options } from './core/options';
 import { createVNode, InfernoChildren, Props, IVNode } from './core/vnode';
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV !== 'production') {
 // To please the TS God
 // https://github.com/Microsoft/TypeScript/issues/6307
 export declare const VNodeFlags: _VNodeFlags;
-export declare const IFiber: _IFiber;
+// export declare const IFiber: _IFiber;
 // export declare const IVNode: _IVNode;
 export declare const LifecycleClass: _LifecycleClass;
 
@@ -54,8 +54,10 @@ options.component.handleInput = handleComponentInput;
 
 export {
 	EMPTY_OBJ,
+	IFiber,
 	InfernoChildren,
 	IVNode,
+	Fiber,
 	NO_OP,
 	Props,
 	createRenderer,

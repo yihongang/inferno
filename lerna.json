@@ -4,6 +4,7 @@
 		"packages/inferno-vnode-flags",
 		"packages/inferno-shared",
     "packages/inferno",
+		"packages/inferno-component",
 		"packages/inferno-create-element"
   ],
   "version": "4.0.0",

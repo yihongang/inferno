@@ -8,6 +8,7 @@ import {
 	isStringOrNumber,
 	LifecycleClass,
 	NO_OP,
+	isNull,
 	throwError
 } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
@@ -16,12 +17,12 @@ import { options } from '../core/options';
 import { isVNode, IVNode, Refs } from '../core/vnode';
 import { booleanProps, delegatedEvents, isUnitlessNumber, namespaces, skipProps, strictProps } from './constants';
 import { handleEvent } from './events/delegation';
-import { mount, mountArrayChildren, mountElement, mountRef, mountText } from './mounting';
+import { mount, mountArrayChildren, mountComponent, mountElement, mountRef, mountText } from './mounting';
 import { unmount } from './unmounting';
 import {
 	EMPTY_OBJ,
 	insertOrAppend,
-	removeAllChildren,
+	removeAllChildren, replaceChild,
 	replaceDOM,
 	replaceWithNewNode,
 	setTextContent,
@@ -82,22 +83,21 @@ export function patch(fiber: IFiber, nextInput: IVNode | string | number, parent
 						isRecycling
 					);
 				} else {
-					// replaceDOM(
-					// 	fiber,
-					// 	parentDom,
-					// 	mountComponent(
-					// 		fiber,
-					// 		nextInput,
-					// 		null,
-					// 		lifecycle,
-					// 		context,
-					// 		isSVG,
-					// 		isClass
-					// 	),
-					// 	lastInput,
-					// 	lifecycle,
-					// 	isRecycling
-					// );
+					replaceDOM(
+						fiber,
+						parentDom,
+						mountComponent(
+							fiber,
+							nextInput,
+							null,
+							lifecycle,
+							context,
+							isSVG,
+							isClass
+						),
+						lifecycle,
+						isRecycling
+					);
 				}
 			}
 		}
@@ -284,24 +284,25 @@ export function patchComponent(fiber, lastVNode: IVNode, nextVNode: IVNode, pare
 		const nextProps = nextVNode.props || EMPTY_OBJ;
 
 		if (isClass) {
-			// if ((C.patch as Function)(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling)) {
-			// 	if (isNull(parentDom)) {
-			// 		return true;
-			// 	}
-			// 	replaceChild(
-			// 		parentDom,
-			// 		mountComponent(
-			// 			fiber,
-			// 			nextVNode,
-			// 			null,
-			// 			lifecycle,
-			// 			context,
-			// 			isSVG,
-			// 			(nextVNode.flags & VNodeFlags.ComponentClass) > 0
-			// 		),
-			// 		lastVNode.dom
-			// 	);
-			// }
+			if ((C.patch as Function)(fiber, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling)) {
+				if (isNull(parentDom)) {
+					return true;
+				}
+				const lastDOM = fiber.dom;
+				replaceChild(
+					parentDom,
+					mountComponent(
+						fiber,
+						nextVNode,
+						null,
+						lifecycle,
+						context,
+						isSVG,
+						(nextVNode.flags & VNodeFlags.ComponentClass) > 0
+					),
+					lastDOM
+				);
+			}
 		} else {
 			let shouldUpdate = true;
 			const lastProps = lastVNode.props;

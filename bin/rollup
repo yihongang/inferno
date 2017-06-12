@@ -139,4 +139,4 @@ rollup({
 	plugins,
 	external
 })
-.then(({ write }) => write(bundleConfig)).catch(console.error);
+.then(({ write }) => write(bundleConfig)).catch(err => console.warn(err));

@@ -8,6 +8,8 @@ export interface IFiber {
 	lifeCycle: LifecycleClass;
 	// pos is used to track point in vNode tree
 	i: string;
+	// c is possible component instance
+	c: any;
 }
 
 /**
@@ -23,4 +25,5 @@ export function Fiber(input, i) {
 	this.children = null; // This value is null for Fibers that hold text nodes
 	this.lifeCycle = null;
 	this.i = i;
+	this.c = null;
 }

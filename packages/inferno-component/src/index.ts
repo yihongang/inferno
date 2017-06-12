@@ -1,5 +1,5 @@
 // Make sure u use EMPTY_OBJ from 'inferno', otherwise it'll be a different reference
-import { EMPTY_OBJ, internal_DOMNodeMap, internal_patch, options, Props, IVNode} from 'inferno';
+import { EMPTY_OBJ, IFiber, Fiber, internal_DOMNodeMap, internal_patch, options, Props, IVNode} from 'inferno';
 import {
 	combineFrom,
 	ERROR_MSG,
@@ -10,7 +10,6 @@ import {
 	NO_OP,
 	throwError
 } from 'inferno-shared';
-import VNodeFlags from 'inferno-vnode-flags';
 
 const C = options.component;
 
@@ -19,7 +18,7 @@ C.create = createInstance;
 C.patch = patchComponent;
 C.flush = flushQueue;
 
-const handleInput = C.handleInput;
+const handleInput = C.handleInput as Function;
 let noOp = ERROR_MSG;
 
 if (process.env.NODE_ENV !== 'production') {
@@ -45,7 +44,7 @@ function queueStateChanges<P, S>(component: Component<P, S>, newState: S, callba
 	if (isNullOrUndef(pending)) {
 		component._pendingState = pending = newState;
 	} else {
-		for (const stateKey in newState) {
+		for (const stateKey in newState as S) {
 			pending[ stateKey ] = newState[ stateKey ];
 		}
 	}
@@ -70,9 +69,10 @@ function queueStateChanges<P, S>(component: Component<P, S>, newState: S, callba
 	}
 }
 
-function createInstance(vNode: IVNode, Component, props: Props, context: Object, isSVG: boolean, lifecycle: LifecycleClass) {
+function createInstance(parentFiber: IFiber, vNode: IVNode, Component, props: Props, context: Object, isSVG: boolean, lifecycle: LifecycleClass) {
 	const instance = new Component(props, context) as Component<any, any>;
-	vNode.children = instance as any;
+	// vNode.children = instance as any;
+	parentFiber.c = instance;
 	instance._blockSetState = false;
 	instance.context = context;
 	if (instance.props === EMPTY_OBJ) {
@@ -110,8 +110,8 @@ function createInstance(vNode: IVNode, Component, props: Props, context: Object,
 	}
 
 	instance._pendingSetState = false;
-	instance._lastInput = handleInput(renderOutput, vNode);
-	instance._vNode = vNode;
+	instance._fiber = parentFiber;
+	parentFiber.children = new Fiber(handleInput(renderOutput, vNode), '0');
 	return instance;
 }
 
@@ -179,9 +179,9 @@ function updateComponent<P, S>(component: Component<P, S>, prevState: S, nextSta
 	return NO_OP;
 }
 
-function patchComponent(lastVNode, nextVNode, parentDom, lifecycle: LifecycleClass, context, isSVG: boolean, isRecycling: boolean) {
-	const instance = lastVNode.children as Component<any, any>;
-	instance._vNode = nextVNode;
+function patchComponent(fiber: IFiber, nextVNode, parentDom, lifecycle: LifecycleClass, context, isSVG: boolean, isRecycling: boolean) {
+	const instance = fiber.c;
+	instance._fiber = fiber;
 	instance._updating = true;
 
 	if (instance._unmounted) {
@@ -198,25 +198,25 @@ function patchComponent(lastVNode, nextVNode, parentDom, lifecycle: LifecycleCla
 const resolvedPromise = Promise.resolve();
 const componentFlushQueue: any[] = [];
 
-// when a components root IVNode is also a component, we can run into issues
-// this will recursively look for input.parentNode if the IVNode is a component
-function updateParentComponentVNodes(vNode: IVNode, dom: Element) {
-	if (vNode.flags & VNodeFlags.Component) {
-		const parentVNode = vNode.parentVNode;
-
-		if (parentVNode) {
-			parentVNode.dom = dom;
-			updateParentComponentVNodes(parentVNode, dom);
-		}
-	}
-}
+// // when a components root IVNode is also a component, we can run into issues
+// // this will recursively look for input.parentNode if the IVNode is a component
+// function updateParentComponentVNodes(vNode: IVNode, dom: Element) {
+// 	if (vNode.flags & VNodeFlags.Component) {
+// 		const parentVNode = vNode.parentVNode;
+//
+// 		if (parentVNode) {
+// 			parentVNode.dom = dom;
+// 			updateParentComponentVNodes(parentVNode, dom);
+// 		}
+// 	}
+// }
 
 function handleUpdate(component, nextState, nextProps, context, force: boolean, fromSetState: boolean, isRecycling: boolean, isSVG: boolean, lifeCycle, parentDom) {
 	let nextInput;
 	const hasComponentDidUpdateIsFunction = isFunction(component.componentDidUpdate);
 	// When component has componentDidUpdate hook, we need to clone lastState or will be modified by reference during update
 	const prevState = hasComponentDidUpdateIsFunction ? combineFrom(nextState, null) : component.state;
-	const lastInput = component._lastInput as IVNode;
+	// const lastInput = component._lastInput as IVNode;
 	const prevProps = component.props;
 	const renderOutput = updateComponent(component, prevState, nextState, prevProps, nextProps, context, force, fromSetState);
 	const vNode = component._vNode as IVNode;
@@ -235,14 +235,15 @@ function handleUpdate(component, nextState, nextProps, context, force: boolean, 
 			childContext = combineFrom(context, childContext as any);
 		}
 
-		if (nextInput.flags & VNodeFlags.Component) {
-			nextInput.parentVNode = vNode;
-		} else if (lastInput.flags & VNodeFlags.Component) {
-			lastInput.parentVNode = vNode;
-		}
+		// if (nextInput.flags & VNodeFlags.Component) {
+		// 	nextInput.parentVNode = vNode;
+		// } else if (lastInput.flags & VNodeFlags.Component) {
+		// 	lastInput.parentVNode = vNode;
+		// }
 
 		// lastVNode: nextVNode: parentDom, lifecycle, context, isSVG, isRecycling
-		internal_patch(lastInput, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG, isRecycling);
+		component._fiber.input = nextInput;
+		internal_patch(component._fiber, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG, isRecycling);
 		if (fromSetState) {
 			lifeCycle.trigger();
 		}
@@ -254,23 +255,24 @@ function handleUpdate(component, nextState, nextProps, context, force: boolean, 
 			options.afterUpdate(vNode);
 		}
 		if (options.findDOMNodeEnabled) {
-			internal_DOMNodeMap.set(component, nextInput.dom);
+			// internal_DOMNodeMap.set(component, nextInput.dom);
 		}
 	} else {
-		nextInput = lastInput;
+		// nextInput = lastInput;
 	}
 
-	if (nextInput.flags & VNodeFlags.Component) {
-		nextInput.parentVNode = vNode;
-	} else if (lastInput.flags & VNodeFlags.Component) {
-		lastInput.parentVNode = vNode;
-	}
+	// if (nextInput.flags & VNodeFlags.Component) {
+	// 	nextInput.parentVNode = vNode;
+	// } else if (lastInput.flags & VNodeFlags.Component) {
+	// 	lastInput.parentVNode = vNode;
+	// }
 
-	component._lastInput = nextInput as IVNode;
-	const dom = vNode.dom = (nextInput as IVNode).dom as Element;
+	// component._lastInput = nextInput as IVNode;
+	// const dom = vNode.dom = (nextInput as IVNode).dom as Element;
+	const dom = component._fiber.dom;
 
 	if (options.findDOMNodeEnabled) {
-		internal_DOMNodeMap.set(component, (nextInput as IVNode).dom);
+		internal_DOMNodeMap.set(component, dom);
 	}
 
 	return dom;
@@ -284,22 +286,25 @@ function applyState<P, S>(component: Component<P, S>, force: boolean, callback?:
 		const pendingState = component._pendingState;
 		component._pendingSetState = false;
 		component._pendingState = null;
-		const lastInput = component._lastInput;
+		const fiber = component._fiber;
 
-		updateParentComponentVNodes(
-			component._vNode,
-			handleUpdate(
-				component,
-				combineFrom(component.state, pendingState),
-				component.props,
-				component.context,
-				force,
-				true,
-				false,
-				component._isSVG,
-				component._lifecycle,
-				lastInput.dom && lastInput.dom.parentNode) || (lastInput.dom = component._vNode.dom)
+		handleUpdate(
+			component,
+			combineFrom(component.state, pendingState),
+			component.props,
+			component.context,
+			force,
+			true,
+			false,
+			component._isSVG,
+			component._lifecycle,
+			fiber.dom
 		);
+
+		// updateParentComponentVNodes(
+		// 	component._vNode,
+		//
+		// );
 	} else {
 		component.state = component._pendingState as S;
 		component._pendingState = null;
@@ -375,14 +380,13 @@ export default class Component<P, S> implements ComponentLifecycle<P, S> {
 	public _blockSetState = true;
 	public _pendingSetState = false;
 	public _pendingState: S|null = null;
-	public _lastInput: any = null;
-	public _vNode: IVNode;
+	// public _lastInput: any = null;
+	public _fiber: IFiber;
 	public _unmounted: boolean = false;
 	public _lifecycle: LifecycleClass;
 	public _childContext: object|null = null;
 	public _isSVG = false;
 	public _updating: boolean = true;
-	public _updateComponent: Function; // TODO: Remove
 
 	public __FP: boolean = false; // Flush Pending
 	public __FCB: Function[]|null = null; // Flush callbacks for this component
@@ -393,7 +397,6 @@ export default class Component<P, S> implements ComponentLifecycle<P, S> {
 
 		/** @type {object} */
 		this.context = context || EMPTY_OBJ; // context should not be mutable
-		this._updateComponent = updateComponent;
 	}
 
 	// LifeCycle methods
