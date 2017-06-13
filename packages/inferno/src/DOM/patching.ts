@@ -52,6 +52,7 @@ export function patch(fiber: IFiber, nextInput: IVNode | string | number, parent
 				if (lastFlags & VNodeFlags.Element) {
 					patchElement(fiber, lastInput, nextInput, parentDom, lifecycle, context, isSVG, isRecycling);
 				} else {
+					fiber.children = null;
 					replaceDOM(
 						fiber,
 						parentDom,

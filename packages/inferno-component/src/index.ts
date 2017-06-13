@@ -260,7 +260,7 @@ function handleUpdate(component: Component<any, any>, nextState, nextProps, cont
 			component.componentDidUpdate(prevProps, prevState, context);
 		}
 		if (isFunction(options.afterUpdate)) {
-			options.afterUpdate(vNode);
+			// options.afterUpdate(vNode);
 		}
 		if (options.findDOMNodeEnabled) {
 			// internal_DOMNodeMap.set(component, nextInput.dom);

@@ -1,4 +1,3 @@
-//
 // import { findDOMNode, options, render } from 'inferno';
 // import Component from 'inferno-component';
 //

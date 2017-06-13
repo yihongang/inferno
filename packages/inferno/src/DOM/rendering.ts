@@ -117,7 +117,7 @@ export function render(input: IVNode|null|string|undefined, parentDom: Element |
 		lifecycle = rootFiber.lifeCycle;
 
 		lifecycle.listeners = [];
-		if (isNullOrUndef(input)) {
+		if (isNullOrUndef(input) && !isInvalid(rootFiber.input)) {
 			unmount(rootFiber, parentDom as Element, lifecycle, false, false);
 			roots.delete(parentDom);
 		} else {

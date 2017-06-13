@@ -34,6 +34,7 @@ export function unmountComponent(fiber: IFiber, parentDom: Element|null, lifecyc
 	const isStatefulComponent: boolean = (flags & VNodeFlags.ComponentClass) > 0;
 	const ref = vNode.ref as any;
 	const dom = fiber.dom as Element;
+	const childFiber = fiber.children;
 
 	if (!isRecycling) {
 		if (isStatefulComponent) {
@@ -52,7 +53,9 @@ export function unmountComponent(fiber: IFiber, parentDom: Element|null, lifecyc
 					componentToDOMNodeMap.delete(instance);
 				}
 
-				unmount(fiber.children as IFiber, null, instance._lifecycle, false, isRecycling);
+				if (!isNull(childFiber)) {
+					unmount(childFiber as IFiber, null, instance._lifecycle, false, isRecycling);
+				}
 			}
 		} else {
 			if (!isNullOrUndef(ref)) {
@@ -61,10 +64,12 @@ export function unmountComponent(fiber: IFiber, parentDom: Element|null, lifecyc
 				}
 			}
 
-			unmount(fiber.children as IFiber, null, lifecycle, false, isRecycling);
+			if (!isNull(childFiber)) {
+				unmount(childFiber as IFiber, null, lifecycle, false, isRecycling);
+			}
 		}
 	}
-	if (parentDom) {
+	if (parentDom && !isNull(dom)) {
 		// let lastInput = instance._lastInput;
 		//
 		// if (isNullOrUndef(lastInput)) {

@@ -153,7 +153,7 @@ export function mountArrayChildren(fiber, children, dom: Element, lifecycle: Lif
 const C = options.component;
 
 export function mountComponent(fiber: IFiber, vNode: IVNode, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isClass: boolean) {
-	let dom;
+	let dom = null;
 	if (options.recyclingEnabled) {
 		dom = recycleComponent(vNode, lifecycle, context, isSVG);
 
@@ -179,7 +179,7 @@ export function mountComponent(fiber: IFiber, vNode: IVNode, parentDom: Element|
 		const childFiber = fiber.children as IFiber;
 		if (!isInvalid(childFiber.input)) {
 			fiber.dom = childFiber.dom = dom = mount(childFiber, childFiber.input, null, lifecycle, instance._childContext, isSVG);
-			if (!isNull(parentDom)) {
+			if (!isNull(parentDom) && !isNull(dom)) {
 				appendChild(parentDom, dom);
 			}
 		}
@@ -190,13 +190,20 @@ export function mountComponent(fiber: IFiber, vNode: IVNode, parentDom: Element|
 		}
 	} else {
 		const renderOutput = type(props, context);
-		const input = handleComponentInput(renderOutput, vNode);
+		const input = handleComponentInput(renderOutput);
 
-		fiber.dom = mount(fiber, input, null, lifecycle, context, isSVG);
-		fiber.input = input;
-		mountFunctionalComponentCallbacks(ref, fiber.dom, lifecycle);
-		if (!isNull(parentDom)) {
-			appendChild(parentDom, fiber.dom);
+		if (!isInvalid(renderOutput)) {
+			const childFiber = new Fiber(input, '0');
+			fiber.children = childFiber;
+			childFiber.dom = dom = mount(childFiber, input, null, lifecycle, context, isSVG);
+		}
+		fiber.c = 'stateless';
+		fiber.dom = dom;
+
+		// fiber.input = input;
+		mountFunctionalComponentCallbacks(ref, dom, lifecycle);
+		if (!isNull(parentDom) && !isNull(dom)) {
+			appendChild(parentDom, dom);
 		}
 	}
 
