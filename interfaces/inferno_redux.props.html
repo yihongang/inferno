@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>LifecycleClass | Inferno</title>
+	<title>Props | Inferno</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,13 +52,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/inferno_shared.html">Inferno-Shared</a>
+					<a href="../modules/inferno_redux.html">Inferno-Redux</a>
 				</li>
 				<li>
-					<a href="inferno_shared.lifecycleclass.html">LifecycleClass</a>
+					<a href="inferno_redux.props.html">Props</a>
 				</li>
 			</ul>
-			<h1>Interface LifecycleClass</h1>
+			<h1>Interface Props</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">LifecycleClass</span>
+						<span class="target">Props</span>
 					</li>
 				</ul>
 			</section>
@@ -80,14 +80,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="inferno_shared.lifecycleclass.html#listeners" class="tsd-kind-icon">listeners</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="inferno_shared.lifecycleclass.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="inferno_shared.lifecycleclass.html#trigger" class="tsd-kind-icon">trigger</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="inferno_redux.props.html#children" class="tsd-kind-icon">children</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="inferno_redux.props.html#store" class="tsd-kind-icon">store</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,57 +90,24 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="listeners" class="tsd-anchor"></a>
-					<h3>listeners</h3>
-					<div class="tsd-signature tsd-kind-icon">listeners<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="children" class="tsd-anchor"></a>
+					<h3>children</h3>
+					<div class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-shared/src/index.ts#L96">inferno-shared/src/index.ts:96</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/components/Provider.ts#L24">inferno-redux/src/components/Provider.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="addlistener" class="tsd-anchor"></a>
-					<h3>add<wbr>Listener</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Listener<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-shared/src/index.ts#L97">inferno-shared/src/index.ts:97</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>callback: <span class="tsd-signature-type">Function</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="trigger" class="tsd-anchor"></a>
-					<h3>trigger</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">trigger<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-shared/src/index.ts#L98">inferno-shared/src/index.ts:98</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="store" class="tsd-anchor"></a>
+					<h3>store</h3>
+					<div class="tsd-signature tsd-kind-icon">store<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Store</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/components/Provider.ts#L23">inferno-redux/src/components/Provider.ts:23</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -180,7 +141,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/inferno_mobx.html">Inferno-<wbr><wbr>Mobx</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/inferno_redux.html">Inferno-<wbr><wbr>Redux</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -189,7 +150,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/inferno_server.html">Inferno-<wbr><wbr>Server</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/inferno_shared.html">Inferno-<wbr><wbr>Shared</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -205,83 +166,116 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/inferno_redux.provider.html" class="tsd-kind-icon">Provider</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/inferno_redux.subscription.html" class="tsd-kind-icon">Subscription</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="inferno_redux.iconnectoptions.html" class="tsd-kind-icon">IConnect<wbr>Options</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="inferno_shared.lifecycleclass.html" class="tsd-kind-icon">Lifecycle<wbr>Class</a>
+						<a href="inferno_redux.props.html" class="tsd-kind-icon">Props</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="inferno_shared.lifecycleclass.html#listeners" class="tsd-kind-icon">listeners</a>
+								<a href="inferno_redux.props.html#children" class="tsd-kind-icon">children</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="inferno_shared.lifecycleclass.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="inferno_shared.lifecycleclass.html#trigger" class="tsd-kind-icon">trigger</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="inferno_redux.props.html#store" class="tsd-kind-icon">store</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#error_msg" class="tsd-kind-icon">ERROR_<wbr>MSG</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#listener" class="tsd-kind-icon">Listener</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#selectorfactory" class="tsd-kind-icon">Selector<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#no_op" class="tsd-kind-icon">NO_<wbr>OP</a>
+						<a href="../modules/inferno_redux.html#connect" class="tsd-kind-icon">connect</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isarray" class="tsd-kind-icon">is<wbr>Array</a>
+						<a href="../modules/inferno_redux.html#defaultmapdispatchtopropsfactories" class="tsd-kind-icon">default<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>Factories</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isbrowser" class="tsd-kind-icon">is<wbr>Browser</a>
+						<a href="../modules/inferno_redux.html#defaultmapstatetopropsfactories" class="tsd-kind-icon">default<wbr>Map<wbr>State<wbr>ToProps<wbr>Factories</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultmergepropsfactories" class="tsd-kind-icon">default<wbr>Merge<wbr>Props<wbr>Factories</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#lifecycle" class="tsd-kind-icon">Lifecycle</a>
+						<a href="../modules/inferno_redux.html#connectadvanced" class="tsd-kind-icon">connect<wbr>Advanced</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#combinefrom" class="tsd-kind-icon">combine<wbr>From</a>
+						<a href="../modules/inferno_redux.html#createconnect" class="tsd-kind-icon">create<wbr>Connect</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isfunction" class="tsd-kind-icon">is<wbr>Function</a>
+						<a href="../modules/inferno_redux.html#defaultmergeprops" class="tsd-kind-icon">default<wbr>Merge<wbr>Props</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isinvalid" class="tsd-kind-icon">is<wbr>Invalid</a>
+						<a href="../modules/inferno_redux.html#defaultselectorfactory" class="tsd-kind-icon">default<wbr>Selector<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isnull" class="tsd-kind-icon">is<wbr>Null</a>
+						<a href="../modules/inferno_redux.html#getdependsonownprops" class="tsd-kind-icon">get<wbr>Depends<wbr>OnOwn<wbr>Props</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isnullorundef" class="tsd-kind-icon">is<wbr>Null<wbr>OrUndef</a>
+						<a href="../modules/inferno_redux.html#impurefinalpropsselectorfactory" class="tsd-kind-icon">impure<wbr>Final<wbr>Props<wbr>Selector<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isnumber" class="tsd-kind-icon">is<wbr>Number</a>
+						<a href="../modules/inferno_redux.html#purefinalpropsselectorfactory" class="tsd-kind-icon">pure<wbr>Final<wbr>Props<wbr>Selector<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isobject" class="tsd-kind-icon">is<wbr>Object</a>
+						<a href="../modules/inferno_redux.html#shallowequal" class="tsd-kind-icon">shallow<wbr>Equal</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isstatefulcomponent" class="tsd-kind-icon">is<wbr>Stateful<wbr>Component</a>
+						<a href="../modules/inferno_redux.html#verify" class="tsd-kind-icon">verify</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isstring" class="tsd-kind-icon">is<wbr>String</a>
+						<a href="../modules/inferno_redux.html#verifyplainobject" class="tsd-kind-icon">verify<wbr>Plain<wbr>Object</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isstringornumber" class="tsd-kind-icon">is<wbr>String<wbr>OrNumber</a>
+						<a href="../modules/inferno_redux.html#verifysubselectors" class="tsd-kind-icon">verify<wbr>Subselectors</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#istrue" class="tsd-kind-icon">is<wbr>True</a>
+						<a href="../modules/inferno_redux.html#warning" class="tsd-kind-icon">warning</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#isundefined" class="tsd-kind-icon">is<wbr>Undefined</a>
+						<a href="../modules/inferno_redux.html#whenmapdispatchtopropsisfunction" class="tsd-kind-icon">when<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>IsFunction</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#throwerror" class="tsd-kind-icon">throw<wbr>Error</a>
+						<a href="../modules/inferno_redux.html#whenmapdispatchtopropsismissing" class="tsd-kind-icon">when<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>IsMissing</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#toarray" class="tsd-kind-icon">to<wbr>Array</a>
+						<a href="../modules/inferno_redux.html#whenmapdispatchtopropsisobject" class="tsd-kind-icon">when<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>IsObject</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_shared.html#warning" class="tsd-kind-icon">warning</a>
+						<a href="../modules/inferno_redux.html#whenmapstatetopropsisfunction" class="tsd-kind-icon">when<wbr>Map<wbr>State<wbr>ToProps<wbr>IsFunction</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapstatetopropsismissing" class="tsd-kind-icon">when<wbr>Map<wbr>State<wbr>ToProps<wbr>IsMissing</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmergepropsisfunction" class="tsd-kind-icon">when<wbr>Merge<wbr>Props<wbr>IsFunction</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmergepropsisomitted" class="tsd-kind-icon">when<wbr>Merge<wbr>Props<wbr>IsOmitted</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../modules/inferno_redux.html#wrapactioncreators" class="tsd-kind-icon">wrap<wbr>Action<wbr>Creators</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#wrapmaptopropsconstant" class="tsd-kind-icon">wrap<wbr>Map<wbr>ToProps<wbr>Constant</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#wrapmaptopropsfunc" class="tsd-kind-icon">wrap<wbr>Map<wbr>ToProps<wbr>Func</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#wrapmergepropsfunc" class="tsd-kind-icon">wrap<wbr>Merge<wbr>Props<wbr>Func</a>
 					</li>
 				</ul>
 			</nav>

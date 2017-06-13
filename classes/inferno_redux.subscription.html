@@ -1,0 +1,487 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Subscription | Inferno</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Inferno</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/inferno_redux.html">Inferno-Redux</a>
+				</li>
+				<li>
+					<a href="inferno_redux.subscription.html">Subscription</a>
+				</li>
+			</ul>
+			<h1>Class Subscription</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">Subscription</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="inferno_redux.subscription.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="inferno_redux.subscription.html#addnestedsub" class="tsd-kind-icon">add<wbr>Nested<wbr>Sub</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="inferno_redux.subscription.html#issubscribed" class="tsd-kind-icon">is<wbr>Subscribed</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="inferno_redux.subscription.html#notifynestedsubs" class="tsd-kind-icon">notify<wbr>Nested<wbr>Subs</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="inferno_redux.subscription.html#trysubscribe" class="tsd-kind-icon">try<wbr>Subscribe</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="inferno_redux.subscription.html#tryunsubscribe" class="tsd-kind-icon">try<wbr>Unsubscribe</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Subscription<span class="tsd-signature-symbol">(</span>store<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Store</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, parentSub<span class="tsd-signature-symbol">: </span><a href="inferno_redux.subscription.html" class="tsd-signature-type">Subscription</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, onStateChange<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="inferno_redux.subscription.html" class="tsd-signature-type">Subscription</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/utils/Subscription.ts#L72">inferno-redux/src/utils/Subscription.ts:72</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>store: <span class="tsd-signature-type">Store</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>parentSub: <a href="inferno_redux.subscription.html" class="tsd-signature-type">Subscription</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+								</li>
+								<li>
+									<h5>onStateChange: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="inferno_redux.subscription.html" class="tsd-signature-type">Subscription</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="addnestedsub" class="tsd-anchor"></a>
+					<h3>add<wbr>Nested<wbr>Sub</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Nested<wbr>Sub<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Unsubscribe</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/utils/Subscription.ts#L85">inferno-redux/src/utils/Subscription.ts:85</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>listener: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Unsubscribe</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="issubscribed" class="tsd-anchor"></a>
+					<h3>is<wbr>Subscribed</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Subscribed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/utils/Subscription.ts#L94">inferno-redux/src/utils/Subscription.ts:94</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="notifynestedsubs" class="tsd-anchor"></a>
+					<h3>notify<wbr>Nested<wbr>Subs</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">notify<wbr>Nested<wbr>Subs<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/utils/Subscription.ts#L90">inferno-redux/src/utils/Subscription.ts:90</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="trysubscribe" class="tsd-anchor"></a>
+					<h3>try<wbr>Subscribe</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">try<wbr>Subscribe<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/utils/Subscription.ts#L98">inferno-redux/src/utils/Subscription.ts:98</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tryunsubscribe" class="tsd-anchor"></a>
+					<h3>try<wbr>Unsubscribe</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">try<wbr>Unsubscribe<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/utils/Subscription.ts#L108">inferno-redux/src/utils/Subscription.ts:108</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno.html">Inferno</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_compat.html">Inferno-<wbr><wbr>Compat</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_component.html">Inferno-<wbr><wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_create_class.html">Inferno-<wbr><wbr>Create-<wbr><wbr>Class</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_create_element.html">Inferno-<wbr><wbr>Create-<wbr><wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_devtools.html">Inferno-<wbr><wbr>Devtools</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_hyperscript.html">Inferno-<wbr><wbr>Hyperscript</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_mobx.html">Inferno-<wbr><wbr>Mobx</a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/inferno_redux.html">Inferno-<wbr><wbr>Redux</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_router.html">Inferno-<wbr><wbr>Router</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_server.html">Inferno-<wbr><wbr>Server</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_shared.html">Inferno-<wbr><wbr>Shared</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_test_utils.html">Inferno-<wbr><wbr>Test-<wbr><wbr>Utils</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_utils.html">Inferno-<wbr><wbr>Utils</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inferno_vnode_flags.html">Inferno-<wbr><wbr>Vnode-<wbr><wbr>Flags</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="inferno_redux.provider.html" class="tsd-kind-icon">Provider</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-external-module">
+						<a href="inferno_redux.subscription.html" class="tsd-kind-icon">Subscription</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="inferno_redux.subscription.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="inferno_redux.subscription.html#addnestedsub" class="tsd-kind-icon">add<wbr>Nested<wbr>Sub</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="inferno_redux.subscription.html#issubscribed" class="tsd-kind-icon">is<wbr>Subscribed</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="inferno_redux.subscription.html#notifynestedsubs" class="tsd-kind-icon">notify<wbr>Nested<wbr>Subs</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="inferno_redux.subscription.html#trysubscribe" class="tsd-kind-icon">try<wbr>Subscribe</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="inferno_redux.subscription.html#tryunsubscribe" class="tsd-kind-icon">try<wbr>Unsubscribe</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/inferno_redux.iconnectoptions.html" class="tsd-kind-icon">IConnect<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/inferno_redux.props.html" class="tsd-kind-icon">Props</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#listener" class="tsd-kind-icon">Listener</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#selectorfactory" class="tsd-kind-icon">Selector<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#connect" class="tsd-kind-icon">connect</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultmapdispatchtopropsfactories" class="tsd-kind-icon">default<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>Factories</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultmapstatetopropsfactories" class="tsd-kind-icon">default<wbr>Map<wbr>State<wbr>ToProps<wbr>Factories</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultmergepropsfactories" class="tsd-kind-icon">default<wbr>Merge<wbr>Props<wbr>Factories</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#connectadvanced" class="tsd-kind-icon">connect<wbr>Advanced</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#createconnect" class="tsd-kind-icon">create<wbr>Connect</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultmergeprops" class="tsd-kind-icon">default<wbr>Merge<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultselectorfactory" class="tsd-kind-icon">default<wbr>Selector<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#getdependsonownprops" class="tsd-kind-icon">get<wbr>Depends<wbr>OnOwn<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#impurefinalpropsselectorfactory" class="tsd-kind-icon">impure<wbr>Final<wbr>Props<wbr>Selector<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#purefinalpropsselectorfactory" class="tsd-kind-icon">pure<wbr>Final<wbr>Props<wbr>Selector<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#shallowequal" class="tsd-kind-icon">shallow<wbr>Equal</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#verify" class="tsd-kind-icon">verify</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#verifyplainobject" class="tsd-kind-icon">verify<wbr>Plain<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#verifysubselectors" class="tsd-kind-icon">verify<wbr>Subselectors</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#warning" class="tsd-kind-icon">warning</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapdispatchtopropsisfunction" class="tsd-kind-icon">when<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>IsFunction</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapdispatchtopropsismissing" class="tsd-kind-icon">when<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>IsMissing</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapdispatchtopropsisobject" class="tsd-kind-icon">when<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>IsObject</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapstatetopropsisfunction" class="tsd-kind-icon">when<wbr>Map<wbr>State<wbr>ToProps<wbr>IsFunction</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapstatetopropsismissing" class="tsd-kind-icon">when<wbr>Map<wbr>State<wbr>ToProps<wbr>IsMissing</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmergepropsisfunction" class="tsd-kind-icon">when<wbr>Merge<wbr>Props<wbr>IsFunction</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmergepropsisomitted" class="tsd-kind-icon">when<wbr>Merge<wbr>Props<wbr>IsOmitted</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../modules/inferno_redux.html#wrapactioncreators" class="tsd-kind-icon">wrap<wbr>Action<wbr>Creators</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#wrapmaptopropsconstant" class="tsd-kind-icon">wrap<wbr>Map<wbr>ToProps<wbr>Constant</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#wrapmaptopropsfunc" class="tsd-kind-icon">wrap<wbr>Map<wbr>ToProps<wbr>Func</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#wrapmergepropsfunc" class="tsd-kind-icon">wrap<wbr>Merge<wbr>Props<wbr>Func</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

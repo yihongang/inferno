@@ -69,7 +69,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="inferno_component.component.html" class="tsd-signature-type">Component</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="inferno_component.component.html" class="tsd-signature-type">Component</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">Provider</span>
@@ -81,7 +81,7 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/inferno_component.componentlifecycle.html" class="tsd-signature-type">ComponentLifecycle</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/inferno_component.componentlifecycle.html" class="tsd-signature-type">ComponentLifecycle</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -111,8 +111,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="inferno_redux.provider.html#context" class="tsd-kind-icon">context</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="inferno_redux.provider.html#props" class="tsd-kind-icon">props</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="inferno_redux.provider.html#state" class="tsd-kind-icon">state</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="inferno_redux.provider.html#store" class="tsd-kind-icon">store</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="inferno_redux.provider.html#defaultprops" class="tsd-kind-icon">default<wbr>Props</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="inferno_redux.provider.html#displayname" class="tsd-kind-icon">display<wbr>Name</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -142,23 +142,23 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Provider<span class="tsd-signature-symbol">(</span>props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, context<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="inferno_redux.provider.html" class="tsd-signature-type">Provider</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Provider<span class="tsd-signature-symbol">(</span>props<span class="tsd-signature-symbol">: </span><a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a>, context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="inferno_redux.provider.html" class="tsd-signature-type">Provider</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-redux/src/Provider.ts#L22">inferno-redux/src/Provider.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/components/Provider.ts#L29">inferno-redux/src/components/Provider.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>props: <span class="tsd-signature-type">any</span></h5>
+									<h5>props: <a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> context: <span class="tsd-signature-type">any</span></h5>
+									<h5>context: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="inferno_redux.provider.html" class="tsd-signature-type">Provider</a></h4>
@@ -175,7 +175,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_blockrender">_blockRender</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L201">inferno-component/src/index.ts:201</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L201">inferno-component/src/index.ts:201</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -186,7 +186,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_blocksetstate">_blockSetState</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L202">inferno-component/src/index.ts:202</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L202">inferno-component/src/index.ts:202</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -197,7 +197,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_childcontext">_childContext</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L209">inferno-component/src/index.ts:209</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L209">inferno-component/src/index.ts:209</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -208,7 +208,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_issvg">_isSVG</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L210">inferno-component/src/index.ts:210</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L210">inferno-component/src/index.ts:210</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -219,7 +219,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_lastinput">_lastInput</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L205">inferno-component/src/index.ts:205</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L205">inferno-component/src/index.ts:205</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -230,7 +230,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_lifecycle">_lifecycle</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L208">inferno-component/src/index.ts:208</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L208">inferno-component/src/index.ts:208</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -241,7 +241,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_pendingsetstate">_pendingSetState</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L203">inferno-component/src/index.ts:203</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L203">inferno-component/src/index.ts:203</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -252,7 +252,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_pendingstate">_pendingState</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L204">inferno-component/src/index.ts:204</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L204">inferno-component/src/index.ts:204</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -263,7 +263,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_unmounted">_unmounted</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L207">inferno-component/src/index.ts:207</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L207">inferno-component/src/index.ts:207</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -274,7 +274,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_updating">_updating</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L211">inferno-component/src/index.ts:211</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L211">inferno-component/src/index.ts:211</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -285,7 +285,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_vnode">_vNode</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L206">inferno-component/src/index.ts:206</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L206">inferno-component/src/index.ts:206</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -296,18 +296,18 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#context">context</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L200">inferno-component/src/index.ts:200</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L200">inferno-component/src/index.ts:200</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="props" class="tsd-anchor"></a>
 					<h3>props</h3>
-					<div class="tsd-signature tsd-kind-icon">props<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a></div>
+					<div class="tsd-signature tsd-kind-icon">props<span class="tsd-signature-symbol">:</span> <a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#props">props</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L199">inferno-component/src/index.ts:199</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L199">inferno-component/src/index.ts:199</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -318,17 +318,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#state">state</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L198">inferno-component/src/index.ts:198</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="store" class="tsd-anchor"></a>
-					<h3>store</h3>
-					<div class="tsd-signature tsd-kind-icon">store<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-redux/src/Provider.ts#L22">inferno-redux/src/Provider.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L198">inferno-component/src/index.ts:198</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -339,7 +329,17 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#defaultprops">defaultProps</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L197">inferno-component/src/index.ts:197</a></li>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L197">inferno-component/src/index.ts:197</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="displayname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> display<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">display<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;Provider&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/components/Provider.ts#L28">inferno-redux/src/components/Provider.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -350,14 +350,14 @@
 					<a name="_updatecomponent" class="tsd-anchor"></a>
 					<h3>_update<wbr>Component</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">_update<wbr>Component<span class="tsd-signature-symbol">(</span>prevState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, prevProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a>, nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a>, context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, force<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, fromSetState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/inferno.vnode.html" class="tsd-signature-type">VNode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">_update<wbr>Component<span class="tsd-signature-symbol">(</span>prevState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, prevProps<span class="tsd-signature-symbol">: </span><a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a>, nextProps<span class="tsd-signature-symbol">: </span><a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a>, context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, force<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, fromSetState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/inferno.vnode.html" class="tsd-signature-type">VNode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#_updatecomponent">_updateComponent</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L271">inferno-component/src/index.ts:271</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L271">inferno-component/src/index.ts:271</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -369,10 +369,10 @@
 									<h5>nextState: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5>prevProps: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a></h5>
+									<h5>prevProps: <a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a></h5>
 								</li>
 								<li>
-									<h5>nextProps: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a></h5>
+									<h5>nextProps: <a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/inferno.props.html" class="tsd-signature-type">Props</a></h5>
 								</li>
 								<li>
 									<h5>context: <span class="tsd-signature-type">any</span></h5>
@@ -403,7 +403,7 @@
 								<p>Implementation of <a href="../interfaces/inferno_component.componentlifecycle.html">ComponentLifecycle</a>.<a href="../interfaces/inferno_component.componentlifecycle.html#componentdidmount">componentDidMount</a></p>
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#componentdidmount">componentDidMount</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L222">inferno-component/src/index.ts:222</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L222">inferno-component/src/index.ts:222</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -414,20 +414,20 @@
 					<a name="componentdidupdate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> component<wbr>Did<wbr>Update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">component<wbr>Did<wbr>Update<span class="tsd-signature-symbol">(</span>prevProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, prevState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, prevContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">component<wbr>Did<wbr>Update<span class="tsd-signature-symbol">(</span>prevProps<span class="tsd-signature-symbol">: </span><a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a>, prevState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, prevContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#componentdidupdate">componentDidUpdate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L232">inferno-component/src/index.ts:232</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L232">inferno-component/src/index.ts:232</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>prevProps: <span class="tsd-signature-type">any</span></h5>
+									<h5>prevProps: <a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a></h5>
 								</li>
 								<li>
 									<h5>prevState: <span class="tsd-signature-type">any</span></h5>
@@ -452,7 +452,7 @@
 								<p>Implementation of <a href="../interfaces/inferno_component.componentlifecycle.html">ComponentLifecycle</a>.<a href="../interfaces/inferno_component.componentlifecycle.html#componentwillmount">componentWillMount</a></p>
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#componentwillmount">componentWillMount</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L224">inferno-component/src/index.ts:224</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L224">inferno-component/src/index.ts:224</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -463,20 +463,20 @@
 					<a name="componentwillreceiveprops" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> component<wbr>Will<wbr>Receive<wbr>Props</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">component<wbr>Will<wbr>Receive<wbr>Props<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">component<wbr>Will<wbr>Receive<wbr>Props<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#componentwillreceiveprops">componentWillReceiveProps</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L226">inferno-component/src/index.ts:226</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L226">inferno-component/src/index.ts:226</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>nextProps: <span class="tsd-signature-type">any</span></h5>
+									<h5>nextProps: <a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a></h5>
 								</li>
 								<li>
 									<h5>nextContext: <span class="tsd-signature-type">any</span></h5>
@@ -498,7 +498,7 @@
 								<p>Implementation of <a href="../interfaces/inferno_component.componentlifecycle.html">ComponentLifecycle</a>.<a href="../interfaces/inferno_component.componentlifecycle.html#componentwillunmount">componentWillUnmount</a></p>
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#componentwillunmount">componentWillUnmount</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L234">inferno-component/src/index.ts:234</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L234">inferno-component/src/index.ts:234</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -509,20 +509,20 @@
 					<a name="componentwillupdate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> component<wbr>Will<wbr>Update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">component<wbr>Will<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">component<wbr>Will<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#componentwillupdate">componentWillUpdate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L230">inferno-component/src/index.ts:230</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L230">inferno-component/src/index.ts:230</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>nextProps: <span class="tsd-signature-type">any</span></h5>
+									<h5>nextProps: <a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a></h5>
 								</li>
 								<li>
 									<h5>nextState: <span class="tsd-signature-type">any</span></h5>
@@ -546,7 +546,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#forceupdate">forceUpdate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L238">inferno-component/src/index.ts:238</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L238">inferno-component/src/index.ts:238</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -570,7 +570,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#getchildcontext">getChildContext</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-redux/src/Provider.ts#L29">inferno-redux/src/Provider.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/components/Provider.ts#L36">inferno-redux/src/components/Provider.ts:36</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
@@ -583,22 +583,16 @@
 					<a name="render" class="tsd-anchor"></a>
 					<h3>render</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#render">render</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-redux/src/Provider.ts#L33">inferno-redux/src/Provider.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-redux/src/components/Provider.ts#L40">inferno-redux/src/components/Provider.ts:40</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>props: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -614,7 +608,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#setstate">setState</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L246">inferno-component/src/index.ts:246</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L246">inferno-component/src/index.ts:246</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -641,7 +635,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#setstatesync">setStateSync</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L260">inferno-component/src/index.ts:260</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L260">inferno-component/src/index.ts:260</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -658,20 +652,20 @@
 					<a name="shouldcomponentupdate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> should<wbr>Component<wbr>Update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Component<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">should<wbr>Component<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="inferno_component.component.html">Component</a>.<a href="inferno_component.component.html#shouldcomponentupdate">shouldComponentUpdate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/7e992a5c/packages/inferno-component/src/index.ts#L228">inferno-component/src/index.ts:228</a></li>
+									<li>Defined in <a href="https://github.com/infernojs/inferno/blob/ce44bdbe/packages/inferno-component/src/index.ts#L228">inferno-component/src/index.ts:228</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>nextProps: <span class="tsd-signature-type">any</span></h5>
+									<h5>nextProps: <a href="../interfaces/inferno_redux.props.html" class="tsd-signature-type">Props</a></h5>
 								</li>
 								<li>
 									<h5>nextState: <span class="tsd-signature-type">any</span></h5>
@@ -791,11 +785,11 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="inferno_redux.provider.html#state" class="tsd-kind-icon">state</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="inferno_redux.provider.html#store" class="tsd-kind-icon">store</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="inferno_redux.provider.html#defaultprops" class="tsd-kind-icon">default<wbr>Props</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="inferno_redux.provider.html#displayname" class="tsd-kind-icon">display<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="inferno_redux.provider.html#_updatecomponent" class="tsd-kind-icon">_update<wbr>Component</a>
@@ -840,35 +834,101 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/inferno_redux.html#mapdispatchtoprops" class="tsd-kind-icon">Map<wbr>Dispatch<wbr>ToProps</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="inferno_redux.subscription.html" class="tsd-kind-icon">Subscription</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/inferno_redux.iconnectoptions.html" class="tsd-kind-icon">IConnect<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/inferno_redux.props.html" class="tsd-kind-icon">Props</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/inferno_redux.html#mapdispatchtopropsfactory" class="tsd-kind-icon">Map<wbr>Dispatch<wbr>ToProps<wbr>Factory</a>
+						<a href="../modules/inferno_redux.html#listener" class="tsd-kind-icon">Listener</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/inferno_redux.html#mapdispatchtopropsfunction" class="tsd-kind-icon">Map<wbr>Dispatch<wbr>ToProps<wbr>Function</a>
+						<a href="../modules/inferno_redux.html#selectorfactory" class="tsd-kind-icon">Selector<wbr>Factory</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/inferno_redux.html#mapstatetoprops" class="tsd-kind-icon">Map<wbr>State<wbr>ToProps</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/inferno_redux.html#wrapwithconnect" class="tsd-kind-icon">Wrap<wbr>With<wbr>Connect</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/inferno_redux.html#connect" class="tsd-kind-icon">connect</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultmapdispatchtopropsfactories" class="tsd-kind-icon">default<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>Factories</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultmapstatetopropsfactories" class="tsd-kind-icon">default<wbr>Map<wbr>State<wbr>ToProps<wbr>Factories</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultmergepropsfactories" class="tsd-kind-icon">default<wbr>Merge<wbr>Props<wbr>Factories</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/inferno_redux.html#isplainobject" class="tsd-kind-icon">is<wbr>Plain<wbr>Object</a>
+						<a href="../modules/inferno_redux.html#connectadvanced" class="tsd-kind-icon">connect<wbr>Advanced</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#createconnect" class="tsd-kind-icon">create<wbr>Connect</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultmergeprops" class="tsd-kind-icon">default<wbr>Merge<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#defaultselectorfactory" class="tsd-kind-icon">default<wbr>Selector<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#getdependsonownprops" class="tsd-kind-icon">get<wbr>Depends<wbr>OnOwn<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#impurefinalpropsselectorfactory" class="tsd-kind-icon">impure<wbr>Final<wbr>Props<wbr>Selector<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#purefinalpropsselectorfactory" class="tsd-kind-icon">pure<wbr>Final<wbr>Props<wbr>Selector<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/inferno_redux.html#shallowequal" class="tsd-kind-icon">shallow<wbr>Equal</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#verify" class="tsd-kind-icon">verify</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#verifyplainobject" class="tsd-kind-icon">verify<wbr>Plain<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#verifysubselectors" class="tsd-kind-icon">verify<wbr>Subselectors</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/inferno_redux.html#warning" class="tsd-kind-icon">warning</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapdispatchtopropsisfunction" class="tsd-kind-icon">when<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>IsFunction</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapdispatchtopropsismissing" class="tsd-kind-icon">when<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>IsMissing</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapdispatchtopropsisobject" class="tsd-kind-icon">when<wbr>Map<wbr>Dispatch<wbr>ToProps<wbr>IsObject</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapstatetopropsisfunction" class="tsd-kind-icon">when<wbr>Map<wbr>State<wbr>ToProps<wbr>IsFunction</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmapstatetopropsismissing" class="tsd-kind-icon">when<wbr>Map<wbr>State<wbr>ToProps<wbr>IsMissing</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmergepropsisfunction" class="tsd-kind-icon">when<wbr>Merge<wbr>Props<wbr>IsFunction</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#whenmergepropsisomitted" class="tsd-kind-icon">when<wbr>Merge<wbr>Props<wbr>IsOmitted</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../modules/inferno_redux.html#wrapactioncreators" class="tsd-kind-icon">wrap<wbr>Action<wbr>Creators</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#wrapmaptopropsconstant" class="tsd-kind-icon">wrap<wbr>Map<wbr>ToProps<wbr>Constant</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#wrapmaptopropsfunc" class="tsd-kind-icon">wrap<wbr>Map<wbr>ToProps<wbr>Func</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/inferno_redux.html#wrapmergepropsfunc" class="tsd-kind-icon">wrap<wbr>Merge<wbr>Props<wbr>Func</a>
 					</li>
 				</ul>
 			</nav>
