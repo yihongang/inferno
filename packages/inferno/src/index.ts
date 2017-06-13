@@ -10,6 +10,7 @@ import { linkEvent } from './DOM/events/linkEvent';
 import { patch as internal_patch } from './DOM/patching';
 import { componentToDOMNodeMap as internal_DOMNodeMap, createRenderer, findDOMNode, render } from './DOM/rendering';
 import { EMPTY_OBJ, handleComponentInput } from './DOM/utils';
+import { mount } from './DOM/mounting';
 
 if (process.env.NODE_ENV !== 'production') {
 	/* tslint:disable-next-line:no-empty */
@@ -69,6 +70,7 @@ export {
 	internal_normalize,
 	internal_patch,
 	linkEvent,
+	mount,
 	options,
 	render,
 	version

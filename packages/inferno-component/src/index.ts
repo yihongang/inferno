@@ -1,5 +1,5 @@
 // Make sure u use EMPTY_OBJ from 'inferno', otherwise it'll be a different reference
-import { EMPTY_OBJ, IFiber, Fiber, internal_DOMNodeMap, internal_patch, options, Props, IVNode} from 'inferno';
+import { EMPTY_OBJ, IFiber, Fiber, mount, internal_DOMNodeMap, internal_patch, options, Props, IVNode} from 'inferno';
 import {
 	combineFrom,
 	ERROR_MSG,
@@ -8,7 +8,8 @@ import {
 	isNullOrUndef,
 	LifecycleClass,
 	NO_OP,
-	throwError
+	throwError,
+	isInvalid
 } from 'inferno-shared';
 
 const C = options.component;
@@ -111,7 +112,7 @@ function createInstance(parentFiber: IFiber, vNode: IVNode, Component, props: Pr
 
 	instance._pendingSetState = false;
 	instance._fiber = parentFiber;
-	parentFiber.children = new Fiber(handleInput(renderOutput, vNode), '0');
+	parentFiber.children = new Fiber(handleInput(renderOutput), '0');
 	return instance;
 }
 
@@ -179,7 +180,7 @@ function updateComponent<P, S>(component: Component<P, S>, prevState: S, nextSta
 	return NO_OP;
 }
 
-function patchComponent(fiber: IFiber, nextVNode, parentDom, lifecycle: LifecycleClass, context, isSVG: boolean, isRecycling: boolean) {
+function patchComponent(fiber: IFiber, nextVNode: IVNode, parentDom, lifecycle: LifecycleClass, context, isSVG: boolean, isRecycling: boolean) {
 	const instance = fiber.c;
 	instance._fiber = fiber;
 	instance._updating = true;
@@ -187,8 +188,8 @@ function patchComponent(fiber: IFiber, nextVNode, parentDom, lifecycle: Lifecycl
 	if (instance._unmounted) {
 		return true;
 	} else {
-		nextVNode.dom  = handleUpdate(instance, instance.state, nextVNode.props || EMPTY_OBJ, context, false, false, isRecycling, isSVG, lifecycle, parentDom);
-		nextVNode.children = instance;
+		fiber.dom  = handleUpdate(instance, instance.state, nextVNode.props || EMPTY_OBJ, context, false, false, isRecycling, isSVG, lifecycle, parentDom);
+		// nextVNode.children = instance;
 	}
 	instance._updating = false;
 
@@ -211,7 +212,7 @@ const componentFlushQueue: any[] = [];
 // 	}
 // }
 
-function handleUpdate(component, nextState, nextProps, context, force: boolean, fromSetState: boolean, isRecycling: boolean, isSVG: boolean, lifeCycle, parentDom) {
+function handleUpdate(component: Component<any, any>, nextState, nextProps, context, force: boolean, fromSetState: boolean, isRecycling: boolean, isSVG: boolean, lifeCycle, parentDom) {
 	let nextInput;
 	const hasComponentDidUpdateIsFunction = isFunction(component.componentDidUpdate);
 	// When component has componentDidUpdate hook, we need to clone lastState or will be modified by reference during update
@@ -219,10 +220,11 @@ function handleUpdate(component, nextState, nextProps, context, force: boolean, 
 	// const lastInput = component._lastInput as IVNode;
 	const prevProps = component.props;
 	const renderOutput = updateComponent(component, prevState, nextState, prevProps, nextProps, context, force, fromSetState);
-	const vNode = component._vNode as IVNode;
+	// const vNode = component._vNode;
+	const componentRootFiber = component._fiber.children as IFiber;
 
 	if (renderOutput !== NO_OP) {
-		nextInput = handleInput(renderOutput, vNode);
+		nextInput = handleInput(renderOutput);
 		let childContext;
 
 		if (isFunction(component.getChildContext)) {
@@ -242,8 +244,14 @@ function handleUpdate(component, nextState, nextProps, context, force: boolean, 
 		// }
 
 		// lastVNode: nextVNode: parentDom, lifecycle, context, isSVG, isRecycling
-		component._fiber.input = nextInput;
-		internal_patch(component._fiber, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG, isRecycling);
+
+		if (isInvalid(componentRootFiber.input)) {
+			// fiber, input, parentDom, lifecycle, context, isSVG
+			mount(componentRootFiber, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG);
+		} else {
+			internal_patch(componentRootFiber, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG, isRecycling);
+		}
+
 		if (fromSetState) {
 			lifeCycle.trigger();
 		}
@@ -261,6 +269,7 @@ function handleUpdate(component, nextState, nextProps, context, force: boolean, 
 		// nextInput = lastInput;
 	}
 
+	componentRootFiber.input = nextInput;
 	// if (nextInput.flags & VNodeFlags.Component) {
 	// 	nextInput.parentVNode = vNode;
 	// } else if (lastInput.flags & VNodeFlags.Component) {

@@ -278,7 +278,7 @@ export function patchComponent(fiber, lastVNode: IVNode, nextVNode: IVNode, pare
 	const nextKey = nextVNode.key;
 
 	if (lastType !== nextType || lastKey !== nextKey) {
-		// replaceWithNewNode(lastVNode, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling);
+		replaceWithNewNode(fiber, nextVNode, parentDom, lifecycle, context, isSVG, isRecycling);
 		return false;
 	} else {
 		const nextProps = nextVNode.props || EMPTY_OBJ;

@@ -114,6 +114,7 @@ describe('Blueprints (JSX)', () => {
 				}
 
 				onWilAttach(node) {
+					debugger;
 					// Do something with node and setState
 					this.setState({
 						text: 'animate'
@@ -133,6 +134,7 @@ describe('Blueprints (JSX)', () => {
 				}
 			}
 
+			debugger;
 			render(<A />, container);
 
 			render(<A open={true}/>, container);

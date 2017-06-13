@@ -176,7 +176,7 @@ export function mountComponent(fiber: IFiber, vNode: IVNode, parentDom: Element|
 		const instance = (C.create as Function)(fiber, vNode, type, props, context, isSVG, lifecycle);
 		// const input = instance._lastInput;
 		fiber.c = instance;
-		const childFiber = fiber.children;
+		const childFiber = fiber.children as IFiber;
 		if (!isInvalid(childFiber.input)) {
 			fiber.dom = childFiber.dom = dom = mount(childFiber, childFiber.input, null, lifecycle, instance._childContext, isSVG);
 			if (!isNull(parentDom)) {
