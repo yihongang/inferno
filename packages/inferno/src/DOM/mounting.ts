@@ -129,20 +129,21 @@ export function mountElement(fiber: IFiber, vNode: IVNode, parentDom: Element|nu
 	return dom;
 }
 
-export function mountArrayChildren(fiber, children, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, prefix: string) {
+export function mountArrayChildren(fiber, children, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, prefix: string, itsKeyed: boolean) {
 	for (let i = 0, len = children.length; i < len; i++) {
 		const child = children[ i ];
 
 		// Verify can string/number be here. might cause de-opt. - Normalization takes care of it.
 		if (!isInvalid(child)) {
-			if (fiber.children === null) {
-				fiber.children = [];
-			}
 			if (isArray(child)) {
 				// TODO: Add warning about nested arrays?
-				mountArrayChildren(fiber, child, dom, lifecycle, context, isSVG, prefix + (i + 1) + '.');
+				mountArrayChildren(fiber, child, dom, lifecycle, context, isSVG, itsKeyed ? '' : prefix + (i + 1) + '.', itsKeyed);
 			} else {
-				const childFiber = new Fiber(child, prefix + (i + 1));
+        if (fiber.children === null) {
+          fiber.children = [];
+          itsKeyed = isObject(child) ? !isNullOrUndef((child as IVNode).key) : false;
+        }
+				const childFiber = new Fiber(child, itsKeyed ? child.key : prefix + (i + 1));
 				fiber.children.push(childFiber);
 				mount(childFiber, child, dom, lifecycle, context, isSVG);
 			}

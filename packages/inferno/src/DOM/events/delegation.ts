@@ -1,5 +1,6 @@
 import { options } from '../../core/options';
 import { isBrowser, isFunction } from 'inferno-shared';
+import {G} from "../utils";
 
 const isiOS = isBrowser && !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
 const delegatedEvents: Map<string, IDelegate> = new Map();
@@ -83,7 +84,7 @@ function stopPropagation() {
 
 function attachEventToDocument(name, delegatedRoots: IDelegate) {
 	const docEvent = (event: Event) => {
-		C.rendering = true;
+		G.INFRender = true;
 		const count = delegatedRoots.items.size;
 
 		if (count > 0) {
@@ -107,7 +108,7 @@ function attachEventToDocument(name, delegatedRoots: IDelegate) {
 		if (isFunction(C.flush)) {
 			C.flush();
 		}
-		C.rendering = false;
+		G.INFRender = false;
 	};
 	document.addEventListener(normalizeEventName(name), docEvent);
 	return docEvent;

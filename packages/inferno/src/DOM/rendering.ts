@@ -15,7 +15,7 @@ import { InfernoChildren, IVNode } from '../core/vnode';
 import { mount } from './mounting';
 import { patch } from './patching';
 import { unmount } from './unmounting';
-import { EMPTY_OBJ } from './utils';
+import {EMPTY_OBJ, G} from './utils';
 import { Fiber, IFiber } from '../core/fiber';
 
 // rather than use a Map, like we did before, we can use an array here
@@ -96,7 +96,7 @@ export function render(input: IVNode|null|string|undefined, parentDom: Element |
 	if ((input as any) === NO_OP) {
 		return;
 	}
-	C.rendering = true;
+	G.INFRender = true;
 	let rootFiber = roots.get(parentDom);
 	let lifecycle;
 	if (rootFiber === undefined) {
@@ -131,7 +131,7 @@ export function render(input: IVNode|null|string|undefined, parentDom: Element |
 	if (isFunction(C.flush)) {
 		C.flush();
 	}
-	C.rendering = false;
+	G.INFRender = false;
 
 	if (rootFiber) {
 		const rootInput: IVNode = rootFiber.input as IVNode;

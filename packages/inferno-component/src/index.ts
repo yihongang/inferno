@@ -15,7 +15,6 @@ import {
 	throwError,
 	isInvalid
 } from 'inferno-shared';
-import {next} from "most-subject";
 
 const C = options.component;
 
@@ -24,6 +23,7 @@ C.create = createInstance;
 C.patch = patchComponent;
 C.flush = flushQueue;
 
+const G = (window || global) as any;
 const handleInput = C.handleInput as Function;
 let noOp = ERROR_MSG;
 
@@ -201,8 +201,8 @@ function patchComponent(fiber: IFiber, nextVNode: IVNode, parentDom, lifecycle: 
 	return false;
 }
 
-const resolvedPromise = Promise.resolve();
-const componentFlushQueue: any[] = [];
+// const resolvedPromise = Promise.resolve();
+let componentFlushQueue: Array<Component<any, any>> = [];
 
 // // when a components root IVNode is also a component, we can run into issues
 // // this will recursively look for input.parentNode if the IVNode is a component
@@ -294,7 +294,7 @@ function handleUpdate(component: Component<any, any>, nextState, nextProps, cont
 	return dom;
 }
 
-function applyState<P, S>(component: Component<P, S>, force: boolean, callback?: Function): void {
+function applyState<P, S>(component: Component<P, S>, force: boolean): void {
 	if (component._unmounted) {
 		return;
 	}
@@ -316,74 +316,64 @@ function applyState<P, S>(component: Component<P, S>, force: boolean, callback?:
 			component._lifecycle,
 			fiber.dom
 		);
-
-		// updateParentComponentVNodes(
-		// 	component._vNode,
-		//
-		// );
 	} else {
 		component.state = component._pendingState as S;
 		component._pendingState = null;
 	}
-	if (isFunction(callback)) {
-		callback.call(component);
-	}
 }
 
-let globalFlushPending = false;
-
-function loopCallbacks() {
-	const callbacks = this.__FCB;
-
-	for (let i = 0, len = callbacks.length; i < len; i++) {
-		callbacks[i].call(this);
-	}
-
-	this.__FCB = null;
-}
+// let globalFlushPending = false;
 
 function flushQueue() {
-	C.rendering = true;
 	const length = componentFlushQueue.length;
 
 	if (length > 0) {
 		for (let i = 0; i < length; i++) {
 			const component = componentFlushQueue[i];
 
-			applyState(component, false, (component.__FCB !== null ? loopCallbacks : undefined));
+			applyState(component, false);
+
+      const callbacks = component.__FCB;
+
+      if (callbacks !== null) {
+        for (let j = 0, len = callbacks.length; j < len; j++) {
+          callbacks[i].call(component);
+        }
+        component.__FCB = null
+      }
 			component.__FP = false; // Flush no longer pending for this component
 		}
-		componentFlushQueue.length = 0;
+		componentFlushQueue = [];
 	}
-	globalFlushPending = false;
 }
 
 function queueStateChange(component, force, callback) {
-	if (C.rendering) {
+	if (G.INFRender) {
+	  // When more setStates stack up, we queue them
 		if (!component.__FP) {
 			component.__FP = true;
 			componentFlushQueue.push(component);
 		}
 
 		if (isFunction(callback)) {
-			let callbacks = component.__FCB;
+			const callbacks = component.__FCB;
 
 			if (callbacks === null) {
-				component.__FCB = callbacks = [callback];
+				component.__FCB = [callback];
 			} else {
 				callbacks.push(callback);
 			}
 		}
-
-		if (!globalFlushPending) {
-			globalFlushPending = true;
-			resolvedPromise.then(flushQueue);
-		}
 	} else {
-		C.rendering = true;
-		applyState(component, force, callback);
-		flushQueue();
-		C.rendering = false;
+    // Main setState loop
+    G.INFRender = true;
+		applyState(component, force);
+    flushQueue();
+    G.INFRender = false;
+
+    if (isFunction(callback)) {
+      callback.call(component);
+    }
 	}
 }
 

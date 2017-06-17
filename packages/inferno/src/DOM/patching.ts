@@ -20,7 +20,7 @@ import { handleEvent } from './events/delegation';
 import { mount, mountArrayChildren, mountComponent, mountElement, mountRef, mountText } from './mounting';
 import { unmount } from './unmounting';
 import {
-  EMPTY_OBJ,
+  EMPTY_OBJ, G,
   insertOrAppend,
   removeAllChildren, replaceChild,
   replaceDOM,
@@ -263,11 +263,11 @@ function patchChildren(fiber: IFiber, lastFlags: VNodeFlags, nextFlags: VNodeFla
 			return;
 		}
 
-		// if (patchKeyed) {
+		if (patchKeyed) {
 			// patchKeyedChildren(lastChildFibers, nextChildren, dom, lifecycle, context, isSVG, isRecycling, lastLength, nextLength);
-		// } else {
+		} else {
 			patchNonKeyedChildren(lastChildFibers, nextChildren, dom, lifecycle, context, isSVG, isRecycling, lastLength);
-		// }
+		}
 	}
 }
 
@@ -503,37 +503,10 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 
 		childFibers.splice(firstIndex, lastFibersLength - firstIndex); // Remove dead Fibers
 	}
+}
 
-	// fiber.children = childFibers;
-	// Fiber children contain only last valid nodes
-	// last: [1, 2, null, null, null, 3, 4]
-	// => [1, 2, 3, 4]
-	// next: [1, 2, null, 5, 6, 7]
-	// => [1, 2, 5 (mount), 6(mount); 7patch, 4remove]
+export function patchKeyedChildren() {
 
-	//
-	// let fiberCntr = -1;
-	// const lastChildrenLength = lastChildren.length;
-	// const nextChildrenLength = nextChildren.length;
-	// const commonLength = lastChildrenLength > nextChildrenLength ? nextChildrenLength : lastChildrenLength;
-	// let i = 0;
-	//
-	// for (; i < commonLength; i++) {
-	// 	let nextChild = nextChildren[ i ];
-	//
-	// 	patch(lastChildren[ i ], nextChild, dom, lifecycle, context, isSVG, isRecycling);
-	// }
-	// if (lastChildrenLength < nextChildrenLength) {
-	// 	for (i = commonLength; i < nextChildrenLength; i++) {
-	// 		let nextChild = nextChildren[ i ];
-	//
-	// 		appendChild(dom, mount(nextChild, null, lifecycle, context, isSVG));
-	// 	}
-	// } else if (lastChildrenLength > nextChildrenLength) {
-	// 	for (i = commonLength; i < lastChildrenLength; i++) {
-	// 		unmount(lastChildren[ i ], dom, lifecycle, false, isRecycling);
-	// 	}
-	// }
 }
 
 // TODO: Should compare fibers by key
@@ -859,12 +832,12 @@ export function patchEvent(name: string, lastValue, nextValue, dom) {
 
 				if (linkEvent && isFunction(linkEvent)) {
 					dom[nameLowerCase] = function(e) {
-						C.rendering = true;
+						G.INFRender = true;
 						linkEvent(nextValue.data, e);
 						if (isFunction(C.flush)) {
 							C.flush();
 						}
-						C.rendering = false;
+						G.INFRender = false;
 					};
 				} else {
 					if (process.env.NODE_ENV !== 'production') {
@@ -874,12 +847,12 @@ export function patchEvent(name: string, lastValue, nextValue, dom) {
 				}
 			} else {
 				dom[nameLowerCase] = function(event) {
-					C.rendering = true;
+					G.INFRender = true;
 					nextValue(event);
 					if (isFunction(C.flush)) {
 						C.flush();
 					}
-					C.rendering = false;
+					G.INFRender = false;
 				};
 			}
 		}
@@ -888,32 +861,36 @@ export function patchEvent(name: string, lastValue, nextValue, dom) {
 
 // We are assuming here that we come from patchProp routine
 // -nextAttrValue cannot be null or undefined
-export function patchStyle(lastAttrValue: string | {}, nextAttrValue: string | {}, dom) {
-	const domStyle = dom.style;
+function patchStyle(lastAttrValue, nextAttrValue, dom) {
+  const domStyle = dom.style;
+  let style;
+  let value;
 
-	if (isString(nextAttrValue)) {
-		domStyle.cssText = nextAttrValue;
-		return;
-	}
+  if (isString(nextAttrValue)) {
+    domStyle.cssText = nextAttrValue;
+    return;
+  }
 
-	for (const style in nextAttrValue) {
-		// do not add a hasOwnProperty check here, it affects performance
-		const value = nextAttrValue[style];
+  if (!isNullOrUndef(lastAttrValue) && !isString(lastAttrValue)) {
+    for (style in nextAttrValue) {
+      // do not add a hasOwnProperty check here, it affects performance
+      value = nextAttrValue[style];
+      if (value !== lastAttrValue[style]) {
+        domStyle[style] = (!isNumber(value) || isUnitlessNumber.has(style)) ? value : (value + 'px');
+      }
+    }
 
-		if (!isNumber(value) || isUnitlessNumber.has(style)) {
-			domStyle[style] = value;
-		} else {
-			domStyle[style] = value + 'px';
-		}
-	}
-
-	if (!isNullOrUndef(lastAttrValue) && !isString(lastAttrValue)) {
-		for (const style in lastAttrValue) {
-			if (isNullOrUndef(nextAttrValue[style])) {
-				domStyle[style] = '';
-			}
-		}
-	}
+    for (style in lastAttrValue) {
+      if (isNullOrUndef(nextAttrValue[style])) {
+        domStyle[style] = '';
+      }
+    }
+  } else {
+    for (style in nextAttrValue) {
+      value = nextAttrValue[style];
+      domStyle[style] = (!isNumber(value) || isUnitlessNumber.has(style)) ? value : (value + 'px');
+    }
+  }
 }
 
 function removeProp(prop: string, lastValue, dom, nextFlags: number) {

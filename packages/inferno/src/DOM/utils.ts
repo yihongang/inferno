@@ -120,6 +120,16 @@ function removeChildren(dom: Element | null, children: IFiber[], lifecycle: Life
 	}
 }
 
+// Reference to global object, rendering was moved there because v8 Chrome 59/60/61 crashed continously
+// to "Oh snap" when using object literal...
+export const G = (window || global) as any;
+Object.defineProperty(G, 'INFRender', {
+  configurable: false,
+  enumerable: false,
+  value: false,
+  writable: true
+});
+
 export function isKeyed(lastChildren: IVNode[], nextChildren: IVNode[]): boolean {
 	return nextChildren.length > 0 && !isNullOrUndef(nextChildren[0]) && !isNullOrUndef(nextChildren[0].key)
 		&& lastChildren.length > 0 && !isNullOrUndef(lastChildren[0]) && !isNullOrUndef(lastChildren[0].key);
