@@ -1,5 +1,4 @@
-import { isArray, isInvalid, isNullOrUndef, isStringOrNumber, LifecycleClass, throwError } from 'inferno-shared';
-import VNodeFlags from 'inferno-vnode-flags';
+import { isArray, isInvalid, isNullOrUndef, LifecycleClass, throwError } from 'inferno-shared';
 import { options } from '../core/options';
 import { IVNode } from '../core/vnode';
 import { svgNS } from './constants';
@@ -87,8 +86,10 @@ export function documentCreateElement(tag, isSVG: boolean): Element {
 export function replaceWithNewNode(fiber: IFiber, nextNode: IVNode, parentDom, lifecycle: LifecycleClass, context: Object, isSVG: boolean, isRecycling: boolean) {
 	const oldNode = fiber.dom;
 	unmount(fiber, null, lifecycle, false, isRecycling);
-	mount(fiber, nextNode, null, lifecycle, context, isSVG);
-	replaceChild(parentDom, fiber.dom, oldNode);
+	// fiber.children = null;
+	const newDom = mount(fiber, nextNode, null, lifecycle, context, isSVG);
+	replaceChild(parentDom, newDom, oldNode);
+	fiber.dom = newDom;
 }
 
 export function replaceChild(parentDom, nextDom, lastDom) {
@@ -109,7 +110,7 @@ export function removeAllChildren(dom: Element, children: IFiber[], lifecycle: L
 	dom.textContent = '';
 }
 
-export function removeChildren(dom: Element | null, children: IFiber[], lifecycle: LifecycleClass, isRecycling: boolean) {
+function removeChildren(dom: Element | null, children: IFiber[], lifecycle: LifecycleClass, isRecycling: boolean) {
 	for (let i = 0, len = children.length; i < len; i++) {
 		const child = children[i];
 

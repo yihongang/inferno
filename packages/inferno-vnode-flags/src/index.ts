@@ -1,3 +1,7 @@
+/**
+ * @module Inferno-Vnode-Flags
+ */ /** TypeDoc Comment */
+
 const enum VNodeFlags {
 	// TODO: 1 is free text is gone.
 	HtmlElement = 1 << 1,

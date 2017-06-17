@@ -34,29 +34,29 @@
 //
 // 		it('Should set value as text on render', () => {
 // 			render(<TextBox value={1}/>, container);
-// 			expect(container.querySelector('input').value).to.equal('1');
+// 			expect(container.querySelector('input').value).toEqual('1');
 // 		});
 //
 // 		it('Should override changed value on next render', () => {
 // 			render(<TextBox value={1}/>, container);
 // 			let input = container.querySelector('input');
-// 			expect(input.value).to.equal('1');
+// 			expect(input.value).toEqual('1');
 // 			input.value = '2'; // Simulate user typing '2'
-// 			expect(input.value).to.equal('2');
+// 			expect(input.value).toEqual('2');
 // 			render(<TextBox value={3}/>, container);
 // 			input = container.querySelector('input');
-// 			expect(input.value).to.equal('3');
+// 			expect(input.value).toEqual('3');
 // 		});
 //
 // 		it('Should override changed value on next render even when value is same as on prev render', () => {
 // 			render(<TextBox value={1}/>, container);
 // 			let input = container.querySelector('input');
-// 			expect(input.value).to.equal('1');
+// 			expect(input.value).toEqual('1');
 // 			input.value = '2'; // Simulate user typing '2'
-// 			expect(input.value).to.equal('2');
+// 			expect(input.value).toEqual('2');
 // 			render(<TextBox value={1}/>, container);
 // 			input = container.querySelector('input');
-// 			expect(input.value).to.equal('1');
+// 			expect(input.value).toEqual('1');
 // 		});
 //
 // 		it('Controlled - oninput - Should have updated props in onInput callbacks', () => {
@@ -86,8 +86,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledOnce).to.equal(true);
-// 			expect(spy.args[0][0]).to.equal(1); // Verify initial props are correct
+// 			expect(spy.calledOnce).toEqual(true);
+// 			expect(spy.args[0][0]).toEqual(1); // Verify initial props are correct
 //
 // 			// Then update component
 // 			render(<Example callback={spy} value={2}/>, container);
@@ -96,8 +96,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledTwice).to.equal(true);
-// 			expect(spy.args[1][0]).to.equal(2); // Verify props have changed
+// 			expect(spy.calledTwice).toEqual(true);
+// 			expect(spy.args[1][0]).toEqual(2); // Verify props have changed
 // 		});
 //
 // 		it('Controlled - onInput - Should have updated props in onInput callbacks', () => {
@@ -127,8 +127,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledOnce).to.equal(true);
-// 			expect(spy.args[0][0]).to.equal(1); // Verify initial props are correct
+// 			expect(spy.calledOnce).toEqual(true);
+// 			expect(spy.args[0][0]).toEqual(1); // Verify initial props are correct
 //
 // 			// Then update component
 // 			render(<Example callback={spy} value={2}/>, container);
@@ -137,8 +137,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledTwice).to.equal(true);
-// 			expect(spy.args[1][0]).to.equal(2); // Verify props have changed
+// 			expect(spy.calledTwice).toEqual(true);
+// 			expect(spy.args[1][0]).toEqual(2); // Verify props have changed
 // 		});
 //
 // 		it('Controlled - onInput - Should have updated props in onInput callbacks in setState callback', () => {
@@ -178,8 +178,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledOnce).to.equal(true);
-// 			expect(spy.args[0][0]).to.equal(1); // Verify initial props are correct
+// 			expect(spy.calledOnce).toEqual(true);
+// 			expect(spy.args[0][0]).toEqual(1); // Verify initial props are correct
 //
 // 			// Then update component
 // 			render(<Example callback={spy} value={2}/>, container);
@@ -188,9 +188,9 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledTwice).to.equal(true);
-// 			expect(spy.args[1][0]).to.equal(2); // Verify props have changed
-// 			expect(spy.args[1][1]).to.equal(2); // Verify state have changed
+// 			expect(spy.calledTwice).toEqual(true);
+// 			expect(spy.args[1][0]).toEqual(2); // Verify props have changed
+// 			expect(spy.args[1][1]).toEqual(2); // Verify state have changed
 // 		});
 //
 // 		it('Controlled - onInput (linkEvent) - Should have updated props in onInput callbacks', () => {
@@ -219,8 +219,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledOnce).to.equal(true);
-// 			expect(spy.args[0][0]).to.equal(1); // Verify initial props are correct
+// 			expect(spy.calledOnce).toEqual(true);
+// 			expect(spy.args[0][0]).toEqual(1); // Verify initial props are correct
 //
 // 			// Then update component
 // 			render(<Example callback={spy} value={2}/>, container);
@@ -229,8 +229,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledTwice).to.equal(true);
-// 			expect(spy.args[1][0]).to.equal(2); // Verify props have changed
+// 			expect(spy.calledTwice).toEqual(true);
+// 			expect(spy.args[1][0]).toEqual(2); // Verify props have changed
 // 		});
 //
 // 		it('NON Controlled - onInput (linkEvent) - Should have updated props in onInput callbacks', () => {
@@ -259,8 +259,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledOnce).to.equal(true);
-// 			expect(spy.args[0][0]).to.equal(1); // Verify initial props are correct
+// 			expect(spy.calledOnce).toEqual(true);
+// 			expect(spy.args[0][0]).toEqual(1); // Verify initial props are correct
 //
 // 			// Then update component
 // 			render(<Example callback={spy} value={2}/>, container);
@@ -269,8 +269,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledTwice).to.equal(true);
-// 			expect(spy.args[1][0]).to.equal(2); // Verify props have changed
+// 			expect(spy.calledTwice).toEqual(true);
+// 			expect(spy.args[1][0]).toEqual(2); // Verify props have changed
 // 		});
 //
 // 		it('NON Controlled - onInput - Should have updated props in onInput callbacks', () => {
@@ -300,8 +300,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledOnce).to.equal(true);
-// 			expect(spy.args[0][0]).to.equal(1); // Verify initial props are correct
+// 			expect(spy.calledOnce).toEqual(true);
+// 			expect(spy.args[0][0]).toEqual(1); // Verify initial props are correct
 //
 // 			// Then update component
 // 			render(<Example callback={spy} value={2}/>, container);
@@ -310,8 +310,8 @@
 // 			event.initEvent('input', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledTwice).to.equal(true);
-// 			expect(spy.args[1][0]).to.equal(2); // Verify props have changed
+// 			expect(spy.calledTwice).toEqual(true);
+// 			expect(spy.args[1][0]).toEqual(2); // Verify props have changed
 // 		});
 //
 // 		it('Controlled - onChange (linkEvent) - Should have updated props in onInput callbacks', () => {
@@ -340,8 +340,8 @@
 // 			event.initEvent('change', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledOnce).to.equal(true);
-// 			expect(spy.args[0][0]).to.equal(1); // Verify initial props are correct
+// 			expect(spy.calledOnce).toEqual(true);
+// 			expect(spy.args[0][0]).toEqual(1); // Verify initial props are correct
 //
 // 			// Then update component
 // 			render(<Example callback={spy} value={2}/>, container);
@@ -350,8 +350,8 @@
 // 			event.initEvent('change', true, true);
 // 			container.firstChild.dispatchEvent(event, true);
 //
-// 			expect(spy.calledTwice).to.equal(true);
-// 			expect(spy.args[1][0]).to.equal(2); // Verify props have changed
+// 			expect(spy.calledTwice).toEqual(true);
+// 			expect(spy.args[1][0]).toEqual(2); // Verify props have changed
 // 		});
 // 	});
 //
@@ -372,49 +372,49 @@
 //
 // 		it('Should set checked on render', () => {
 // 			render(<CheckBox checked={true}/>, container);
-// 			expect(container.querySelector('input').checked).to.equal(true);
+// 			expect(container.querySelector('input').checked).toEqual(true);
 // 		});
 //
 // 		it('Should set checked on render #2', () => {
 // 			render(<CheckBox checked={false}/>, container);
-// 			expect(container.querySelector('input').checked).to.equal(false);
+// 			expect(container.querySelector('input').checked).toEqual(false);
 // 		});
 //
 // 		it('Should set checked on render #3', () => {
 // 			render(<CheckBox />, container);
-// 			expect(container.querySelector('input').checked).to.equal(false);
+// 			expect(container.querySelector('input').checked).toEqual(false);
 // 		});
 //
 // 		it('Should override changed value on next render', () => {
 // 			render(<CheckBox checked={false}/>, container);
 // 			let input = container.querySelector('input');
-// 			expect(input.checked).to.equal(false);
+// 			expect(input.checked).toEqual(false);
 // 			input.checked = false; // Simulate user clicking checkbox twice
 // 			render(<CheckBox checked={true}/>, container);
 // 			input = container.querySelector('input');
-// 			expect(input.checked).to.equal(true);
+// 			expect(input.checked).toEqual(true);
 // 		});
 //
 // 		it('Should override changed value on next render even when value is same as on prev render', () => {
 // 			render(<CheckBox checked={false}/>, container);
 // 			let input = container.querySelector('input');
-// 			expect(input.checked).to.equal(false);
+// 			expect(input.checked).toEqual(false);
 // 			input.checked = true; // Simulate user clicking checkbox
-// 			expect(input.checked).to.equal(true);
+// 			expect(input.checked).toEqual(true);
 // 			render(<CheckBox checked={false}/>, container);
 // 			input = container.querySelector('input');
-// 			expect(input.checked).to.equal(false);
+// 			expect(input.checked).toEqual(false);
 // 		});
 //
 // 		it('Should override changed value on next render even when value is same as on prev render #1', () => {
 // 			render(<CheckBox checked={true}/>, container);
 // 			let input = container.querySelector('input');
-// 			expect(input.checked).to.equal(true);
+// 			expect(input.checked).toEqual(true);
 // 			input.checked = false; // Simulate user clicking checkbox
-// 			expect(input.checked).to.equal(false);
+// 			expect(input.checked).toEqual(false);
 // 			render(<CheckBox checked={true}/>, container);
 // 			input = container.querySelector('input');
-// 			expect(input.checked).to.equal(true);
+// 			expect(input.checked).toEqual(true);
 // 		});
 // 	});
 //
@@ -442,23 +442,23 @@
 // 			it('Should pre select option by value', () => {
 // 				render(<SelectList value="B"/>, container);
 // 				const selectList = container.querySelector('select');
-// 				expect(selectList.childNodes[ 0 ].selected).to.equal(false);
-// 				expect(selectList.childNodes[ 1 ].selected).to.equal(true);
-// 				expect(selectList.childNodes[ 2 ].selected).to.equal(false);
+// 				expect(selectList.childNodes[ 0 ].selected).toEqual(false);
+// 				expect(selectList.childNodes[ 1 ].selected).toEqual(true);
+// 				expect(selectList.childNodes[ 2 ].selected).toEqual(false);
 // 			});
 //
 // 			it('Should change value based on value property', () => {
 // 				render(<SelectList value="B"/>, container);
 // 				let selectList = container.querySelector('select');
-// 				expect(selectList.childNodes[ 0 ].selected).to.equal(false);
-// 				expect(selectList.childNodes[ 1 ].selected).to.equal(true);
-// 				expect(selectList.childNodes[ 2 ].selected).to.equal(false);
+// 				expect(selectList.childNodes[ 0 ].selected).toEqual(false);
+// 				expect(selectList.childNodes[ 1 ].selected).toEqual(true);
+// 				expect(selectList.childNodes[ 2 ].selected).toEqual(false);
 //
 // 				render(<SelectList value="C"/>, container);
 // 				selectList = container.querySelector('select');
-// 				expect(selectList.childNodes[ 0 ].selected).to.equal(false);
-// 				expect(selectList.childNodes[ 1 ].selected).to.equal(false);
-// 				expect(selectList.childNodes[ 2 ].selected).to.equal(true);
+// 				expect(selectList.childNodes[ 0 ].selected).toEqual(false);
+// 				expect(selectList.childNodes[ 1 ].selected).toEqual(false);
+// 				expect(selectList.childNodes[ 2 ].selected).toEqual(true);
 // 			});
 // 		});
 //
@@ -500,16 +500,16 @@
 // 			it('Should pre select option by value on update', (done) => {
 // 				render(<SelectList />, container);
 // 				let selectList = container.querySelector('select');
-// 				expect(selectList.childNodes[ 0 ].selected).to.equal(true);
-// 				expect(selectList.childNodes[ 1 ].selected).to.equal(false);
-// 				expect(selectList.childNodes[ 2 ].selected).to.equal(false);
+// 				expect(selectList.childNodes[ 0 ].selected).toEqual(true);
+// 				expect(selectList.childNodes[ 1 ].selected).toEqual(false);
+// 				expect(selectList.childNodes[ 2 ].selected).toEqual(false);
 //
 // 				updater({ value: 'B' });
 // 				setTimeout(() => {
 // 					selectList = container.querySelector('select');
-// 					expect(selectList.childNodes[ 0 ].selected).to.equal(false);
-// 					expect(selectList.childNodes[ 1 ].selected).to.equal(true);
-// 					expect(selectList.childNodes[ 2 ].selected).to.equal(false);
+// 					expect(selectList.childNodes[ 0 ].selected).toEqual(false);
+// 					expect(selectList.childNodes[ 1 ].selected).toEqual(true);
+// 					expect(selectList.childNodes[ 2 ].selected).toEqual(false);
 // 					done();
 // 				}, 10);
 // 			});
@@ -536,8 +536,8 @@
 // 				}
 // 				render(<TestInputRange />, container);
 //
-// 				expect(container.firstChild.value).to.equal('260');
-// 				expect(container.firstChild.defaultValue).to.equal('260');
+// 				expect(container.firstChild.value).toEqual('260');
+// 				expect(container.firstChild.defaultValue).toEqual('260');
 // 			});
 //
 // 			it('Should have defaultValue even when defaultValue is omitted, if value exists', () => {
@@ -560,8 +560,8 @@
 // 				}
 // 				render(<TestInputRange />, container);
 //
-// 				expect(container.firstChild.value).to.equal('110');
-// 				expect(container.firstChild.defaultValue).to.equal('110');
+// 				expect(container.firstChild.value).toEqual('110');
+// 				expect(container.firstChild.defaultValue).toEqual('110');
 // 			});
 // 		});
 //
@@ -574,8 +574,8 @@
 // 					</select>
 // 				), container);
 //
-// 				expect(container.firstChild.children[ 0 ].selected).to.equal(false);
-// 				expect(container.firstChild.children[ 1 ].selected).to.equal(true);
+// 				expect(container.firstChild.children[ 0 ].selected).toEqual(false);
+// 				expect(container.firstChild.children[ 1 ].selected).toEqual(true);
 // 			});
 //
 // 			it('should render specified default selected option', () => {
@@ -638,21 +638,21 @@
 //
 // 				render(<CompA/>, container);
 //
-// 				expect(container.firstChild.firstChild.checked).to.equal(false);
-// 				// expect(container.querySelectorAll('input:checked').length).to.equal(1);
+// 				expect(container.firstChild.firstChild.checked).toEqual(false);
+// 				// expect(container.querySelectorAll('input:checked').length).toEqual(1);
 //
 //
 // 				let input = container.querySelector('input');
 // 				input.click();
 //
-// 				expect(container.firstChild.firstChild.checked).to.equal(true);
-// 				// expect(container.querySelectorAll('input:checked').length).to.equal(2);
+// 				expect(container.firstChild.firstChild.checked).toEqual(true);
+// 				// expect(container.querySelectorAll('input:checked').length).toEqual(2);
 //
 // 				input = container.querySelector('input');
 // 				input.click();
 //
-// 				expect(container.firstChild.firstChild.checked).to.equal(false, 'it should toggle back to false');
-// 				// expect(container.querySelectorAll('input:checked').length).to.equal(1);
+// 				expect(container.firstChild.firstChild.checked).toEqual(false, 'it should toggle back to false');
+// 				// expect(container.querySelectorAll('input:checked').length).toEqual(1);
 // 			});
 //
 // 			it('Github - 1023 It should call recent callback from input', (done) => {
@@ -700,15 +700,15 @@
 //
 // 				triggerEvent('change', input);
 //
-// 				expect(spy.calledOnce).to.equal(true);
-// 				expect(spy.args[ 0 ][ 1 ]).to.equal('foo');
+// 				expect(spy.calledOnce).toEqual(true);
+// 				expect(spy.args[ 0 ][ 1 ]).toEqual('foo');
 //
 // 				input.value = 'bar';
 //
 // 				triggerEvent('change', input);
 //
-// 				expect(spy.calledTwice).to.equal(true);
-// 				expect(spy.args[ 1 ][ 1 ]).to.equal('bar');
+// 				expect(spy.calledTwice).toEqual(true);
+// 				expect(spy.args[ 1 ][ 1 ]).toEqual('bar');
 //
 // 				done();
 // 			});
@@ -757,15 +757,15 @@
 //
 // 				triggerEvent('change', input);
 //
-// 				expect(spy.calledOnce).to.equal(true);
-// 				expect(spy.args[0][1]).to.equal('foo');
+// 				expect(spy.calledOnce).toEqual(true);
+// 				expect(spy.args[0][1]).toEqual('foo');
 //
 // 				input.value = 'bar';
 //
 // 				triggerEvent('change', input);
 //
-// 				expect(spy.calledTwice).to.equal(true);
-// 				expect(spy.args[1][1]).to.equal('bar');
+// 				expect(spy.calledTwice).toEqual(true);
+// 				expect(spy.args[1][1]).toEqual('bar');
 //
 // 				done();
 // 			});
@@ -783,11 +783,11 @@
 // 				// Verify its not checked
 // 				const input = container.querySelector('input');
 //
-// 				expect(input.checked).to.equal(false);
+// 				expect(input.checked).toEqual(false);
 //
 // 				input.click();
 //
-// 				expect(input.checked).to.equal(false);
+// 				expect(input.checked).toEqual(false);
 // 			});
 //
 // 			it('Should be possible to control checkbox by props', () => {
@@ -811,16 +811,16 @@
 //
 // 				render(<ComponentTest/>, container);
 //
-// 				expect(container.querySelectorAll('input').length).to.equal(1);
+// 				expect(container.querySelectorAll('input').length).toEqual(1);
 //
 // 				const input = container.querySelector('input');
 // 				const button = container.querySelector('button');
 //
-// 				expect(input.checked).to.equal(false);
+// 				expect(input.checked).toEqual(false);
 //
 // 				button.click();
 //
-// 				expect(input.checked).to.equal(true);
+// 				expect(input.checked).toEqual(true);
 // 			});
 //
 // 			it('Clicking checkbox should have value changed in callback, and reverted after it (unless no change in state)', () => {
@@ -832,7 +832,7 @@
 // 						this.state = { checked: true };
 // 					}
 // 					handleClick(event) {
-// 						expect(event.currentTarget.checked).to.equal(false);
+// 						expect(event.currentTarget.checked).toEqual(false);
 //
 // 						this.setState((state) => ({ checked: changeToValue }));
 // 					}
@@ -847,21 +847,21 @@
 //
 // 				render(<ComponentTest/>, container);
 //
-// 				expect(container.querySelectorAll('input').length).to.equal(1);
+// 				expect(container.querySelectorAll('input').length).toEqual(1);
 //
 // 				const input = container.querySelector('input');
 //
-// 				expect(input.checked).to.equal(true);
+// 				expect(input.checked).toEqual(true);
 //
 // 				input.click();
 //
-// 				expect(input.checked).to.equal(true);
+// 				expect(input.checked).toEqual(true);
 //
 // 				changeToValue = false;
 //
 // 				input.click();
 //
-// 				expect(input.checked).to.equal(false);
+// 				expect(input.checked).toEqual(false);
 // 			});
 //
 // 			/* Same test as above, but in opposite order */
@@ -874,7 +874,7 @@
 // 						this.state = { checked: false };
 // 					}
 // 					handleClick(event) {
-// 						expect(event.currentTarget.checked).to.equal(true);
+// 						expect(event.currentTarget.checked).toEqual(true);
 //
 // 						this.setState((state) => ({ checked: changeToValue }));
 // 					}
@@ -889,21 +889,21 @@
 //
 // 				render(<ComponentTest/>, container);
 //
-// 				expect(container.querySelectorAll('input').length).to.equal(1);
+// 				expect(container.querySelectorAll('input').length).toEqual(1);
 //
 // 				const input = container.querySelector('input');
 //
-// 				expect(input.checked).to.equal(false); // Initially false
+// 				expect(input.checked).toEqual(false); // Initially false
 //
 // 				input.click(); // Inside event handler should be true
 //
-// 				expect(input.checked).to.equal(false); // After render it should be false again
+// 				expect(input.checked).toEqual(false); // After render it should be false again
 //
 // 				changeToValue = true;
 //
 // 				input.click(); // Inside event handler should be true
 //
-// 				expect(input.checked).to.equal(true); // Now it should be true because value was changed in state
+// 				expect(input.checked).toEqual(true); // Now it should be true because value was changed in state
 // 			});
 // 		});
 // 	});

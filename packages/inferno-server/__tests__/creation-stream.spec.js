@@ -23,7 +23,7 @@
 // 		const test = (value) => createElement('a', null, true);
 //
 // 		return streamPromise(test('foo')).catch((err) => {
-// 			expect(err.toString()).to.equal('Error: invalid component');
+// 			expect(err.toString()).toEqual('Error: invalid component');
 // 		});
 // 	});
 //
@@ -37,7 +37,7 @@
 // 			}
 // 		});
 // 		return streamPromise(createElement(TestComponent, null)).then(function (output) {
-// 			expect(output).to.equal('<a data-infernoroot>world</a>');
+// 			expect(output).toEqual('<a data-infernoroot>world</a>');
 // 		});
 // 	});
 //
@@ -95,7 +95,7 @@
 // 				const container = document.createElement('div');
 // 				document.body.appendChild(container);
 // 				container.innerHTML = output;
-// 				expect(output).to.equal('<div data-infernoroot>bar2<div>bar2</div></div>');
+// 				expect(output).toEqual('<div data-infernoroot>bar2<div>bar2</div></div>');
 // 				document.body.removeChild(container);
 // 			});
 // 		});

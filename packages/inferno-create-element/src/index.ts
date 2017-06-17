@@ -1,7 +1,11 @@
-import { createVNode, getFlagsForElementVnode, InfernoChildren, Props, IVNode } from 'inferno';
+/**
+ * @module Inferno-Create-Element
+ */ /** TypeDoc Comment */
+
 import Component from 'inferno-component';
 import { isInvalid, isNullOrUndef, isObject, isString, isUndefined } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
+import {Props, IVNode, getFlagsForElementVnode, createVNode} from "inferno";
 
 const componentHooks = new Set<string>();
 componentHooks.add('onComponentWillMount');
@@ -18,7 +22,7 @@ componentHooks.add('onComponentDidUpdate');
  * @param {...{object}=} _children Optional children for virtual node
  * @returns {IVNode} new virtual ndoe
  */
-export default function createElement<T>(type: string | Function | Component<any, any>, props?: T & Props|null, ..._children: Array<InfernoChildren | any>): IVNode {
+export default function createElement<T>(type: string | Function | Component<any, any>, props?: T & Props|null, ..._children: any[]): IVNode {
 	if (isInvalid(type) || isObject(type)) {
 		throw new Error('Inferno Error: createElement() name parameter cannot be undefined, null, false or true, It must be a string, class or function.');
 	}

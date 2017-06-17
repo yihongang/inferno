@@ -1,4 +1,3 @@
-// const ecapeCharacters = {
 // 	'"': '&quot;',
 // 	'&': '&amp;',
 // 	'\'': '&#039;',

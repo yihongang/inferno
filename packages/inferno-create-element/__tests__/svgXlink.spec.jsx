@@ -21,7 +21,7 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.hasAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal(true);
+		)).toEqual(true);
 
 		render(<svg>
 			<image />
@@ -31,7 +31,7 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.hasAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal(false);
+		)).toEqual(false);
 	});
 
 	it('should update namespaced SVG attributes', () => {
@@ -43,7 +43,7 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.hasAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal(true);
+		)).toEqual(true);
 
 		render(<svg>
 			<image xlink:href="http://i.imgur.com/JvqCM2p.png"/>
@@ -53,7 +53,7 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.getAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal('http://i.imgur.com/JvqCM2p.png');
+		)).toEqual('http://i.imgur.com/JvqCM2p.png');
 	});
 
 	it('should add / change / remove xlink:href attribute', () => {
@@ -64,7 +64,7 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.getAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal('#test');
+		)).toEqual('#test');
 
 		render(<svg>
 			<use xlink:href="#changed"/>
@@ -73,7 +73,7 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.getAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal('#changed');
+		)).toEqual('#changed');
 
 		render(<svg>
 			<use/>
@@ -82,7 +82,7 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.hasAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal(false);
+		)).toEqual(false);
 	});
 
 	it('should add / change / remove xlinkHref attribute (babel plugin should transpile it)', () => {
@@ -93,7 +93,7 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.getAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal('#test');
+		)).toEqual('#test');
 
 		render(<svg>
 			<use xlinkHref="#changed"/>
@@ -102,7 +102,7 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.getAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal('#changed');
+		)).toEqual('#changed');
 
 		render(<svg>
 			<use/>
@@ -111,6 +111,6 @@ describe('createTree - SVG (JSX)', () => {
 		expect(container.firstChild.firstChild.hasAttributeNS(
 			'http://www.w3.org/1999/xlink',
 			'href'
-		)).to.equal(false);
+		)).toEqual(false);
 	});
 });

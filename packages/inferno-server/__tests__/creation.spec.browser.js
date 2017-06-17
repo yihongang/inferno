@@ -94,7 +94,7 @@
 //
 // 			document.body.appendChild(container);
 // 			container.innerHTML = output;
-// 			expect(output).to.equal(test.result);
+// 			expect(output).toEqual(test.result);
 // 			document.body.removeChild(container);
 // 		});
 // 	});

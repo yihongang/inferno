@@ -1,4 +1,8 @@
-import { createVNode } from 'inferno';
+/**
+ * @module Inferno-Router
+ */ /** TypeDoc Comment */
+
+import {createVNode} from 'inferno';
 import { combineFrom, isArray, toArray } from 'inferno-shared';
 import pathToRegExp from 'path-to-regexp-es6';
 import {

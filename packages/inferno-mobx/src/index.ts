@@ -1,3 +1,7 @@
+/**
+ * @module Inferno-Mobx
+ */ /** TypeDoc Comment */
+
 import { inject } from './inject';
 import { Observer, observer, useStaticRendering } from './observer';
 import { Provider } from './Provider';

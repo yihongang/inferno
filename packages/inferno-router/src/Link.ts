@@ -1,4 +1,8 @@
-import { createVNode, VNode } from 'inferno';
+/**
+ * @module Inferno-Router
+ */ /** TypeDoc Comment */
+
+import { createVNode, IVNode } from 'inferno';
 import { combineFrom, isBrowser, warning } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
 
@@ -6,7 +10,7 @@ function renderLink(classNm, children, otherProps) {
 	return createVNode(VNodeFlags.HtmlElement, 'a', classNm, children, otherProps);
 }
 
-export default function Link(props, { router }): VNode {
+export default function Link(props, { router }): IVNode {
 	const { activeClassName, activeStyle, className, onClick, children, to, ...otherProps } = props;
 
 	let classNm;

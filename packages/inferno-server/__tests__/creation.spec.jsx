@@ -89,7 +89,7 @@
 //
 // 			document.body.appendChild(container);
 // 			container.innerHTML = output;
-// 			expect(output).to.equal(test.result);
+// 			expect(output).toEqual(test.result);
 // 			document.body.removeChild(container);
 // 		});
 // 	});
@@ -153,7 +153,7 @@
 //
 // 			document.body.appendChild(container);
 // 			container.innerHTML = output;
-// 			expect(output).to.equal('<div>bar2<div>bar2</div></div>');
+// 			expect(output).toEqual('<div>bar2<div>bar2</div></div>');
 // 			document.body.removeChild(container);
 // 		});
 // 	});

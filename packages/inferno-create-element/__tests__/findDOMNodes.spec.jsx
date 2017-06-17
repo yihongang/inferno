@@ -50,22 +50,22 @@
 //
 // 		it('simple findDOMNodes', () => {
 // 			render(<Example1 />, container);
-// 			expect(findDOMNode(instance1) === document.getElementById('example1')).to.equal(true);
+// 			expect(findDOMNode(instance1) === document.getElementById('example1')).toEqual(true);
 // 			render(null, container);
-// 			expect(findDOMNode(instance1) === null).to.equal(true);
+// 			expect(findDOMNode(instance1) === null).toEqual(true);
 // 			render(<Example2 />, container);
-// 			expect(findDOMNode(instance2) === document.getElementById('example2')).to.equal(true);
+// 			expect(findDOMNode(instance2) === document.getElementById('example2')).toEqual(true);
 // 			render(<Example1 />, container);
-// 			expect(findDOMNode(instance1) === document.getElementById('example1')).to.equal(true);
+// 			expect(findDOMNode(instance1) === document.getElementById('example1')).toEqual(true);
 // 			render(<Example3 />, container);
-// 			expect(findDOMNode(instance3) === document.getElementById('example3')).to.equal(true);
-// 			expect(findDOMNode(instance2) === document.getElementById('example2')).to.equal(true);
-// 			expect(findDOMNode(instance1) === document.getElementById('example1')).to.equal(true);
+// 			expect(findDOMNode(instance3) === document.getElementById('example3')).toEqual(true);
+// 			expect(findDOMNode(instance2) === document.getElementById('example2')).toEqual(true);
+// 			expect(findDOMNode(instance1) === document.getElementById('example1')).toEqual(true);
 // 			render(null, container);
-// 			expect(findDOMNode(instance1) === null).to.equal(true);
-// 			expect(findDOMNode(instance2) === null).to.equal(true);
-// 			expect(findDOMNode(instance3) === null).to.equal(true);
-// 			expect(findDOMNode(ref) === ref).to.equal(true);
+// 			expect(findDOMNode(instance1) === null).toEqual(true);
+// 			expect(findDOMNode(instance2) === null).toEqual(true);
+// 			expect(findDOMNode(instance3) === null).toEqual(true);
+// 			expect(findDOMNode(ref) === ref).toEqual(true);
 // 		});
 // 	});
 // });

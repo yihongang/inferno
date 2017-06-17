@@ -6,8 +6,8 @@ export interface IFiber {
 	children: null|IFiber|IFiber[];
 	dom: null|Element;
 	lifeCycle: LifecycleClass;
-	// pos is used to track point in vNode tree
-	i: string;
+  // Non keyed index or keyed key
+	i: string|number;
 	// c is possible component instance
 	c: any;
 }

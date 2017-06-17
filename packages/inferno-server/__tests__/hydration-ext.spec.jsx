@@ -49,7 +49,7 @@
 // 			let container = createContainerWithHTML(html);
 // 			render(component, container);
 // 			console.log(container.innerHTML);
-// 			expect(innerHTML(container.innerHTML)).to.equal(innerHTML(compHtml));
+// 			expect(innerHTML(container.innerHTML)).toEqual(innerHTML(compHtml));
 // 		});
 // 	});
 // });

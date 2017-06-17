@@ -53,7 +53,7 @@ export function recycleComponent(vNode: IVNode, lifecycle: LifecycleClass, conte
 	// 	}
 	// }
 	//
-	// return null;
+	return null;
 }
 
 export function pool(vNode: IVNode, tagPools: Map<any, Pools>) {

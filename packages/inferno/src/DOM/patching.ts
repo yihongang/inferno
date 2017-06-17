@@ -20,13 +20,13 @@ import { handleEvent } from './events/delegation';
 import { mount, mountArrayChildren, mountComponent, mountElement, mountRef, mountText } from './mounting';
 import { unmount } from './unmounting';
 import {
-	EMPTY_OBJ,
-	insertOrAppend,
-	removeAllChildren, replaceChild,
-	replaceDOM,
-	replaceWithNewNode,
-	setTextContent,
-	updateTextContent
+  EMPTY_OBJ,
+  insertOrAppend,
+  removeAllChildren, replaceChild,
+  replaceDOM,
+  replaceWithNewNode,
+  setTextContent,
+  updateTextContent
 } from './utils';
 import { isControlledFormElement, processElement } from './wrappers/processelements';
 
@@ -209,11 +209,11 @@ function patchChildren(fiber: IFiber, lastFlags: VNodeFlags, nextFlags: VNodeFla
 	} else if (isInvalid(nextChildren)) {
 		unmountChildren(fiber, lastChildFibers, dom, lifecycle, isRecycling);
 	} else if (lastChildFibers === null) {
-		(fiber.dom as any).textContent = '';
 		// If there was nothing previously, then just mount
 		if (isStringOrNumber(nextChildren)) {
 			setTextContent(dom, nextChildren);
 		} else {
+      (fiber.dom as any).textContent = '';
 			if (isArray(nextChildren)) {
 				mountArrayChildren(fiber, nextChildren, dom, lifecycle, context, isSVG, '');
 			} else {
@@ -249,7 +249,7 @@ function patchChildren(fiber: IFiber, lastFlags: VNodeFlags, nextFlags: VNodeFla
 	}
 	if (patchArray) {
 		// Common optimizations for arrays
-		const lastLength = (fiber.children as any[]).length;
+		const lastLength = fiber.children !== null ? (fiber.children as any[]).length : 0;
 		const nextLength = nextChildren.length;
 
 		if (lastLength === 0) {
@@ -259,14 +259,15 @@ function patchChildren(fiber: IFiber, lastFlags: VNodeFlags, nextFlags: VNodeFla
 			return;
 		} else if (nextLength === 0) {
 			removeAllChildren(dom, lastChildFibers, lifecycle, isRecycling);
+			fiber.children = null; // TODO: Optimize with Fiber flags
 			return;
 		}
 
-		if (patchKeyed) {
+		// if (patchKeyed) {
 			// patchKeyedChildren(lastChildFibers, nextChildren, dom, lifecycle, context, isSVG, isRecycling, lastLength, nextLength);
-		} else {
+		// } else {
 			patchNonKeyedChildren(lastChildFibers, nextChildren, dom, lifecycle, context, isSVG, isRecycling, lastLength);
-		}
+		// }
 	}
 }
 
@@ -309,10 +310,10 @@ export function patchComponent(fiber, lastVNode: IVNode, nextVNode: IVNode, pare
 			const lastProps = lastVNode.props;
 			const nextHooks = nextVNode.ref as Refs;
 			const nextHooksDefined = !isNullOrUndef(nextHooks);
-			const lastInput = lastVNode.children;
-			let nextInput = lastInput;
+			// const lastInput = lastVNode.children;
+			// let nextInput = lastInput;
 
-			nextVNode.children = lastInput;
+			// nextVNode.children = lastInput;
 			if (lastKey !== nextKey) {
 				shouldUpdate = true;
 			} else {
@@ -324,25 +325,33 @@ export function patchComponent(fiber, lastVNode: IVNode, nextVNode: IVNode, pare
 				if (nextHooksDefined && !isNullOrUndef(nextHooks.onComponentWillUpdate)) {
 					nextHooks.onComponentWillUpdate(lastProps, nextProps);
 				}
-				nextInput = nextType(nextProps, context);
+				const nextInput = nextType(nextProps, context);
 
-				if (isInvalid(nextInput)) {
-					// nextInput = createVoidVNode();
-				} else if (isStringOrNumber(nextInput) && nextInput !== NO_OP) {
-					// nextInput = createTextVNode(nextInput, null);
-				} else if (isArray(nextInput)) {
+        // if (isInvalid(componentRootFiber.input)) {
+        //
+        // }
+        // let nextInput;
+
+				if (isArray(nextInput)) {
 					if (process.env.NODE_ENV !== 'production') {
 						throwError('a valid Inferno IVNode (or null) must be returned from a component render. You may have returned an array or an invalid object.');
 					}
 					throwError();
 				}
-				if (nextInput !== NO_OP) {
-					patch(fiber, nextInput as any, parentDom, lifecycle, context, isSVG, isRecycling);
-					nextVNode.children = nextInput;
-					if (nextHooksDefined && !isNullOrUndef(nextHooks.onComponentDidUpdate)) {
-						nextHooks.onComponentDidUpdate(lastProps, nextProps);
-					}
-				}
+        if (!isInvalid(nextInput)) {
+          if (nextInput !== NO_OP) {
+            if (isInvalid(fiber.children.input)) {
+              mount(fiber.children, nextInput, parentDom, lifecycle, context, isSVG);
+            } else {
+              patch(fiber.children, nextInput as any, parentDom, lifecycle, context, isSVG, isRecycling);
+            }
+
+            // fiber.children.input = nextInput;
+            if (nextHooksDefined && !isNullOrUndef(nextHooks.onComponentDidUpdate)) {
+              nextHooks.onComponentDidUpdate(lastProps, nextProps);
+            }
+          }
+        }
 			}
 			// if (nextInput.flags & VNodeFlags.Component) {
 			// 	nextInput.parentVNode = nextVNode;
@@ -528,7 +537,7 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 }
 
 // TODO: Should compare fibers by key
-// export function patchKeyedChildren(a: IVNode[], b: IVNode[], dom, lifecycle: LifecycleClass, context, isSVG: boolean, isRecycling: boolean, aLength: number, bLength: number) {
+// export function patchKeyedChildren(a: IFiber[], b: IVNode[], parentDOM, lifecycle: LifecycleClass, context, isSVG: boolean, isRecycling: boolean, aLength: number, bLength: number) {
 // 	let aEnd = aLength - 1;
 // 	let bEnd = bLength - 1;
 // 	let aStart = 0;
@@ -540,16 +549,6 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 	let nextNode;
 // 	let nextPos;
 // 	let node;
-//
-// 	// if (aLength === 0) {
-// 	// 	if (bLength > 0) {
-// 	// 		mountArrayChildren(b, dom, lifecycle, context, isSVG, 0);
-// 	// 	}
-// 	// 	return;
-// 	// } else if (bLength === 0) {
-// 	// 	removeAllChildren(dom, a, lifecycle, isRecycling);
-// 	// 	return;
-// 	// }
 // 	let aStartNode = a[aStart];
 // 	let bStartNode = b[bStart];
 // 	let aEndNode = a[aEnd];
@@ -559,8 +558,8 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 	/* eslint no-constant-condition: 0 */
 // 	outer: while (true) {
 // 		// Sync nodes with the same key at the beginning.
-// 		while (aStartNode.key === bStartNode.key) {
-// 			patch(aStartNode, bStartNode, dom, lifecycle, context, isSVG, isRecycling);
+// 		while (aStartNode.i === bStartNode.key) {
+// 			patch(aStartNode, bStartNode, parentDOM, lifecycle, context, isSVG, isRecycling);
 // 			aStart++;
 // 			bStart++;
 // 			if (aStart > aEnd || bStart > bEnd) {
@@ -571,8 +570,8 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 		}
 //
 // 		// Sync nodes with the same key at the end.
-// 		while (aEndNode.key === bEndNode.key) {
-// 			patch(aEndNode, bEndNode, dom, lifecycle, context, isSVG, isRecycling);
+// 		while (aEndNode.i === bEndNode.key) {
+// 			patch(aEndNode, bEndNode, parentDOM, lifecycle, context, isSVG, isRecycling);
 // 			aEnd--;
 // 			bEnd--;
 // 			if (aStart > aEnd || bStart > bEnd) {
@@ -583,9 +582,9 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 		}
 //
 // 		// Move and sync nodes from right to left.
-// 		if (aEndNode.key === bStartNode.key) {
-// 			patch(aEndNode, bStartNode, dom, lifecycle, context, isSVG, isRecycling);
-// 			insertOrAppend(dom, bStartNode.dom, aStartNode.dom);
+// 		if (aEndNode.i === bStartNode.key) {
+// 			patch(aEndNode, bStartNode, parentDOM, lifecycle, context, isSVG, isRecycling);
+// 			insertOrAppend(parentDOM, aEndNode.dom, aStartNode.dom);
 // 			aEnd--;
 // 			bStart++;
 // 			aEndNode = a[aEnd];
@@ -594,11 +593,11 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 		}
 //
 // 		// Move and sync nodes from left to right.
-// 		if (aStartNode.key === bEndNode.key) {
-// 			patch(aStartNode, bEndNode, dom, lifecycle, context, isSVG, isRecycling);
+// 		if (aStartNode.i === bEndNode.key) {
+// 			patch(aStartNode, bEndNode, parentDOM, lifecycle, context, isSVG, isRecycling);
 // 			nextPos = bEnd + 1;
-// 			nextNode = nextPos < b.length ? b[nextPos].dom : null;
-// 			insertOrAppend(dom, bEndNode.dom, nextNode);
+// 			nextNode = nextPos < bLength ? b[nextPos].dom : null;
+// 			insertOrAppend(parentDOM, aStartNode.dom, nextNode);
 // 			aStart++;
 // 			bEnd--;
 // 			aStartNode = a[aStart];
@@ -611,16 +610,16 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 	if (aStart > aEnd) {
 // 		if (bStart <= bEnd) {
 // 			nextPos = bEnd + 1;
-// 			nextNode = nextPos < b.length ? b[nextPos].dom : null;
+// 			nextNode = nextPos < bLength ? b[nextPos].dom : null;
 // 			while (bStart <= bEnd) {
 // 				node = b[bStart];
 // 				bStart++;
-// 				insertOrAppend(dom, mount(node, null, lifecycle, context, isSVG), nextNode);
+// 				insertOrAppend(parentDOM, mount(node, null, lifecycle, context, isSVG), nextNode);
 // 			}
 // 		}
 // 	} else if (bStart > bEnd) {
 // 		while (aStart <= aEnd) {
-// 			unmount(a[aStart++], dom, lifecycle, false, isRecycling);
+// 			unmount(a[aStart++], parentDOM, lifecycle, false, isRecycling);
 // 		}
 // 	} else {
 // 		aLength = aEnd - aStart + 1;
@@ -650,7 +649,7 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 							} else {
 // 								pos = j;
 // 							}
-// 							patch(aNode, bNode, dom, lifecycle, context, isSVG, isRecycling);
+// 							patch(aNode, bNode, parentDOM, lifecycle, context, isSVG, isRecycling);
 // 							patched++;
 // 							a[i] = null as any;
 // 							break;
@@ -673,7 +672,7 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 				if (patched < bLength) {
 // 					j = keyIndex.get(aNode.key);
 //
-// 					if (!isUndefined(j)) {
+// 					if (j !== void 0) {
 // 						bNode = b[j];
 // 						sources[j - bStart] = i;
 // 						if (pos > j) {
@@ -681,7 +680,7 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 						} else {
 // 							pos = j;
 // 						}
-// 						patch(aNode, bNode, dom, lifecycle, context, isSVG, isRecycling);
+// 						patch(aNode, bNode, parentDOM, lifecycle, context, isSVG, isRecycling);
 // 						patched++;
 // 						a[i] = null as any;
 // 					}
@@ -690,18 +689,18 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 		}
 // 		// fast-path: if nothing patched remove all old and add all new
 // 		if (aLength === a.length && patched === 0) {
-// 			removeAllChildren(dom, a, lifecycle, isRecycling);
+// 			removeAllChildren(parentDOM, a, lifecycle, isRecycling);
 // 			while (bStart < bLength) {
 // 				node = b[bStart];
 // 				bStart++;
-// 				insertOrAppend(dom, mount(node, null, lifecycle, context, isSVG), null);
+// 				insertOrAppend(parentDOM, mount(node, null, lifecycle, context, isSVG), null);
 // 			}
 // 		} else {
 // 			i = aLength - patched;
 // 			while (i > 0) {
 // 				aNode = a[aStart++];
 // 				if (!isNull(aNode)) {
-// 					unmount(aNode, dom, lifecycle, true, isRecycling);
+// 					unmount(aNode, parentDOM, lifecycle, true, isRecycling);
 // 					i--;
 // 				}
 // 			}
@@ -713,15 +712,15 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 						pos = i + bStart;
 // 						node = b[pos];
 // 						nextPos = pos + 1;
-// 						nextNode = nextPos < b.length ? b[nextPos].dom : null;
-// 						insertOrAppend(dom, mount(node, dom, lifecycle, context, isSVG), nextNode);
+// 						nextNode = nextPos < bLength ? b[nextPos].dom : null;
+// 						insertOrAppend(parentDOM, mount(node, parentDOM, lifecycle, context, isSVG), nextNode);
 // 					} else {
 // 						if (j < 0 || i !== seq[j]) {
 // 							pos = i + bStart;
 // 							node = b[pos];
 // 							nextPos = pos + 1;
-// 							nextNode = nextPos < b.length ? b[nextPos].dom : null;
-// 							insertOrAppend(dom, node.dom, nextNode);
+// 							nextNode = nextPos < bLength ? b[nextPos].dom : null;
+// 							insertOrAppend(parentDOM, node.dom, nextNode);
 // 						} else {
 // 							j--;
 // 						}
@@ -735,16 +734,16 @@ export function patchNonKeyedChildren(childFibers: IFiber[], nextChildren, dom, 
 // 						pos = i + bStart;
 // 						node = b[pos];
 // 						nextPos = pos + 1;
-// 						nextNode = nextPos < b.length ? b[nextPos].dom : null;
-// 						insertOrAppend(dom, mount(node, null, lifecycle, context, isSVG), nextNode);
+// 						nextNode = nextPos < bLength ? b[nextPos].dom : null;
+// 						insertOrAppend(parentDOM, mount(node, null, lifecycle, context, isSVG), nextNode);
 // 					}
 // 				}
 // 			}
 // 		}
 // 	}
 // }
-
-// // // https://en.wikipedia.org/wiki/Longest_increasing_subsequence
+//
+// // // // https://en.wikipedia.org/wiki/Longest_increasing_subsequence
 // function lis_algorithm(arr: number[]): number[] {
 // 	const p = arr.slice(0);
 // 	const result: number[] = [0];

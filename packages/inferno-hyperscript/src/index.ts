@@ -1,5 +1,9 @@
-import { createVNode, getFlagsForElementVnode, InfernoChildren, IVNode } from 'inferno';
+/**
+ * @module Inferno-Hyperscript
+ */ /** TypeDoc Comment */
+
 import { isArray, isString, isStringOrNumber, isUndefined } from 'inferno-shared';
+import {IVNode, InfernoChildren, getFlagsForElementVnode, createVNode} from 'inferno';
 import VNodeFlags from 'inferno-vnode-flags';
 
 const classIdSplit = /([.#]?[a-zA-Z0-9_:-]+)/;

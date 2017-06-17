@@ -192,12 +192,12 @@ export function mountComponent(fiber: IFiber, vNode: IVNode, parentDom: Element|
 		const renderOutput = type(props, context);
 		const input = handleComponentInput(renderOutput);
 
-		if (!isInvalid(renderOutput)) {
+		if (!isInvalid(input)) {
 			const childFiber = new Fiber(input, '0');
 			fiber.children = childFiber;
 			childFiber.dom = dom = mount(childFiber, input, null, lifecycle, context, isSVG);
 		}
-		fiber.c = 'stateless';
+		// fiber.c = 'stateless';
 		fiber.dom = dom;
 
 		// fiber.input = input;

@@ -78,7 +78,7 @@
 //
 // 		// eslint-disable-next-line
 // 		render(App(), container);
-// 		expect(container.innerHTML).to.equal(innerHTML('<span>works!</span>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<span>works!</span>'));
 // 	});
 //
 // 	it('should prefer props over stores', () => {
@@ -91,7 +91,7 @@
 //
 // 		// eslint-disable-next-line
 // 		render(App(), container);
-// 		expect(container.innerHTML).to.equal(innerHTML('<span>works!</span>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<span>works!</span>'));
 // 	});
 //
 // 	it('should create class with injected stores', () => {
@@ -114,7 +114,7 @@
 //
 // 		// eslint-disable-next-line
 // 		render(App(), container);
-// 		expect(container.innerHTML).to.equal(innerHTML('<span>hello world</span>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<span>hello world</span>'));
 // 	});
 //
 // });

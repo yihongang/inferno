@@ -7,8 +7,8 @@
 	/* (flags, type, props, children, key, ref, noNormalise) */
 	Inferno.options.recyclingEnabled = true; // Advanced optimisation
 	var createVNode = Inferno.createVNode;
-	var Component = Inferno.Component.default;
-	var createElement = Inferno.createElement.default;
+	var Component = Inferno.Component;
+	var createElement = Inferno.createElement;
 	var setStateCounter = 0;
 
 

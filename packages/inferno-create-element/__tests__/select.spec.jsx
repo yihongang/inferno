@@ -33,7 +33,7 @@
 // 		expect(container.firstChild.children[ 1 ].selected).to.eql(true);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="1">1</option><option value="2">2</option></select>')
 // 		);
 //
@@ -48,7 +48,7 @@
 // 		expect(container.firstChild.children[ 1 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="1">1</option><option value="2">2</option></select>')
 // 		);
 //
@@ -61,7 +61,7 @@
 // 		expect(container.firstChild.children[ 1 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="1">1</option><option value="2">2</option></select>')
 // 		);
 // 	});
@@ -79,7 +79,7 @@
 // 		expect(container.firstChild.children[ 1 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="foo">foo</option><option value="bar">bar</option></select>')
 // 		);
 // 		render(<select multiple={ true } value={ false }>
@@ -90,7 +90,7 @@
 // 		expect(container.firstChild.children[ 1 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="foo">foo</option><option value="bar">bar</option></select>')
 // 		);
 //
@@ -102,7 +102,7 @@
 // 		expect(container.firstChild.children[ 1 ].selected).to.eql(true);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="foo">foo</option><option value="bar">bar</option></select>')
 // 		);
 // 	});
@@ -171,7 +171,7 @@
 // 		expect(container.firstChild.children[ 1 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="foo">foo</option><option value="bar">bar</option></select>') // Missing selected markup
 // 		);
 // 	});
@@ -187,7 +187,7 @@
 // 		expect(container.firstChild.children[ 1 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="foo">foo</option><option value="bar">bar</option></select>')
 // 		);
 //
@@ -200,7 +200,7 @@
 // 		expect(container.firstChild.children[ 1 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="foo">foo</option><option value="bar">bar</option></select>')
 // 		);
 //
@@ -241,7 +241,7 @@
 // 		expect(container.firstChild.children[ 3 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option></select>')
 // 		);
 // 	});
@@ -260,7 +260,7 @@
 // 		expect(container.firstChild.children[ 3 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option></select>')
 // 		);
 // 	});
@@ -283,7 +283,7 @@
 // 		expect(container.firstChild.children[ 3 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option></select>')
 // 		);
 // 	});
@@ -302,7 +302,7 @@
 // 		expect(container.firstChild.children[ 3 ].selected).to.eql(false);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<select multiple=""><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option></select>')
 // 		);
 // 	});
@@ -337,15 +337,15 @@
 // 				<option value="">a</option>
 // 			</select>
 // 		), container);
-// 		expect(container.firstChild.selectedIndex, 'Initial selected index').to.equal(0);
-// 		expect(container.firstChild.value, 'Intial value').to.equal('');
+// 		expect(container.firstChild.selectedIndex, 'Initial selected index').toEqual(0);
+// 		expect(container.firstChild.value, 'Intial value').toEqual('');
 //
 // 		render((
 // 			<select id="sel">
 // 				<option value="">a</option>
 // 			</select>
 // 		), container);
-// 		expect(container.firstChild.value, 'Second selected index').to.equal('');
+// 		expect(container.firstChild.value, 'Second selected index').toEqual('');
 // 		expect(container.firstChild.selectedIndex, 'Second value').to.oneOf([ 0, -1 ]);
 // 	});
 // });

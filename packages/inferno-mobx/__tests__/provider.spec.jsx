@@ -73,7 +73,7 @@
 // 			const link = container.querySelector('#update');
 // 			link.click();
 //
-// 			expect(container.innerHTML).to.equal(innerHTML('<article><a id="update">update</a><span>Statefull</span></article>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<article><a id="update">update</a><span>Statefull</span></article>'));
 // 		});
 //
 // 		it('should update a stateless component', () => {
@@ -82,7 +82,7 @@
 // 			const link = container.querySelector('#update');
 // 			link.click();
 //
-// 			expect(container.innerHTML).to.equal(innerHTML('<article><a id="update">update</a><span>Stateless</span></article>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<article><a id="update">update</a><span>Stateless</span></article>'));
 // 		});
 //
 // 		it('should update a stateless component with stores', () => {
@@ -91,7 +91,7 @@
 // 			const link = container.querySelector('#update');
 // 			link.click();
 //
-// 			expect(container.innerHTML).to.equal(innerHTML('<article><a id="update">update</a><span>hello world</span></article>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<article><a id="update">update</a><span>hello world</span></article>'));
 // 		});
 // 	});
 //
@@ -119,7 +119,7 @@
 // 				</Provider>
 // 			</Provider>, container);
 //
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><span>one</span><span>two</span></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><span>one</span><span>two</span></div>'));
 // 		});
 // 	});
 // });

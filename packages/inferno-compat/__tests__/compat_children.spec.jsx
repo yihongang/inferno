@@ -22,7 +22,7 @@
 //
 // 	it('should create a VNode with the correct className', function () {
 // 		const element = createElement('div', { className: 'foo', test: 'hi' });
-// 		expect(element.className).to.equal('foo');
+// 		expect(element.className).toEqual('foo');
 // 		expect(element.props).to.eql({ test: 'hi', className: 'foo' });
 // 	});
 
@@ -32,7 +32,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>body text</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>body text</div>'));
 // 	});
 //
 // 	it('Should render element with an array of one text string', function () {
@@ -41,7 +41,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>body text</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>body text</div>'));
 // 	});
 //
 // 	it('Should render element with an array of two text strings', function () {
@@ -50,7 +50,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>first textsecond text</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>first textsecond text</div>'));
 // 	});
 //
 // 	it('Should render element with child element', function () {
@@ -62,7 +62,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><span>child body text</span></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><span>child body text</span></div>'));
 // 	});
 //
 // 	it('Should render element with an array of one child element', function () {
@@ -74,7 +74,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><span>child body text</span></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><span>child body text</span></div>'));
 // 	});
 //
 // 	it('Should render element with an array of two child elements', function () {
@@ -89,7 +89,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><span>first text</span><span>second text</span></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><span>first text</span><span>second text</span></div>'));
 // 	});
 //
 // 	it('Should render element with an array of a string and a child element', function () {
@@ -101,7 +101,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>first text<span>second text</span></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>first text<span>second text</span></div>'));
 // 	});
 //
 // 	function arrayAsBasicIterator(array) {
@@ -128,7 +128,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>generated body text</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>generated body text</div>'));
 // 	});
 //
 // 	it('Should render element with an iterable of one child element', function () {
@@ -141,7 +141,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><span>generated child body text</span></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><span>generated child body text</span></div>'));
 // 	});
 //
 // 	it('Should render element with an iterable of a child element and a string', function () {
@@ -154,7 +154,7 @@
 //
 // 		renderCompatTestElement(element);
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><span>generated child body text</span>generated body text</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><span>generated child body text</span>generated body text</div>'));
 // 	});
 //
 // });

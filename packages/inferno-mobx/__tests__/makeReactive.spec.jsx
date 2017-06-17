@@ -47,13 +47,13 @@
 //
 // 	it('should render a todo list', () => {
 // 		render(<TodoList/>, container);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><li>one</li><li>two</li></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><li>one</li><li>two</li></div>'));
 // 	});
 //
 // 	it('should render a todo list with added todo item', () => {
 // 		store.todos.push('three');
 // 		render(<TodoList/>, container);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><li>one</li><li>two</li><li>three</li></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><li>one</li><li>two</li><li>three</li></div>'));
 // 	});
 //
 // 	it('should render a todo list with non observable item', () => {
@@ -70,7 +70,7 @@
 // 			test: 'new entry'
 // 		});
 // 		render(<FlatList extra={ store.extra }/>, container);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><li>oneXXX</li><li>twoXXX</li><li>threeXXX</li></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><li>oneXXX</li><li>twoXXX</li><li>threeXXX</li></div>'));
 // 	});
 //
 // 	it('should have a shouldComponentUpdate that returns false when appropriate', () => {
@@ -105,9 +105,9 @@
 // 		});
 //
 // 		render(<Foobar number={1} />, container);
-// 		expect(container.firstChild.innerHTML).to.equal('1');
+// 		expect(container.firstChild.innerHTML).toEqual('1');
 //
 // 		render(<Foobar number={2} />, container);
-// 		expect(container.firstChild.innerHTML).to.equal('1');
+// 		expect(container.firstChild.innerHTML).toEqual('1');
 // 	});
 // });

@@ -24,12 +24,12 @@ describe('CSS style properties (JSX)', () => {
 		const styles = { display: 'none', fontFamily: 'Arial', lineHeight: 2 };
 
 		render(<div style={ styles }/>, container);
-		expect(container.firstChild.style.fontFamily).to.equal('Arial');
-		expect(container.firstChild.style.lineHeight).to.equal('2');
+		expect(container.firstChild.style.fontFamily).toEqual('Arial');
+		expect(container.firstChild.style.lineHeight).toEqual('2');
 
 		render(<div />, container);
-		expect(container.firstChild.style.fontFamily).to.equal('');
-		expect(container.firstChild.style.lineHeight).to.equal('');
+		expect(container.firstChild.style.fontFamily).toEqual('');
+		expect(container.firstChild.style.lineHeight).toEqual('');
 
 	});
 
@@ -41,7 +41,7 @@ describe('CSS style properties (JSX)', () => {
 		styles = { display: 'block' };
 
 		render(<div style={ styles }/>, container);
-		expect(container.firstChild.style.display).to.equal('block');
+		expect(container.firstChild.style.display).toEqual('block');
 	});
 
 	it('should update styles if updated to null multiple times', () => {
@@ -50,21 +50,21 @@ describe('CSS style properties (JSX)', () => {
 		render(<div style={ undefined }/>, container);
 
 		render(<div style={ styles }/>, container);
-		expect(container.firstChild.style.display).to.equal('');
+		expect(container.firstChild.style.display).toEqual('');
 
 		styles = { display: 'block' };
 
 		render(<div style={ styles }/>, container);
-		expect(container.firstChild.style.display).to.equal('block');
+		expect(container.firstChild.style.display).toEqual('block');
 
 		render(<div style={ null }/>, container);
-		expect(container.firstChild.style.display).to.equal('');
+		expect(container.firstChild.style.display).toEqual('');
 
 		render(<div style={ styles }/>, container);
-		expect(container.firstChild.style.display).to.equal('block');
+		expect(container.firstChild.style.display).toEqual('block');
 
 		render(<div style={ null }/>, container);
-		expect(container.firstChild.style.display).to.equal('');
+		expect(container.firstChild.style.display).toEqual('');
 	});
 
 	it('should update styles when `style` changes from null to object', () => {
@@ -75,7 +75,7 @@ describe('CSS style properties (JSX)', () => {
 		render(<div style={ styles }/>, container);
 
 		const stubStyle = container.firstChild.style;
-		expect(stubStyle.color).to.equal('red');
+		expect(stubStyle.color).toEqual('red');
 	});
 
 	it('should support different unit types - em and mm', () => {
@@ -85,8 +85,8 @@ describe('CSS style properties (JSX)', () => {
 		render(<div style={ styles }/>, container);
 
 		const stubStyle = container.firstChild.style;
-		expect(stubStyle.height).to.equal('200em');
-		expect(stubStyle.width).to.equal('20mm');
+		expect(stubStyle.height).toEqual('200em');
+		expect(stubStyle.width).toEqual('20mm');
 	});
 
 	it('should clear all the styles when removing `style`', () => {
@@ -94,47 +94,47 @@ describe('CSS style properties (JSX)', () => {
 		render(<div style={ styles }/>, container);
 
 		const stubStyle = container.firstChild.style;
-		expect(stubStyle.display).to.equal('none');
-		expect(stubStyle.color).to.equal('red');
+		expect(stubStyle.display).toEqual('none');
+		expect(stubStyle.color).toEqual('red');
 	});
 
 	it('Should change styles', () => {
 		const stylesOne = { color: 'red' };
 		render(styleNode(stylesOne), container);
-		expect(container.firstChild.style.color).to.equal('red');
+		expect(container.firstChild.style.color).toEqual('red');
 
 		const styles = { color: 'blue' };
 		render(styleNode(styles), container);
-		expect(container.firstChild.style.color).to.equal('blue');
+		expect(container.firstChild.style.color).toEqual('blue');
 
 		const stylesTwo = { color: 'orange' };
 		render(styleNode(stylesTwo), container);
-		expect(container.firstChild.style.color).to.equal('orange');
+		expect(container.firstChild.style.color).toEqual('orange');
 
 		const stylesThree = { color: 'orange' };
 		render(styleNode(stylesThree), container);
-		expect(container.firstChild.style.color).to.equal('orange');
+		expect(container.firstChild.style.color).toEqual('orange');
 	});
 
 	it('Should remove style attribute when next value is null', () => {
 		const stylesOne = { float: 'left' };
 		render(styleNode(stylesOne), container);
-		expect(container.firstChild.style.float).to.equal('left');
+		expect(container.firstChild.style.float).toEqual('left');
 
 		render(styleNode(null), container);
-		expect(container.firstChild.style.cssText).to.equal('');
+		expect(container.firstChild.style.cssText).toEqual('');
 		// expect(container.innerHTML).to.eql('<div></div>');
 	});
 
 	it('Should remove style attribute when single prop value is null', () => {
 		const stylesOne = { float: 'left', color: 'red', display: 'block' };
 		render(styleNode(stylesOne), container);
-		expect(container.firstChild.style.float).to.equal('left');
+		expect(container.firstChild.style.float).toEqual('left');
 
 		const stylesTwo = { float: 'left', display: 'none' };
 		render(styleNode(stylesTwo), container);
-		expect(container.firstChild.style.float).to.equal('left');
-		expect(container.firstChild.style.display).to.equal('none');
-		expect(container.firstChild.style.color).to.equal('');
+		expect(container.firstChild.style.float).toEqual('left');
+		expect(container.firstChild.style.display).toEqual('none');
+		expect(container.firstChild.style.color).toEqual('');
 	});
 });

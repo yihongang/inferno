@@ -105,21 +105,21 @@ describe('Component lifecycle (JSX)', () => {
 			const notCalled = assert.notCalled;
 
 			render(<A />, container);
-			expect(container.innerHTML).to.equal(innerHTML('<div><button>btn</button></div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div><button>btn</button></div>'));
 			notCalled(Aspy);
 			notCalled(Bspy);
 			notCalled(CSpy);
 			notCalled(DSpy);
 
 			updater();
-			expect(container.innerHTML).to.equal(innerHTML('<div><div><div><div>Terve</div></div></div><button>btn</button></div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div><div><div><div>Terve</div></div></div><button>btn</button></div>'));
 			notCalled(Aspy);
 			notCalled(Bspy);
 			notCalled(CSpy);
 			notCalled(DSpy);
 
 			updater();
-			expect(container.innerHTML).to.equal(innerHTML('<div><button>btn</button></div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div><button>btn</button></div>'));
 			notCalled(Aspy);
 			const calledOnce = assert.calledOnce;
 			calledOnce(Bspy);
@@ -204,21 +204,21 @@ describe('Component lifecycle (JSX)', () => {
 			const notCalled = assert.notCalled;
 
 			render(<A />, container);
-			expect(container.innerHTML).to.equal(innerHTML('<div><button>btn</button></div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div><button>btn</button></div>'));
 			notCalled(Aspy);
 			notCalled(Bspy);
 			notCalled(CSpy);
 			notCalled(DSpy);
 
 			updater();
-			expect(container.innerHTML).to.equal(innerHTML('<div><div>Terve</div><button>btn</button></div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div><div>Terve</div><button>btn</button></div>'));
 			notCalled(Aspy);
 			notCalled(Bspy);
 			notCalled(CSpy);
 			notCalled(DSpy);
 
 			updater();
-			expect(container.innerHTML).to.equal(innerHTML('<div><button>btn</button></div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div><button>btn</button></div>'));
 			notCalled(Aspy);
 			const calledOnce = assert.calledOnce;
 			calledOnce(Bspy);
@@ -261,25 +261,25 @@ describe('Component lifecycle (JSX)', () => {
 			const calledOnce = assert.calledOnce;
 
 			render(<B />, container);
-			expect(container.innerHTML).to.equal(innerHTML('<div>B</div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div>B</div>'));
 			notCalled(Bspy);
 			notCalled(CSpy);
 			notCalled(DSpy);
 
 			render(<C />, container);
-			expect(container.innerHTML).to.equal(innerHTML('<div>C</div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div>C</div>'));
 			calledOnce(Bspy);
 			notCalled(CSpy);
 			notCalled(DSpy);
 
 			render(<D />, container);
-			expect(container.innerHTML).to.equal(innerHTML('<div>D</div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div>D</div>'));
 			calledOnce(Bspy);
 			calledOnce(CSpy);
 			notCalled(DSpy);
 
 			render(<B />, container);
-			expect(container.innerHTML).to.equal(innerHTML('<div>B</div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div>B</div>'));
 			calledOnce(Bspy);
 			calledOnce(CSpy);
 			calledOnce(DSpy);
@@ -371,7 +371,7 @@ describe('Component lifecycle (JSX)', () => {
 			const calledOnce = assert.calledOnce;
 
 			render(<B />, container);
-			expect(container.innerHTML).to.equal(innerHTML('<div><p>B1</p><p>B2</p></div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div><p>B1</p><p>B2</p></div>'));
 			notCalled(Bspy);
 			notCalled(B1spy);
 			notCalled(B2spy);
@@ -383,7 +383,7 @@ describe('Component lifecycle (JSX)', () => {
 			CSpy.reset();
 
 			render(<C />, container);
-			expect(container.innerHTML).to.equal(innerHTML('<div class="c"><p>C1</p><p>C2</p></div>'));
+			expect(container.innerHTML).toEqual(innerHTML('<div class="c"><p>C1</p><p>C2</p></div>'));
 			calledOnce(Bspy);
 			calledOnce(B1spy);
 			calledOnce(B2spy);
@@ -418,7 +418,7 @@ describe('Component lifecycle (JSX)', () => {
 			const sinonSpy = spy(spyObj, 'fn');
 			render(<StatelessComponent onComponentWillMount={spyObj.fn}/>, _container);
 
-			expect(sinonSpy.callCount).to.equal(1);
+			expect(sinonSpy.callCount).toEqual(1);
 		});
 
 		it('"onComponentDidMount" hook should fire, args DOM', () => {
@@ -429,8 +429,8 @@ describe('Component lifecycle (JSX)', () => {
 			const sinonSpy = spy(spyObj, 'fn');
 			render(<StatelessComponent onComponentDidMount={spyObj.fn}/>, _container);
 
-			expect(sinonSpy.callCount).to.equal(1);
-			expect(sinonSpy.getCall(0).args[ 0 ]).to.equal(_container.firstChild);
+			expect(sinonSpy.callCount).toEqual(1);
+			expect(sinonSpy.getCall(0).args[ 0 ]).toEqual(_container.firstChild);
 		});
 
 		it('"onComponentWillUnmount" hook should fire', () => {
@@ -440,11 +440,11 @@ describe('Component lifecycle (JSX)', () => {
 			};
 			const sinonSpy = spy(spyObj, 'fn');
 			render(<StatelessComponent onComponentWillUnmount={spyObj.fn}/>, _container);
-			expect(sinonSpy.callCount).to.equal(0);
+			expect(sinonSpy.callCount).toEqual(0);
 			// do unmount
 			render(null, _container);
 
-			expect(sinonSpy.callCount).to.equal(1);
+			expect(sinonSpy.callCount).toEqual(1);
 		});
 
 		it('"onComponentWillUpdate" hook should fire', () => {
@@ -454,7 +454,7 @@ describe('Component lifecycle (JSX)', () => {
 			};
 			const sinonSpy = spy(spyObj, 'fn');
 			render(<StatelessComponent onComponentWillUpdate={spyObj.fn}/>, _container);
-			expect(sinonSpy.callCount).to.equal(0);
+			expect(sinonSpy.callCount).toEqual(0);
 		});
 
 		it('"onComponentDidUpdate" hook should fire', () => {
@@ -464,9 +464,9 @@ describe('Component lifecycle (JSX)', () => {
 			};
 			const sinonSpy = spy(spyObj, 'fn');
 			render(<StatelessComponent onComponentDidUpdate={spyObj.fn}/>, _container);
-			expect(sinonSpy.callCount).to.equal(0); // Update 1
+			expect(sinonSpy.callCount).toEqual(0); // Update 1
 			render(<StatelessComponent onComponentDidUpdate={spyObj.fn}/>, _container);
-			expect(sinonSpy.callCount).to.equal(1); // Update 2
+			expect(sinonSpy.callCount).toEqual(1); // Update 2
 		});
 
 		it('"onComponentShouldUpdate" hook should fire, should call render when return true', () => {
@@ -481,15 +481,15 @@ describe('Component lifecycle (JSX)', () => {
 				onComponentShouldUpdateCount++;
 				return true;
 			}}/>, _container);
-			expect(onComponentShouldUpdateCount).to.equal(0, 'should have called shouldUpdate none'); // Update 1
-			expect(renderCount).to.equal(1, 'should have called "render" once'); // Rendered 1 time
+			expect(onComponentShouldUpdateCount).toEqual(0, 'should have called shouldUpdate none'); // Update 1
+			expect(renderCount).toEqual(1, 'should have called "render" once'); // Rendered 1 time
 
 			render(<StatelessComponent onComponentShouldUpdate={() => {
 				onComponentShouldUpdateCount++;
 				return true;
 			}}/>, _container);
-			expect(onComponentShouldUpdateCount).to.equal(1, 'should have called shouldUpdate once'); // Update 2
-			expect(renderCount).to.equal(2, 'should have called "render" twice'); // Rendered 2 time
+			expect(onComponentShouldUpdateCount).toEqual(1, 'should have called shouldUpdate once'); // Update 2
+			expect(renderCount).toEqual(2, 'should have called "render" twice'); // Rendered 2 time
 		});
 
 		it('"onComponentShouldUpdate" hook should fire, should not call render when return false', () => {
@@ -504,15 +504,15 @@ describe('Component lifecycle (JSX)', () => {
 				onComponentShouldUpdateCount++;
 				return false;
 			}}/>, _container);
-			expect(onComponentShouldUpdateCount).to.equal(0, 'should have called shouldUpdate none'); // Update 1
-			expect(renderCount).to.equal(1, 'should have called "render" once'); // Rendered 1 time
+			expect(onComponentShouldUpdateCount).toEqual(0, 'should have called shouldUpdate none'); // Update 1
+			expect(renderCount).toEqual(1, 'should have called "render" once'); // Rendered 1 time
 
 			render(<StatelessComponent onComponentShouldUpdate={() => {
 				onComponentShouldUpdateCount++;
 				return false;
 			}}/>, _container);
-			expect(onComponentShouldUpdateCount).to.equal(1, 'should have called shouldUpdate once'); // Update 2
-			expect(renderCount).to.equal(1, 'should have called "render" once'); // Rendered 1 time
+			expect(onComponentShouldUpdateCount).toEqual(1, 'should have called shouldUpdate once'); // Update 2
+			expect(renderCount).toEqual(1, 'should have called "render" once'); // Rendered 1 time
 		});
 	});
 
@@ -1272,16 +1272,16 @@ describe('Component lifecycle (JSX)', () => {
 			}
 
 			render(<A />, container);
-			expect(spy5.callCount).to.equal(1);
+			expect(spy5.callCount).toEqual(1);
 
 			render(<B />, container);
 
-			expect(spy5.callCount).to.equal(2); // mount + unmount
+			expect(spy5.callCount).toEqual(2); // mount + unmount
 
-			expect(spy1.callCount).to.equal(1);
-			expect(spy2.callCount).to.equal(1);
-			expect(spy3.callCount).to.equal(1);
-			expect(spy4.callCount).to.equal(2); // 2 refs
+			expect(spy1.callCount).toEqual(1);
+			expect(spy2.callCount).toEqual(1);
+			expect(spy3.callCount).toEqual(1);
+			expect(spy4.callCount).toEqual(2); // 2 refs
 		});
 
 		// it('Should trigger lifecycle hooks when parent changes #2', (done) => {
@@ -1364,16 +1364,16 @@ describe('Component lifecycle (JSX)', () => {
 		// 	}
 		//
 		// 	render(<Parent bool={true}/>, container);
-		// 	expect(spy5.callCount).to.equal(1);
+		// 	expect(spy5.callCount).toEqual(1);
 		// 	render(<Parent bool={false}/>, container);
 		//
 		// 	setTimeout(function () {
-		// 		expect(spy5.callCount).to.equal(2); // mount + unmount
+		// 		expect(spy5.callCount).toEqual(2); // mount + unmount
 		//
-		// 		expect(spy1.callCount).to.equal(1);
-		// 		expect(spy2.callCount).to.equal(0);
-		// 		expect(spy3.callCount).to.equal(1);
-		// 		expect(spy4.callCount).to.equal(1); // 2 refs
+		// 		expect(spy1.callCount).toEqual(1);
+		// 		expect(spy2.callCount).toEqual(0);
+		// 		expect(spy3.callCount).toEqual(1);
+		// 		expect(spy4.callCount).toEqual(1); // 2 refs
 		//
 		// 		setTimeout(function () {
 		// 			done();

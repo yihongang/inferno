@@ -649,7 +649,7 @@
 // 			const Broken = () => <div className='dummy'><NoOp /></div>;
 // 			const renderedTree = renderIntoDocument(<Broken />);
 // 			const dummy = findRenderedDOMElementWithClass(renderedTree, 'dummy');
-// 			expect(dummy.className).to.equal('dummy');
+// 			expect(dummy.className).toEqual('dummy');
 // 		});
 // 	});
 //
@@ -722,7 +722,7 @@
 // 				expect(result).to.be.instanceof(Object);
 // 				expect(result).to.have.all.keys(VNodeKeys);
 // 				expect(isVNode(result)).to.be.true;
-// 				expect(result.type).to.equal(type);
+// 				expect(result.type).toEqual(type);
 // 			};
 // 			testValue('h1');
 // 			testValue(CreateClassComponent);
@@ -761,7 +761,7 @@
 // 				expect(result).to.be.instanceof(Object);
 // 				expect(result).to.have.all.keys(VNodeKeys);
 // 				expect(isVNode(result)).to.be.true;
-// 				expect(result.type).to.equal(type);
+// 				expect(result.type).toEqual(type);
 // 			};
 // 			testValue('h1');
 // 			testValue(CreateClassComponent);

@@ -22,7 +22,7 @@
 // 			h('div'),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div></div>'));
 // 	});
 //
 // 	it('Should handle a basic example #2', () => {
@@ -30,7 +30,7 @@
 // 			h('div', 'Hello world!'),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>Hello world!</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>Hello world!</div>'));
 // 	});
 //
 // 	it('Should handle a basic example #3', () => {
@@ -38,7 +38,7 @@
 // 			h('div', { className: 'foo' }, 'Hello world!'),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div class="foo">Hello world!</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div class="foo">Hello world!</div>'));
 // 	});
 //
 // 	const StatelessComponent = () => h('div', 'Hello world!');
@@ -48,7 +48,7 @@
 // 			h(StatelessComponent),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>Hello world!</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>Hello world!</div>'));
 // 	});
 //
 // 	it('Should handle a hooks example #1', () => {
@@ -67,7 +67,7 @@
 // 			h(ComponentHooks),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>Hello world!</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>Hello world!</div>'));
 // 	});
 //
 // 	it('Should handle children as third argument', () => {
@@ -80,7 +80,7 @@
 // 			h(ComponentHooks),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>Hello world!</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>Hello world!</div>'));
 // 	});
 //
 // 	it('Should handle different props (key, class, id, ref, children)', () => {
@@ -101,7 +101,7 @@
 // 			innerHTML(
 // 				container.innerHTML
 // 			)
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML(
 // 				'<div class="test myClass" id="myId">Hello world!</div>'
 // 			)
@@ -114,7 +114,7 @@
 // 			h(ComponentHooks),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div>Hello world!</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div>Hello world!</div>'));
 // 	});
 //
 // 	it('Should be possible to create textarea with hyperscript', () => {
@@ -123,7 +123,7 @@
 // 			h(ComponentHooks),
 // 			container
 // 		);
-// 		expect(innerHTML(container.innerHTML)).to.equal(innerHTML('<textarea id="test"></textarea>'));
+// 		expect(innerHTML(container.innerHTML)).toEqual(innerHTML('<textarea id="test"></textarea>'));
 // 	});
 //
 // 	it('Should be possible to create select element with hyperscript', () => {
@@ -135,7 +135,7 @@
 // 			h(ComponentHooks),
 // 			container
 // 		);
-// 		expect(innerHTML(container.innerHTML)).to.equal(innerHTML('<select id="select"><option value="1">1</option><option value="2">2</option></select>'));
+// 		expect(innerHTML(container.innerHTML)).toEqual(innerHTML('<select id="select"><option value="1">1</option><option value="2">2</option></select>'));
 // 	});
 //
 // 	it('Should handle tag with no tag name but id is present', () => {
@@ -144,7 +144,7 @@
 // 			h(ComponentHooks),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div id="myId"></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div id="myId"></div>'));
 // 	});
 //
 // 	it('Should support lifecycle methods on functional components willMount', () => {
@@ -154,8 +154,8 @@
 // 			h(ComponentHooks, { onComponentWillMount: callbackSpy }),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div id="myId"></div>'));
-// 		expect(callbackSpy.calledOnce).to.equal(true);
+// 		expect(container.innerHTML).toEqual(innerHTML('<div id="myId"></div>'));
+// 		expect(callbackSpy.calledOnce).toEqual(true);
 // 	});
 //
 // 	it('Should support lifecycle methods on functional components didMount', () => {
@@ -165,8 +165,8 @@
 // 			h(ComponentHooks, { onComponentDidMount: callbackSpy }),
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div id="myId"></div>'));
-// 		expect(callbackSpy.calledOnce).to.equal(true);
+// 		expect(container.innerHTML).toEqual(innerHTML('<div id="myId"></div>'));
+// 		expect(callbackSpy.calledOnce).toEqual(true);
 // 	});
 //
 // 	it('Should pass classNames through', () => {
@@ -198,10 +198,10 @@
 //
 // 		const children = container.firstChild.childNodes;
 //
-// 		expect(children[0].className).to.equal('test1 test1prop');
-// 		expect(children[1].className).to.equal('test2prop');
-// 		expect(children[2].className).to.equal('test3');
-// 		expect(children[3].className).to.equal('test4prop');
+// 		expect(children[0].className).toEqual('test1 test1prop');
+// 		expect(children[1].className).toEqual('test2prop');
+// 		expect(children[2].className).toEqual('test3');
+// 		expect(children[3].className).toEqual('test4prop');
 // 	});
 //
 // 	if (typeof global !== 'undefined' && !global.usingJSDOM) {

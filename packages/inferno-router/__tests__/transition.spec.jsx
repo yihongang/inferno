@@ -44,10 +44,10 @@
 // 		// noinspection JSUnusedLocalSymbols
 // 		function onEnter({ props, router }) {
 // 			router.push('/enter');
-// 			expect(typeof props).to.equal('object');
-// 			expect(typeof router).to.equal('object');
+// 			expect(typeof props).toEqual('object');
+// 			expect(typeof router).toEqual('object');
 // 			requestAnimationFrame(() => {
-// 				expect(container.innerHTML).to.equal(innerHTML('<div>onLeave</div>'));
+// 				expect(container.innerHTML).toEqual(innerHTML('<div>onLeave</div>'));
 // 				done();
 // 			});
 // 		}
@@ -71,10 +71,10 @@
 // 		}
 //
 // 		const onLeave = ({ props, router }) => {
-// 			expect(typeof props).to.equal('object');
-// 			expect(typeof router).to.equal('object');
+// 			expect(typeof props).toEqual('object');
+// 			expect(typeof router).toEqual('object');
 // 			requestAnimationFrame(() => {
-// 				expect(container.innerHTML).to.equal(innerHTML('<div>onLeave</div>'));
+// 				expect(container.innerHTML).toEqual(innerHTML('<div>onLeave</div>'));
 // 				done();
 // 			});
 // 		};
@@ -98,10 +98,10 @@
 // 		}
 //
 // 		const onLeave = ({ props, router }) => {
-// 			expect(typeof props).to.equal('object');
-// 			expect(typeof router).to.equal('object');
+// 			expect(typeof props).toEqual('object');
+// 			expect(typeof router).toEqual('object');
 // 			requestAnimationFrame(() => {
-// 				expect(container.innerHTML).to.equal(innerHTML('<div>onLeave</div>'));
+// 				expect(container.innerHTML).toEqual(innerHTML('<div>onLeave</div>'));
 // 				done();
 // 			});
 // 		};
@@ -130,7 +130,7 @@
 // 		</Router>, container);
 //
 // 		setTimeout(() => {
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Done</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Done</div>'));
 // 			done();
 // 		}, 10);
 // 	});
@@ -142,7 +142,7 @@
 // 		</Router>, container);
 //
 // 		setTimeout(() => {
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Done</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Done</div>'));
 // 			done();
 // 		}, 10);
 // 	});
@@ -163,13 +163,13 @@
 // 			</Router>,
 // 			container
 // 		);
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><a href="/foo/two">Go</a><div>Bad Component</div></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><a href="/foo/two">Go</a><div>Bad Component</div></div>'));
 //
 // 		const link = container.querySelector('a');
 // 		clickOnLink(link);
 //
 // 		setTimeout(() => {
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><a href="/foo/two">Go</a><div>Good Component</div></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><a href="/foo/two">Go</a><div>Good Component</div></div>'));
 // 			done();
 // 		}, 10);
 // 	});
@@ -195,7 +195,7 @@
 // 		</Router>, container);
 //
 // 		setTimeout(() => {
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Good Component</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Good Component</div>'));
 // 			done();
 // 		}, 10);
 // 	});
@@ -212,7 +212,7 @@
 // 		browserHistory.push('/?foo=Bar');
 //
 // 		setTimeout(() => {
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Query Params Bar</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Query Params Bar</div>'));
 // 			done();
 // 		}, 10);
 // 	});

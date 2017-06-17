@@ -60,16 +60,16 @@ describe('Stateful Component updates', () => {
 		// Render A
 		const sinonSpy = spy(A.prototype, 'componentWillUnmount');
 		render(<A />, container);
-		expect(container.innerHTML).to.equal(innerHTML('<div>A Component A</div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div>A Component A</div>'));
 		// Render B
 		render(<B />, container);
-		expect(container.innerHTML).to.equal(innerHTML('<div>B Component B</div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div>B Component B</div>'));
 		assert.calledOnce(sinonSpy); // componentUnMount should have been called
 		sinonSpy.restore();
 
 		// delayed update triggers for A
 		updatesAfromOutside();
-		expect(container.innerHTML).to.equal(innerHTML('<div>B Component B</div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div>B Component B</div>'));
 
 		done();
 	});
@@ -168,20 +168,20 @@ describe('Stateful Component updates', () => {
 		}
 
 		render(<A />, container);
-		expect(container.innerHTML).to.equal(innerHTML('<div><input type="checkbox"><input type="checkbox"><input type="checkbox"></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><input type="checkbox"><input type="checkbox"><input type="checkbox"></div>'));
 		const firstChild = container.firstChild;
-		expect(firstChild.childNodes[ 0 ].checked).to.equal(false);
-		expect(firstChild.childNodes[ 1 ].checked).to.equal(false);
-		expect(firstChild.childNodes[ 2 ].checked).to.equal(false);
+		expect(firstChild.childNodes[ 0 ].checked).toEqual(false);
+		expect(firstChild.childNodes[ 1 ].checked).toEqual(false);
+		expect(firstChild.childNodes[ 2 ].checked).toEqual(false);
 
 		const checkbox = container.querySelector('input');
 		checkbox.checked = true; // SIMULATE user selecting checkbox
-		expect(firstChild.childNodes[ 0 ].checked).to.equal(true, 'USER SHOULD BE ABLE TO TICK CHECKBOX');
+		expect(firstChild.childNodes[ 0 ].checked).toEqual(true, 'USER SHOULD BE ABLE TO TICK CHECKBOX');
 
 		updateCaller(); // New render
-		expect(container.innerHTML).to.equal(innerHTML('<div><input type="checkbox"><input type="checkbox"></div>'));
-		expect(firstChild.childNodes[ 0 ].checked).to.equal(false, 'AFTER NEW RENDER IT SHOULD RENDER INPUT AS UNCHECKED');
-		expect(firstChild.childNodes[ 1 ].checked).to.equal(false);
+		expect(container.innerHTML).toEqual(innerHTML('<div><input type="checkbox"><input type="checkbox"></div>'));
+		expect(firstChild.childNodes[ 0 ].checked).toEqual(false, 'AFTER NEW RENDER IT SHOULD RENDER INPUT AS UNCHECKED');
+		expect(firstChild.childNodes[ 1 ].checked).toEqual(false);
 
 	});
 
@@ -281,20 +281,20 @@ describe('Stateful Component updates', () => {
 
 		render(<Parent />, container);
 
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>truefalse</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>truefalse</div></div></div>'));
 
 		updateCaller();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>falsefalse</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>falsefalse</div></div></div>'));
 		updateCaller();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>truefalse</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>truefalse</div></div></div>'));
 		updateCaller();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>falsefalse</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>falsefalse</div></div></div>'));
 		stuckChild();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>falsetrue</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>falsetrue</div></div></div>'));
 		stuckChild();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>falsefalse</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>falsefalse</div></div></div>'));
 		stuckChild();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>falsetrue</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>falsetrue</div></div></div>'));
 	});
 
 	it('Should Not get stuck in UNMOUNTED state - variation2', () => {
@@ -393,24 +393,24 @@ describe('Stateful Component updates', () => {
 
 		render(<Parent />, container);
 
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>truefalse</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>truefalse</div></div></div>'));
 
 		stuckChild();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>truetrue</div></div></div>'), 'failed here?');
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>truetrue</div></div></div>'), 'failed here?');
 		stuckChild();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>truefalse</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>truefalse</div></div></div>'));
 		stuckChild();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>truetrue</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>truetrue</div></div></div>'));
 
 		updateCaller();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>falsetrue</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>falsetrue</div></div></div>'));
 		updateCaller();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>truetrue</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>truetrue</div></div></div>'));
 		updateCaller();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>falsetrue</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>falsetrue</div></div></div>'));
 
 		stuckChild();
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><div>falsefalse</div></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><div>falsefalse</div></div></div>'));
 	});
 
 	it('Should keep order of nodes', () => {
@@ -482,7 +482,7 @@ describe('Stateful Component updates', () => {
 		}
 
 		render(<Looper />, container);
-		expect(container.innerHTML).to.equal(innerHTML('<div><ul></ul></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><ul></ul></div>'));
 		setItems([
 			{ value: 'val1', text: 'key1' },
 			{ value: 'val2', text: 'key2' },
@@ -490,13 +490,13 @@ describe('Stateful Component updates', () => {
 			{ value: 'val4', text: 'key4' }
 		]);
 
-		expect(container.innerHTML).to.equal(innerHTML('<div><ul><li><div class="common-root"><div>DIVval1</div></div><span>key1</span></li><li><div class="common-root"><span>SPANval2</span></div><span>key2</span></li><li><div class="common-root"><div>DIVval3</div></div><span>key3</span></li><li><div class="common-root"><span>SPANval4</span></div><span>key4</span></li></ul></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><ul><li><div class="common-root"><div>DIVval1</div></div><span>key1</span></li><li><div class="common-root"><span>SPANval2</span></div><span>key2</span></li><li><div class="common-root"><div>DIVval3</div></div><span>key3</span></li><li><div class="common-root"><span>SPANval4</span></div><span>key4</span></li></ul></div>'));
 
 		setItems([
 			{ value: 'val2', text: 'key2' },
 			{ value: 'val3', text: 'key3' }
 		]);
-		expect(container.innerHTML).to.equal(innerHTML('<div><ul><li><div class="common-root"><div>DIVval2</div></div><span>key2</span></li><li><div class="common-root"><span>SPANval3</span></div><span>key3</span></li></ul></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><ul><li><div class="common-root"><div>DIVval2</div></div><span>key2</span></li><li><div class="common-root"><span>SPANval3</span></div><span>key3</span></li></ul></div>'));
 
 		setItems([
 			{ value: 'val1', text: 'key1' },
@@ -504,7 +504,7 @@ describe('Stateful Component updates', () => {
 			{ value: 'val3', text: 'key3' },
 			{ value: 'val4', text: 'key4' }
 		]);
-		expect(container.innerHTML).to.equal(innerHTML('<div><ul><li><div class="common-root"><div>DIVval1</div></div><span>key1</span></li><li><div class="common-root"><span>SPANval2</span></div><span>key2</span></li><li><div class="common-root"><div>DIVval3</div></div><span>key3</span></li><li><div class="common-root"><span>SPANval4</span></div><span>key4</span></li></ul></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><ul><li><div class="common-root"><div>DIVval1</div></div><span>key1</span></li><li><div class="common-root"><span>SPANval2</span></div><span>key2</span></li><li><div class="common-root"><div>DIVval3</div></div><span>key3</span></li><li><div class="common-root"><span>SPANval4</span></div><span>key4</span></li></ul></div>'));
 	});
 
 	it('Should not crash when patching array to array with hooks', () => {
@@ -538,7 +538,7 @@ describe('Stateful Component updates', () => {
 
 		render(<Stuff />, container);
 		updater(orig);
-		expect(container.innerHTML).to.equal(innerHTML('<div><div><span>1</span></div></div>'));
+		expect(container.innerHTML).toEqual(innerHTML('<div><div><span>1</span></div></div>'));
 
 	});
 

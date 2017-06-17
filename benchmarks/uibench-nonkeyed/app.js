@@ -2,11 +2,13 @@
 	"use strict";
 
 	/* (flags, type, props, children, key, ref, noNormalise) */
-	Inferno.options.recyclingEnabled = true; // Advanced optimisation
+	// Inferno.options.recyclingEnabled = true; // Advanced optimisation
 	var createVNode = Inferno.createVNode;
 	var linkEvent = Inferno.linkEvent;
+	var name = Inferno.version + ' non-keyed';
 
-	uibench.init('Inferno', Inferno.version + ' non-keyed');
+	uibench.init('Inferno', name);
+	document.title = 'Inferno' + name;
 
 	function TreeLeaf(id) {
 		return createVNode(2, 'li', 'TreeLeaf', id + '', null, null, null, true);
@@ -14,7 +16,7 @@
 
 	var shouldDataUpdate = {
 		onComponentShouldUpdate: function (lastProps, nextProps) {
-			return lastProps !== nextProps;
+			return true;
 		}
 	};
 
@@ -37,9 +39,9 @@
 	var lastTreeData;
 
 	function tree(data) {
-		if (data === lastTreeData) {
-			return Inferno.NO_OP;
-		}
+		// if (data === lastTreeData) {
+		// 	return Inferno.NO_OP;
+		// }
 		lastTreeData = data;
 		return createVNode(2, 'div', 'Tree', createVNode(8, TreeNode, null, null, data.root, null, shouldDataUpdate, true), null, null, null, true);
 	}
@@ -55,9 +57,9 @@
 	var lastAnimData;
 
 	function anim(data) {
-		if (data === lastAnimData) {
-			return Inferno.NO_OP;
-		}
+		// if (data === lastAnimData) {
+		// 	return Inferno.NO_OP;
+		// }
 		lastAnimData = data;
 		var items = data.items;
 		var length = items.length;
@@ -101,9 +103,9 @@
 	var lastTableData;
 
 	function table(data) {
-		if (data === lastTableData) {
-			return Inferno.NO_OP;
-		}
+		// if (data === lastTableData) {
+		// 	return Inferno.NO_OP;
+		// }
 		lastTableData = data;
 		var items = data.items;
 		var length = items.length;
@@ -120,9 +122,9 @@
 	var lastMainData;
 
 	function main(data) {
-		if (data === lastMainData) {
-			return Inferno.NO_OP;
-		}
+		// if (data === lastMainData) {
+		// 	return Inferno.NO_OP;
+		// }
 		lastMainData = data;
 		var location = data.location;
 		var section;
@@ -137,12 +139,26 @@
 		return createVNode(2, 'div', 'Main', section, null, null, null, true);
 	}
 
+	var i = 0;
 	document.addEventListener('DOMContentLoaded', function(e) {
 		var container = document.querySelector('#App');
 
 		uibench.run(
 			function(state) {
+			  i++;
+
+			  if (i === 33) {
+			    debugger;
+        }
 				Inferno.render(main(state), container);
+
+			// 	if (state.table && state.table.items && state.table.items) {
+			// 	  var itemsLength = state.table.items.length;
+		//
+			// 	  if (itemsLength !== void 0 && document.querySelectorAll('tr').length !== itemsLength) {
+			// 	    debugger;
+        //   }
+        // }
 			},
 			function(samples) {
 				Inferno.render(

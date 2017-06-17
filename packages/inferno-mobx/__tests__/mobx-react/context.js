@@ -30,8 +30,8 @@
 // 	// 		render: () => null
 // 	// 	}));
 // 	//
-// 	// 	expect(warns.length).to.equal(1);
-// 	// 	expect(warns[0]).to.equal('Mobx observer: Using observer to inject stores is deprecated since 4.0. Use `@inject("store1", "store2") @observer ComponentClass` or `inject("store1", "store2")(observer(componentClass))` instead of `@observer(["store1", "store2"]) ComponentClass`');
+// 	// 	expect(warns.length).toEqual(1);
+// 	// 	expect(warns[0]).toEqual('Mobx observer: Using observer to inject stores is deprecated since 4.0. Use `@inject("store1", "store2") @observer ComponentClass` or `inject("store1", "store2")(observer(componentClass))` instead of `@observer(["store1", "store2"]) ComponentClass`');
 // 	//
 // 	// 	console.warn = w;
 // 	// });
@@ -48,7 +48,7 @@
 //         <B />
 //       </Provider>;
 // 		mount(<A />);
-// 		expect(container.querySelector('div').innerHTML).to.equal('context:bar');
+// 		expect(container.querySelector('div').innerHTML).toEqual('context:bar');
 // 	});
 //
 // 	it('props override context', () => {
@@ -63,7 +63,7 @@
 //         <B />
 //       </Provider>;
 // 		mount(<A />);
-// 		expect(container.querySelector('div').innerHTML).to.equal('context:42');
+// 		expect(container.querySelector('div').innerHTML).toEqual('context:42');
 // 	});
 //
 // 	it('overriding stores is supported', () => {
@@ -87,8 +87,8 @@
 //         </div>
 //       </Provider>;
 // 		const wrapper = mount(<A />);
-// 		expect(wrapper.find('span').text()).to.equal('context:bar1337');
-// 		expect(wrapper.find('section').text()).to.equal('context:421337');
+// 		expect(wrapper.find('span').text()).toEqual('context:bar1337');
+// 		expect(wrapper.find('section').text()).toEqual('context:421337');
 // 	});
 //
 // 	it('store should be available', () => {

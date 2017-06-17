@@ -26,12 +26,12 @@
 // 			})
 // 		]), container);
 //
-// 		expect(container.firstChild.getAttribute('viewBox')).to.equal('0 0 1024 1024');
-// 		expect(container.firstChild.getAttribute('height')).to.equal('16');
-// 		expect(container.firstChild.getAttribute('width')).to.equal('16');
-// 		expect(container.firstChild.firstChild.tagName).to.equal('stop');
-// 		expect(container.firstChild.firstChild.getAttribute('stop-color')).to.equal('white');
-// 		expect(container.firstChild.firstChild.getAttribute('stop-opacity')).to.equal('0.5');
+// 		expect(container.firstChild.getAttribute('viewBox')).toEqual('0 0 1024 1024');
+// 		expect(container.firstChild.getAttribute('height')).toEqual('16');
+// 		expect(container.firstChild.getAttribute('width')).toEqual('16');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('stop');
+// 		expect(container.firstChild.firstChild.getAttribute('stop-color')).toEqual('white');
+// 		expect(container.firstChild.firstChild.getAttribute('stop-opacity')).toEqual('0.5');
 // 	});
 //
 // 	it('Should work with namespace svg attributes', () => {
@@ -41,7 +41,7 @@
 // 			})
 // 		]), container);
 //
-// 		expect(container.firstChild.firstChild.tagName).to.equal('image');
-// 		expect(container.firstChild.firstChild.getAttribute('xlink:href')).to.equal('http://i.imgur.com/w7GCRPb.png');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('image');
+// 		expect(container.firstChild.firstChild.getAttribute('xlink:href')).toEqual('http://i.imgur.com/w7GCRPb.png');
 // 	});
 // });

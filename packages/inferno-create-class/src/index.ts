@@ -1,3 +1,7 @@
+/**
+ * @module Inferno-Create-Class
+ */ /** TypeDoc Comment */
+
 import Component, { ComponentLifecycle } from 'inferno-component';
 import { isFunction, isNullOrUndef, isObject, isUndefined, throwError } from 'inferno-shared';
 
@@ -61,7 +65,7 @@ function extend(base, props) {
 	return base;
 }
 
-function bindAll(ctx: Component) {
+function bindAll(ctx: Component<any , any>) {
 	for (const i in ctx) {
 		const v = ctx[ i ];
 		if (typeof v === 'function' && !v.__bound && !AUTOBIND_BLACKLIST.has(i)) {

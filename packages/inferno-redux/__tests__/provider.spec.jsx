@@ -126,12 +126,12 @@
 // 		_render();
 // 		store.subscribe(() => _render());
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><div class="basic"><a id="dispatch"><span>Hello Tom</span></a></div><div class="basic2">You\'re a cat!</div></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><div class="basic"><a id="dispatch"><span>Hello Tom</span></a></div><div class="basic2">You\'re a cat!</div></div>'));
 //
 // 		const link = container.querySelector('#dispatch');
 // 		link.click();
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div><div class="basic"><a id="dispatch"><span>Hello Jerry</span></a></div><div class="basic2">You\'re a mouse!</div></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div><div class="basic"><a id="dispatch"><span>Hello Jerry</span></a></div><div class="basic2">You\'re a mouse!</div></div>'));
 // 	});
 //
 // 	it('should work with routing', () => {
@@ -161,12 +161,12 @@
 // 			_render(state.name === 'Tom' ? '/' : '/next');
 // 		});
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div class="basic"><a id="dispatch"><span>Hello Tom</span></a></div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div class="basic"><a id="dispatch"><span>Hello Tom</span></a></div>'));
 //
 // 		const link = container.querySelector('#dispatch');
 // 		link.click();
 //
-// 		expect(container.innerHTML).to.equal(innerHTML('<div class="basic2">You\'re a mouse!</div>'));
+// 		expect(container.innerHTML).toEqual(innerHTML('<div class="basic2">You\'re a mouse!</div>'));
 // 	});
 //
 // 	it('should render the example correctly', () => {

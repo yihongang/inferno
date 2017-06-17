@@ -1,4 +1,8 @@
-import { VNode } from 'inferno';
+/**
+ * @module Inferno-Router
+ */ /** TypeDoc Comment */
+
+import { IVNode } from 'inferno';
 import Component from 'inferno-component';
 import createElement from 'inferno-create-element';
 import { isArray } from 'inferno-shared';
@@ -87,7 +91,7 @@ export default class Route extends Component<IRouteProps, any> {
 		this.onLeave(this.props.path !== nextProps.path);
 	}
 
-	public render(_args: IRouteProps): VNode|null {
+	public render(_args: IRouteProps): IVNode|null {
 		const { component, children } = _args;
 		const props = rest(_args, [ 'component', 'children', 'path', 'getComponent' ]);
 

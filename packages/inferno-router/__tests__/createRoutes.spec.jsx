@@ -45,6 +45,6 @@
 //
 // describe('Router #createRoutes', () => {
 // 	it('it should parse route configuration', () => {
-// 		expect(JSON.stringify(createRoutes(routeConfig)[ 0 ])).to.equal(JSON.stringify(expectedResult));
+// 		expect(JSON.stringify(createRoutes(routeConfig)[ 0 ])).toEqual(JSON.stringify(expectedResult));
 // 	});
 // });

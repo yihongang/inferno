@@ -22,7 +22,7 @@
 //
 // export const t = {
 // 	equal(a, b, msg) {
-// 		expect(a).to.equal(b, msg);
+// 		expect(a).toEqual(b, msg);
 // 	},
 // 	throws(a, b) {
 // 		expect(a).to.throw(); // Dont validate msg

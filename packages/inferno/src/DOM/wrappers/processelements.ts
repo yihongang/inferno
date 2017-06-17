@@ -1,3 +1,7 @@
+/**
+ * @module Inferno
+ */ /** TypeDoc Comment */
+
 import { isNullOrUndef } from 'inferno-shared';
 import VNodeFlags from 'inferno-vnode-flags';
 import { IVNode } from '../../core/vnode';

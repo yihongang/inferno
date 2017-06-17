@@ -1,4 +1,8 @@
 /**
+ * @module Inferno-Router
+ */ /** TypeDoc Comment */
+
+/**
  * Helper function for parsing plain route configurations
  * based on react-router createRoutes handler.
  *
@@ -37,7 +41,7 @@
  * <Router history={browserHistory} children={routes} />
  */
 
-import { VNode } from 'inferno';
+import { IVNode } from 'inferno';
 import Component from 'inferno-component';
 import createElement from 'inferno-create-element';
 import { isArray } from 'inferno-shared';
@@ -48,16 +52,16 @@ export interface IPlainRouteConfig {
 	component: Component<any, any>;
 	indexRoute?: IPlainRouteConfig;
 	childRoutes?: IPlainRouteConfig | IPlainRouteConfig[];
-	children?: VNode | VNode[];
+	children?: IVNode | IVNode[];
 	onEnter?: IRouteHook;
 	onLeave?: IRouteHook;
 }
 
-const handleIndexRoute = (indexRouteNode: IPlainRouteConfig): VNode => createElement(Route, indexRouteNode);
-const handleChildRoute = (childRouteNode: IPlainRouteConfig): VNode => handleRouteNode(childRouteNode);
-const handleChildRoutes = (childRouteNodes: IPlainRouteConfig[]): VNode[] => childRouteNodes.map(handleChildRoute);
+const handleIndexRoute = (indexRouteNode: IPlainRouteConfig): IVNode => createElement(Route, indexRouteNode);
+const handleChildRoute = (childRouteNode: IPlainRouteConfig): IVNode => handleRouteNode(childRouteNode);
+const handleChildRoutes = (childRouteNodes: IPlainRouteConfig[]): IVNode[] => childRouteNodes.map(handleChildRoute);
 
-function handleRouteNode(routeConfigNode: IPlainRouteConfig): VNode {
+function handleRouteNode(routeConfigNode: IPlainRouteConfig): IVNode {
 
 	if (routeConfigNode.indexRoute && !routeConfigNode.childRoutes) {
 		return createElement(Route, routeConfigNode);
@@ -98,4 +102,4 @@ function handleRouteNode(routeConfigNode: IPlainRouteConfig): VNode {
 	return createElement(Route, node);
 }
 
-export default (routeConfig: IPlainRouteConfig[]): VNode[] => routeConfig.map(handleRouteNode);
+export default (routeConfig: IPlainRouteConfig[]): IVNode[] => routeConfig.map(handleRouteNode);

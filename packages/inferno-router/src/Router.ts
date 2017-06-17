@@ -1,4 +1,8 @@
-import { createVNode, VNode } from 'inferno';
+/**
+ * @module Inferno-Router
+ */ /** TypeDoc Comment */
+
+import { createVNode, IVNode } from 'inferno';
 import Component from 'inferno-component';
 import VNodeFlags from 'inferno-vnode-flags';
 import match, { matchPath } from './match';
@@ -78,7 +82,7 @@ export default class Router extends Component<IRouterProps, any> {
 		);
 	}
 
-	public render(props): VNode|null {
+	public render(props): IVNode|null {
 		const hit = match(props.children, this.state.url);
 
 		if (hit.redirect) {

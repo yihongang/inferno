@@ -49,7 +49,7 @@
 //
 // 			expect(
 // 				innerHTML(container.innerHTML)
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<a class="linkClass linkActiveClass" href="/" style="color: red; font-weight: bold;" title="TestTitle" data-test="DataTest">Link</a>')
 // 			);
 // 		});
@@ -62,7 +62,7 @@
 //
 // 			expect(
 // 				innerHTML(container.innerHTML)
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<a class="linkClass" href="/notactive" style="color: red;">Link</a>')
 // 			);
 // 		});
@@ -74,7 +74,7 @@
 //
 // 			expect(
 // 				innerHTML(container.innerHTML)
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<a class="linkClass" href="/notactive" style="color: red;">Link</a>')
 // 			);
 // 		});
@@ -86,7 +86,7 @@
 //
 // 			expect(
 // 				innerHTML(container.innerHTML)
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<a class="linkActiveClass" href="/" style="font-weight: bold;">Link</a>')
 // 			);
 // 		});
@@ -94,13 +94,13 @@
 // 		it('should route on click', (done) => {
 // 			render(createRoutes(<TestComponent/>), container);
 //
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><a href="/test">Link</a><a href="/">IndexLink</a></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><a href="/test">Link</a><a href="/">IndexLink</a></div>'));
 //
 // 			const link = container.querySelector('a[href="/test"]');
 // 			clickOnLink(link);
 //
 // 			requestAnimationFrame(() => {
-// 				expect(container.innerHTML).to.equal(innerHTML('<div>Good</div>'));
+// 				expect(container.innerHTML).toEqual(innerHTML('<div>Good</div>'));
 // 				done();
 // 			});
 // 		});
@@ -170,7 +170,7 @@
 //
 // 			expect(
 // 				innerHTML(container.innerHTML)
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<a class="linkClass linkActiveClass" href="/" style="font-weight: bold;">IndexLink</a>')
 // 			);
 // 		});
@@ -181,13 +181,13 @@
 // 				<Route path={'/test'} component={ () => <TestComponent/> }/>
 // 			</Router>, container);
 //
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><a href="/test">Link</a><a href="/">IndexLink</a></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><a href="/test">Link</a><a href="/">IndexLink</a></div>'));
 //
 // 			const link = container.querySelector('a[href="/"]');
 // 			clickOnLink(link);
 //
 // 			requestAnimationFrame(() => {
-// 				expect(container.innerHTML).to.equal(innerHTML('<div>Good</div>'));
+// 				expect(container.innerHTML).toEqual(innerHTML('<div>Good</div>'));
 // 				done();
 // 			});
 // 		});
@@ -208,7 +208,7 @@
 // 			clickOnLink(link);
 //
 // 			requestAnimationFrame(() => {
-// 				expect(callbackSpy.calledOnce).to.equal(true);
+// 				expect(callbackSpy.calledOnce).toEqual(true);
 // 				done();
 // 			});
 // 		});
@@ -227,13 +227,13 @@
 //
 // 			requestAnimationFrame(() => {
 // 				// onEnter should have been called the first time we enter the component
-// 				expect(callbackSpy.callCount).to.equal(1);
+// 				expect(callbackSpy.callCount).toEqual(1);
 // 				const link = container.querySelector('a[href="/test"]');
 // 				clickOnLink(link);
 // 				requestAnimationFrame(() => {
 // 					// But shouldn't be called again when clicking on a link that points to the same location
 // 					// as we are in
-// 					expect(callbackSpy.callCount).to.equal(1);
+// 					expect(callbackSpy.callCount).toEqual(1);
 // 					done();
 // 				});
 // 			});
@@ -257,8 +257,8 @@
 //
 // 			requestAnimationFrame(() => {
 // 				const context = callback.getCall(0).args[ 0 ];
-// 				expect(context.props.className).to.equal('test-class');
-// 				expect(context.router.url).to.equal('/');
+// 				expect(context.props.className).toEqual('test-class');
+// 				expect(context.router.url).toEqual('/');
 // 				done();
 // 			});
 // 		});
@@ -283,9 +283,9 @@
 // 				const link = container.querySelector('a[href="/"]');
 // 				clickOnLink(link);
 // 				requestAnimationFrame(() => {
-// 					expect(spy.callCount).to.equal(1);
-// 					expect(spy.getCall(0).args[ 0 ].props.path).to.equal('/');
-// 					expect(spy.getCall(0).args[ 0 ].router.url).to.equal('/');
+// 					expect(spy.callCount).toEqual(1);
+// 					expect(spy.getCall(0).args[ 0 ].props.path).toEqual('/');
+// 					expect(spy.getCall(0).args[ 0 ].router.url).toEqual('/');
 // 					done();
 // 				});
 // 			});
@@ -306,13 +306,13 @@
 // 			);
 //
 // 			requestAnimationFrame(() => {
-// 				expect(container.innerHTML).to.equal('<div><a href="/test">Link</a><a href="/">IndexLink</a></div>');
-// 				expect(spy.getCall(0).args[ 0 ].props.path).to.equal('/test');
+// 				expect(container.innerHTML).toEqual('<div><a href="/test">Link</a><a href="/">IndexLink</a></div>');
+// 				expect(spy.getCall(0).args[ 0 ].props.path).toEqual('/test');
 // 				const link = container.querySelector('a[href="/test"]');
 // 				clickOnLink(link);
 // 				requestAnimationFrame(() => {
 // 					// Should be one because getComponent is called on first render
-// 					expect(spy.callCount).to.equal(1);
+// 					expect(spy.callCount).toEqual(1);
 // 					done();
 // 				});
 // 			});
@@ -340,7 +340,7 @@
 // 			clickOnLink(link);
 //
 // 			requestAnimationFrame(() => {
-// 				expect(container.innerHTML).to.equal('<div><div>async component</div></div>');
+// 				expect(container.innerHTML).toEqual('<div><div>async component</div></div>');
 // 				done();
 // 			});
 // 		});
@@ -355,7 +355,7 @@
 // 				</Router>, container
 // 			);
 //
-// 			expect(innerHTML(container.innerHTML)).to.equal('<div>Good</div>');
+// 			expect(innerHTML(container.innerHTML)).toEqual('<div>Good</div>');
 // 		});
 //
 // 		it('should render /test Route when root Route without component prop used', () => {
@@ -368,7 +368,7 @@
 // 				</Router>, container
 // 			);
 //
-// 			expect(container.innerHTML).to.equal('<div>Good</div>');
+// 			expect(container.innerHTML).toEqual('<div>Good</div>');
 // 		});
 // 	});
 // });

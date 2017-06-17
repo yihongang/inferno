@@ -2,11 +2,11 @@
 	"use strict";
 
 	/* (flags, type, props, children, key, ref, noNormalise) */
-	Inferno.options.recyclingEnabled = true; // Advanced optimisation
+	// Inferno.options.recyclingEnabled = true; // Advanced optimisation
 	var createVNode = Inferno.createVNode;
 	var linkEvent = Inferno.linkEvent;
-
-	uibench.init('Inferno', Inferno.version);
+  uibench.init('Inferno', Inferno.version);
+  document.title = 'Inferno' + Inferno.version;
 
 	function TreeLeaf(id) {
 		return createVNode(2, 'li', 'TreeLeaf', id + '', null, null, null, true);

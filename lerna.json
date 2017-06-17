@@ -1,5 +1,10 @@
 {
   "lerna": "2.0.0-rc.5",
+  "command": {
+    "init": {
+      "exact": true
+    }
+  },
   "packages": [
 		"packages/inferno-vnode-flags",
 		"packages/inferno-shared",
@@ -7,15 +12,5 @@
 		"packages/inferno-component",
 		"packages/inferno-create-element"
   ],
-  "version": "4.0.0",
-  "changelog": {
-    "repo": "infernojs/inferno",
-    "labels": {
-      "greenkeeper": ":nail_care: Dependency upgrades",
-      "maintenance & build tools": ":nail_care: Maintenance",
-      "bug": ":bug: Bugs",
-      "enhancement": ":rocket: Enhancements"
-    },
-    "cacheDir": ".changelog"
-  }
+  "version": "4.0.0"
 }

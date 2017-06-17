@@ -54,7 +54,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><p>Parent Component</p><div>Child is bar Link is <a href="/basename-prefix/foo/test"></a></div></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><p>Parent Component</p><div>Child is bar Link is <a href="/basename-prefix/foo/test"></a></div></div>'));
 // 		});
 // 	});
 // 	describe('#history', () => {
@@ -67,7 +67,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><p>Parent Component</p></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><p>Parent Component</p></div>'));
 // 		});
 // 		it('should render the child and inherit parent (partial URL)', () => {
 // 			render(
@@ -78,7 +78,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><p>Parent Component</p><div>Child is bar</div></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><p>Parent Component</p><div>Child is bar</div></div>'));
 // 		});
 // 		it('should render the child and inherit parent (full URL)', () => {
 // 			render(
@@ -89,7 +89,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><p>Parent Component</p><div>Child is bar</div></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><p>Parent Component</p><div>Child is bar</div></div>'));
 // 		});
 // 		it('should render the child and inherit parent (URL containing percent encoded value)', () => {
 // 			render(
@@ -100,7 +100,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><p>Parent Component</p><div>Child is 100%</div></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><p>Parent Component</p><div>Child is 100%</div></div>'));
 // 		});
 // 		it('should render the child and inherit parent (URL search param containing percent encoded value)', () => {
 // 			render(
@@ -111,7 +111,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><p>Parent Component</p><div>Child is 50%</div></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><p>Parent Component</p><div>Child is 50%</div></div>'));
 // 		});
 // 		it('should render the child with the longest path', () => {
 // 			render(
@@ -122,51 +122,51 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>level-one</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>level-one</div>'));
 // 		});
 // 		it('should render the TestComponent with given paths', () => {
 // 			render(
 // 				createRouterWithSingleRoute('/', '/', TestComponent),
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Test!</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Test!</div>'));
 //
 // 			render(
 // 				createRouterWithSingleRoute('/foo', '/foo', TestComponent),
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Test!</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Test!</div>'));
 //
 // 			render(
 // 				createRouterWithSingleRoute('/foo/bar/yar', '*', TestComponent),
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Test!</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Test!</div>'));
 //
 // 			render(
 // 				createRouterWithSingleRoute('/foo/bar', '/foo/*', TestComponent),
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Test!</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Test!</div>'));
 // 		});
 // 		it('should render the TestComponent with given paths (and params)', () => {
 // 			render(
 // 				createRouterWithSingleRoute('/foo', '/:test', TestComponentParams),
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Test! foo</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Test! foo</div>'));
 //
 // 			render(
 // 				createRouterWithSingleRoute('/foo/bar', '/foo/:test', TestComponentParams),
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Test! bar</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Test! bar</div>'));
 //
 // 			render(
 // 				createRouterWithSingleRoute('/foo/bar/yar', '/foo/bar/:test', TestComponentParams),
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Test! yar</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Test! yar</div>'));
 // 		});
 // 		it('should render the TestComponent with the highest ranked path', () => {
 // 			render(
@@ -177,7 +177,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Good Component</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Good Component</div>'));
 //
 // 			render(
 // 				<Router url={ '/foo/bar/yar' } history={ browserHistory }>
@@ -188,7 +188,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Good Component</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Good Component</div>'));
 // 		});
 // 		it('should render the correct nested route based on the path', () => {
 // 			render(
@@ -199,7 +199,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Good Component</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Good Component</div>'));
 //
 // 			render(
 // 				<Router url={ '/foo' } history={ browserHistory }>
@@ -209,7 +209,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Good Component</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Good Component</div>'));
 //
 // 			render(
 // 				<Router url={ '/foo' } history={ browserHistory }>
@@ -221,7 +221,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><div>Good Component</div></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><div>Good Component</div></div>'));
 // 		});
 // 		it('should render the both components with same params prop passed down', () => {
 // 			render(
@@ -232,7 +232,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><div>Param is bar</div></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><div>Param is bar</div></div>'));
 // 		});
 // 		it('should render the both components with same params prop passed down (route in an array)', () => {
 // 			render(
@@ -244,7 +244,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div><div>Param is bar</div></div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div><div>Param is bar</div></div>'));
 // 		});
 // 		it('Should render IndexRoute correctly', () => {
 // 			render(
@@ -255,7 +255,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Good Component</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Good Component</div>'));
 // 		});
 // 		it('should map through routes with new props', () => {
 // 			render(
@@ -270,7 +270,7 @@
 // 				</Router>,
 // 				container
 // 			);
-// 			expect(container.innerHTML).to.equal(innerHTML('<div>Good Component Clone</div>'));
+// 			expect(container.innerHTML).toEqual(innerHTML('<div>Good Component Clone</div>'));
 // 		});
 // 		it('should fail on empty routes', () => {
 // 			expect(
@@ -293,15 +293,15 @@
 // 			const url = '/';
 // 			const matched = <GoodComponent/>;
 // 			const actual = render(<RouterContext location={ url } matched={ matched }/>, container);
-// 			expect(actual.props.location).to.equal(url);
-// 			expect(actual.props.matched).to.equal(matched);
+// 			expect(actual.props.location).toEqual(url);
+// 			expect(actual.props.matched).toEqual(matched);
 // 		});
 // 		it('should pass when `location` is provided and has percent encoded value', () => {
 // 			const url = '/100%25';
 // 			const matched = <GoodComponent/>;
 // 			const actual = render(<RouterContext location={ url } matched={ matched }/>, container);
-// 			expect(actual.props.location).to.equal(url);
-// 			expect(actual.props.matched).to.equal(matched);
+// 			expect(actual.props.location).toEqual(url);
+// 			expect(actual.props.matched).toEqual(matched);
 // 		});
 // 	});
 // 	describe('#match', () => {
@@ -320,14 +320,14 @@
 //
 // 			const actual = render(<RouterContext {...renderProps}/>, container);
 //
-// 			expect(actual.props.location).to.equal('/');
+// 			expect(actual.props.location).toEqual('/');
 // 			expect(
 // 				actual.props.matched.props.history.location.pathname + actual.props.matched.props.history.location.search
-// 			).to.equal('/search/foo?arg1=50%25');
-// 			expect(actual.props.matched.props.params.searchData).to.equal('foo');
-// 			expect(actual.props.matched.props.params.arg1).to.equal('50%');
-// 			expect(actual.props.matched.props.children.props.component).to.equal(BadComponent);
-// 			expect(actual.props.matched.props.children.props.children.props.component).to.equal(GoodComponent);
+// 			).toEqual('/search/foo?arg1=50%25');
+// 			expect(actual.props.matched.props.params.searchData).toEqual('foo');
+// 			expect(actual.props.matched.props.params.arg1).toEqual('50%');
+// 			expect(actual.props.matched.props.children.props.component).toEqual(BadComponent);
+// 			expect(actual.props.matched.props.children.props.children.props.component).toEqual(GoodComponent);
 // 		});
 // 		it('should find route when url has percent encoded value', () => {
 // 			const url = '/search/100%25?arg1=50%25';
@@ -343,14 +343,14 @@
 //
 // 			const actual = render(<RouterContext {...renderProps}/>, container);
 //
-// 			expect(actual.props.location).to.equal('/');
+// 			expect(actual.props.location).toEqual('/');
 // 			expect(
 // 				actual.props.matched.props.history.location.pathname + actual.props.matched.props.history.location.search
-// 			).to.equal('/search/100%?arg1=50%25');
-// 			expect(actual.props.matched.props.params.searchData).to.equal('100%');
-// 			expect(actual.props.matched.props.params.arg1).to.equal('50%');
-// 			expect(actual.props.matched.props.children.props.component).to.equal(BadComponent);
-// 			expect(actual.props.matched.props.children.props.children.props.component).to.equal(GoodComponent);
+// 			).toEqual('/search/100%?arg1=50%25');
+// 			expect(actual.props.matched.props.params.searchData).toEqual('100%');
+// 			expect(actual.props.matched.props.params.arg1).toEqual('50%');
+// 			expect(actual.props.matched.props.children.props.component).toEqual(BadComponent);
+// 			expect(actual.props.matched.props.children.props.children.props.component).toEqual(GoodComponent);
 // 		});
 // 		it('should find route when url has percent encoded value and multi-search arg', () => {
 // 			const url = '/search/100%25?arg1=50%25&arg1=75%25';
@@ -366,15 +366,15 @@
 //
 // 			const actual = render(<RouterContext {...renderProps}/>, container);
 //
-// 			expect(actual.props.location).to.equal('/');
+// 			expect(actual.props.location).toEqual('/');
 // 			expect(
 // 				actual.props.matched.props.history.location.pathname + actual.props.matched.props.history.location.search
-// 			).to.equal('/search/100%?arg1=50%25&arg1=75%25');
-// 			expect(actual.props.matched.props.params.searchData).to.equal('100%');
-// 			expect(actual.props.matched.props.params.arg1[0]).to.equal('50%');
-// 			expect(actual.props.matched.props.params.arg1[1]).to.equal('75%');
-// 			expect(actual.props.matched.props.children.props.component).to.equal(BadComponent);
-// 			expect(actual.props.matched.props.children.props.children.props.component).to.equal(GoodComponent);
+// 			).toEqual('/search/100%?arg1=50%25&arg1=75%25');
+// 			expect(actual.props.matched.props.params.searchData).toEqual('100%');
+// 			expect(actual.props.matched.props.params.arg1[0]).toEqual('50%');
+// 			expect(actual.props.matched.props.params.arg1[1]).toEqual('75%');
+// 			expect(actual.props.matched.props.children.props.component).toEqual(BadComponent);
+// 			expect(actual.props.matched.props.children.props.children.props.component).toEqual(GoodComponent);
 // 		});
 // 	});
 //

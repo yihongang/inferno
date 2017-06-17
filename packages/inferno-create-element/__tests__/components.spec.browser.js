@@ -53,11 +53,11 @@
 //
 // 		render(template(BasicComponent1, 'abc'), container);
 //
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).to.equal('basic-render');
-// 		expect(container.firstChild.firstChild.tagName).to.equal('DIV');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('SPAN');
-// 		expect(container.firstChild.firstChild.firstChild.innerHTML).to.equal('The title is abc');
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).toEqual('basic-render');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('DIV');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('SPAN');
+// 		expect(container.firstChild.firstChild.firstChild.innerHTML).toEqual('The title is abc');
 //
 // 		expect(() => {
 // 			render(template({}, 'abc'), container);
@@ -69,35 +69,35 @@
 //
 // 		render(template(BasicComponent1, 'abcdef'), container);
 //
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).to.equal('basic-render');
-// 		expect(container.firstChild.firstChild.tagName).to.equal('DIV');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('SPAN');
-// 		expect(container.firstChild.firstChild.firstChild.innerHTML).to.equal('The title is abcdef');
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).toEqual('basic-render');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('DIV');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('SPAN');
+// 		expect(container.firstChild.firstChild.firstChild.innerHTML).toEqual('The title is abcdef');
 //
 // 		render(template(BasicComponent1, null), container);
 //
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).to.equal('basic-render');
-// 		expect(container.firstChild.firstChild.tagName).to.equal('DIV');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('SPAN');
-// 		expect(container.firstChild.firstChild.firstChild.innerHTML).to.equal('The title is ');
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).toEqual('basic-render');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('DIV');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('SPAN');
+// 		expect(container.firstChild.firstChild.firstChild.innerHTML).toEqual('The title is ');
 //
 // 		render(template(BasicComponent1, undefined), container);
 //
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).to.equal('basic-render');
-// 		expect(container.firstChild.firstChild.tagName).to.equal('DIV');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('SPAN');
-// 		expect(container.firstChild.firstChild.firstChild.innerHTML).to.equal('The title is ');
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).toEqual('basic-render');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('DIV');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('SPAN');
+// 		expect(container.firstChild.firstChild.firstChild.innerHTML).toEqual('The title is ');
 //
 // 		render(template(BasicComponent1, '1234'), container);
 //
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).to.equal('basic-render');
-// 		expect(container.firstChild.firstChild.tagName).to.equal('DIV');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('SPAN');
-// 		expect(container.firstChild.firstChild.firstChild.innerHTML).to.equal('The title is 1234');
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).toEqual('basic-render');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('DIV');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('SPAN');
+// 		expect(container.firstChild.firstChild.firstChild.innerHTML).toEqual('The title is 1234');
 // 	});
 //
 // 	class BasicComponent1b extends Component {
@@ -132,23 +132,23 @@
 // 		render(null, container);
 //
 // 		render(template(BasicComponent1b, 'abc', true), container);
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.firstChild.getAttribute('type')).to.equal('checkbox');
-// 		expect(container.firstChild.firstChild.tagName).to.equal('DIV');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('LABEL');
-// 		expect(container.firstChild.firstChild.firstChild.innerHTML).to.equal(innerHTML('<input type="checkbox">The title is abc'));
-// 		expect(container.querySelector('input').checked).to.equal(true);
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.firstChild.getAttribute('type')).toEqual('checkbox');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('DIV');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('LABEL');
+// 		expect(container.firstChild.firstChild.firstChild.innerHTML).toEqual(innerHTML('<input type="checkbox">The title is abc'));
+// 		expect(container.querySelector('input').checked).toEqual(true);
 //
 // 		render(null, container);
 // 		render(null, container);
 //
 // 		render(template(BasicComponent1b, 'abc', null), container);
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.firstChild.getAttribute('type')).to.equal('checkbox');
-// 		expect(container.firstChild.firstChild.tagName).to.equal('DIV');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('LABEL');
-// 		expect(container.firstChild.firstChild.firstChild.innerHTML).to.equal(innerHTML('<input type="checkbox">The title is abc'));
-// 		expect(container.querySelector('input').checked).to.equal(false);
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.firstChild.getAttribute('type')).toEqual('checkbox');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('DIV');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('LABEL');
+// 		expect(container.firstChild.firstChild.firstChild.innerHTML).toEqual(innerHTML('<input type="checkbox">The title is abc'));
+// 		expect(container.querySelector('input').checked).toEqual(false);
 // 	});
 //
 // 	class BasicComponent1c extends Component {
@@ -182,21 +182,21 @@
 // 			);
 //
 // 		render(template(BasicComponent1c, 'abc', true), container);
-// 		expect(container.firstChild.firstChild.tagName).to.equal('DIV');
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('LABEL');
-// 		expect(container.firstChild.firstChild.firstChild.firstChild.tagName).to.equal('INPUT');
-// 		expect(container.firstChild.firstChild.firstChild.firstChild.getAttribute('type')).to.equal('password');
-// 		expect(container.firstChild.firstChild.firstChild.firstChild.disabled).to.equal(false);
-// 		expect(container.firstChild.firstChild.firstChild.textContent).to.equal('The title is abc');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('DIV');
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('LABEL');
+// 		expect(container.firstChild.firstChild.firstChild.firstChild.tagName).toEqual('INPUT');
+// 		expect(container.firstChild.firstChild.firstChild.firstChild.getAttribute('type')).toEqual('password');
+// 		expect(container.firstChild.firstChild.firstChild.firstChild.disabled).toEqual(false);
+// 		expect(container.firstChild.firstChild.firstChild.textContent).toEqual('The title is abc');
 // 		render(template(BasicComponent1c, ['abc'], true), container);
-// 		expect(container.firstChild.firstChild.tagName).to.equal('DIV');
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('LABEL');
-// 		expect(container.firstChild.firstChild.firstChild.firstChild.tagName).to.equal('INPUT');
-// 		expect(container.firstChild.firstChild.firstChild.firstChild.getAttribute('type')).to.equal('password');
-// 		expect(container.firstChild.firstChild.firstChild.firstChild.disabled).to.equal(false);
-// 		expect(container.firstChild.firstChild.firstChild.textContent).to.equal('The title is abc');
+// 		expect(container.firstChild.firstChild.tagName).toEqual('DIV');
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('LABEL');
+// 		expect(container.firstChild.firstChild.firstChild.firstChild.tagName).toEqual('INPUT');
+// 		expect(container.firstChild.firstChild.firstChild.firstChild.getAttribute('type')).toEqual('password');
+// 		expect(container.firstChild.firstChild.firstChild.firstChild.disabled).toEqual(false);
+// 		expect(container.firstChild.firstChild.firstChild.textContent).toEqual('The title is abc');
 // 	});
 //
 // 	class BasicComponent1d extends Component {
@@ -221,24 +221,24 @@
 // 		render(template(BasicComponent1d, 'abc', true), container);
 // 		expect(
 // 			innerHTML(container.innerHTML)
-// 		).to.equal(
+// 		).toEqual(
 // 			innerHTML('<div><div class="basic"><label><input disabled="" type="password">The title is abc</label></div></div>')
 // 		);
 // 		expect(
 // 			container.querySelector('input').disabled
-// 		).to.equal(
+// 		).toEqual(
 // 			true
 // 		);
 //
 // 		render(template(BasicComponent1d, '123', false), container);
 // 		expect(
 // 			innerHTML(container.innerHTML)
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><div class="basic"><label><input type="password">The title is 123</label></div></div>'
 // 		);
 // 		expect(
 // 			container.querySelector('input').disabled
-// 		).to.equal(
+// 		).toEqual(
 // 			false
 // 		);
 // 	});
@@ -253,14 +253,14 @@
 //
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><div class="basic"><span class="basic-render">The title is abc</span></div></div>'
 // 		);
 //
 // 		render(template(BasicComponent1, '123', null), container);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><div class="basic"><span>The title is 123</span></div></div>'
 // 		);
 // 	});
@@ -276,7 +276,7 @@
 //
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><div class="basic"><span>The title is abc</span></div></div>'
 // 		);
 //
@@ -285,7 +285,7 @@
 // 		render(template(BasicComponent1, '123', 'basic-update'), container);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><div class="basic"><span class="basic-update">The title is 123</span></div></div>'
 // 		);
 // 	});
@@ -298,14 +298,14 @@
 //
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div class="basic"><span class="basic-render">The title is abc</span></div>'
 // 		);
 // 		render(template(BasicComponent1, 'abc', 'basic-render'), container);
 //
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div class="basic"><span class="basic-render">The title is abc</span></div>'
 // 		);
 //
@@ -313,7 +313,7 @@
 //
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div class="basic"><span class="[object Object]">The title is abc</span></div>'
 // 		);
 //
@@ -321,7 +321,7 @@
 //
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			''
 // 		);
 // 	});
@@ -359,14 +359,14 @@
 //
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><div class="basic"><span class="basic-render">The title is abc</span><span>I\'m a child</span></div></div>'
 // 		);
 // 		render(template(BasicComponent2, 'abc', 'basic-render'), container);
 //
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><div class="basic"><span class="basic-render">The title is abc</span><span>I\'m a child</span></div></div>'
 // 		);
 //
@@ -375,7 +375,7 @@
 // 		);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><div class="basic"><span class="basic-update">The title is 123</span><span>I\'m a child</span></div></div>'
 // 		);
 // 		render(
@@ -383,7 +383,7 @@
 // 		);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><div class="basic"><span class="basic-update">The title is 1234</span><span>I\'m a child</span></div></div>'
 // 		);
 // 	});
@@ -445,7 +445,7 @@
 //
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				'<div style="color: red; padding-left: 10px;"><span style="color: red; padding-left: 10px;">The title is styled!</span></div>'
 // 			);
 // 			render(template(BasicComponent3, {
@@ -458,7 +458,7 @@
 //
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				'<div style="color: red; padding-left: 10px;"><span style="color: red; padding-left: 10px;">The title is styled!</span></div>'
 // 			);
 //
@@ -471,7 +471,7 @@
 // 			}), container);
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				'<div style="color: blue; padding-right: 20px;"><span style="color: blue; padding-right: 20px;">The title is styled (again)!</span></div>'
 // 			);
 // 		});
@@ -488,7 +488,7 @@
 //
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><span>component!</span><div><div><span>component!</span><div><div><span>component!</span><div></div></div></div></div></div></div>'
 // 		);
 //
@@ -497,41 +497,41 @@
 // 		render(template(BasicComponent2b, BasicComponent2b, BasicComponent2b), container);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><span>component!</span><div><div><span>component!</span><div><div><span>component!</span><div></div></div></div></div></div></div>'
 // 		);
 //
 // 		render(template(BasicComponent2b, BasicComponent2b, BasicComponent2c), container);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><span>component!</span><div><div><span>component!</span><div><div><span>other component!</span><div></div></div></div></div></div></div>'
 // 		);
 //
 // 		render(template(BasicComponent2b, BasicComponent2c, BasicComponent2c), container);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><span>component!</span><div><div><span>other component!</span><div><div><span>other component!</span><div></div></div></div></div></div></div>'
 // 		);
 //
 // 		render(template(BasicComponent2b, BasicComponent2c, BasicComponent2c), container);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><span>component!</span><div><div><span>other component!</span><div><div><span>other component!</span><div></div></div></div></div></div></div>'
 // 		);
 //
 // 		render(template(BasicComponent2c, BasicComponent2c, BasicComponent2c), container);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><span>other component!</span><div><div><span>other component!</span><div><div><span>other component!</span><div></div></div></div></div></div></div>'
 // 		);
 // 		render(template(BasicComponent2c, BasicComponent2c, BasicComponent2c), container);
 // 		expect(
 // 			container.innerHTML
-// 		).to.equal(
+// 		).toEqual(
 // 			'<div><span>other component!</span><div><div><span>other component!</span><div><div><span>other component!</span><div></div></div></div></div></div></div>'
 // 		);
 // 	});
@@ -566,14 +566,14 @@
 // 		render(template(ComponentLifecycleCheck, ComponentLifecycleCheck, ComponentLifecycleCheck), container);
 // 		expect(
 // 			componentWillMountCount
-// 		).to.equal(
+// 		).toEqual(
 // 			3
 // 		);
 //
 // 		render(template(ComponentLifecycleCheck, ComponentLifecycleCheck, ComponentLifecycleCheck), container);
 // 		expect(
 // 			componentWillMountCount
-// 		).to.equal(
+// 		).toEqual(
 // 			3
 // 		);
 // 	});
@@ -596,7 +596,7 @@
 //
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				'<div><div class="basic"><span class="basic-render">The title is component 1</span></div>' + '<div class="basic"><span class="basic-render">The title is component 2</span></div></div>'
 // 			);
 //
@@ -604,7 +604,7 @@
 //
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				'<div><div class="basic"><span class="basic-render">The title is component 1</span></div>' + '<div class="basic"><span class="basic-render">The title is component 2</span></div></div>'
 // 			);
 // 		});
@@ -639,9 +639,9 @@
 // 			createElement(Component, null);
 // 		render(template(ComponentLifecycleCheck), container);
 //
-// 		expect(mountCount).to.equal(1);
+// 		expect(mountCount).toEqual(1);
 // 		render(null, container);
-// 		expect(unmountCount).to.equal(1);
+// 		expect(unmountCount).toEqual(1);
 // 	});
 //
 // 	it('should mount and unmount a basic component #2', () => {
@@ -668,13 +668,13 @@
 // 		unmountCount = 0;
 //
 // 		render(createElement(ComponentLifecycleCheck, null), container);
-// 		expect(mountCount).to.equal(1);
+// 		expect(mountCount).toEqual(1);
 // 		render(null, container);
-// 		expect(unmountCount).to.equal(1);
+// 		expect(unmountCount).toEqual(1);
 // 		render(createElement(ComponentLifecycleCheck, null), container);
-// 		expect(mountCount).to.equal(2);
+// 		expect(mountCount).toEqual(2);
 // 		render(null, container);
-// 		expect(unmountCount).to.equal(2);
+// 		expect(unmountCount).toEqual(2);
 // 	});
 //
 // 	describe('state changes should trigger all lifecycle events for an update', () => {
@@ -716,10 +716,10 @@
 // 		});
 //
 // 		it('componentWillMountCount to have fired once', () => {
-// 			expect(componentWillMountCount).to.equal(1);
+// 			expect(componentWillMountCount).toEqual(1);
 // 		});
 // 		it('the element in the component should show the new state', () => {
-// 			expect(container.innerHTML).to.equal(
+// 			expect(container.innerHTML).toEqual(
 // 				'<div><span>1</span></div>'
 // 			);
 // 		});
@@ -785,19 +785,19 @@
 // 		});
 //
 // 		it('componentWillMountCount to have fired once', () => {
-// 			expect(componentWillMountCount).to.equal(1);
+// 			expect(componentWillMountCount).toEqual(1);
 // 		});
 // 		it('shouldComponentUpdateCount to have fired once', () => {
-// 			expect(shouldComponentUpdateCount).to.equal(1);
+// 			expect(shouldComponentUpdateCount).toEqual(1);
 // 		});
 // 		it('componentWillUpdateCount to have fired once', () => {
-// 			expect(componentWillUpdateCount).to.equal(1);
+// 			expect(componentWillUpdateCount).toEqual(1);
 // 		});
 // 		it('componentDidUpdateCount to have fired once', () => {
-// 			expect(componentDidUpdateCount).to.equal(1);
+// 			expect(componentDidUpdateCount).toEqual(1);
 // 		});
 // 		it('the element in the component should show the new state', () => {
-// 			expect(container.innerHTML).to.equal(
+// 			expect(container.innerHTML).toEqual(
 // 				'<div><span>1</span></div>'
 // 			);
 // 		});
@@ -821,11 +821,11 @@
 //
 // 		it('Initial render (creation)', () => {
 // 			render(createElement(ConditionalComponent, { condition: true }), container);
-// 			expect(container.innerHTML).to.equal(
+// 			expect(container.innerHTML).toEqual(
 // 				'<div><h1>BIG</h1><p>test</p></div>'
 // 			);
 // 			render(createElement(ConditionalComponent, { condition: false }), container);
-// 			expect(container.innerHTML).to.equal(
+// 			expect(container.innerHTML).toEqual(
 // 				'<div><h2>small</h2><p>test</p></div>'
 // 			);
 // 		});
@@ -870,15 +870,15 @@
 //
 // 		it('Initial render (creation)', () => {
 // 			render(tpl1546018623(ValueComponent), container);
-// 			expect(container.innerHTML).to.equal(
+// 			expect(container.innerHTML).toEqual(
 // 				'<ul class="login-organizationlist"><li>test1</li><li>test2</li><li>test3</li><li>test4</li><li>test5</li><li>test6</li></ul>'
 // 			);
 // 			render(tpl1546018623(ValueComponent), container);
-// 			expect(container.innerHTML).to.equal(
+// 			expect(container.innerHTML).toEqual(
 // 				'<ul class="login-organizationlist"><li>test1</li><li>test2</li><li>test3</li><li>test4</li><li>test5</li><li>test6</li></ul>'
 // 			);
 // 			render(tpl1546018623(ValueComponent), container);
-// 			expect(container.innerHTML).to.equal(
+// 			expect(container.innerHTML).toEqual(
 // 				'<ul class="login-organizationlist"><li>test1</li><li>test2</li><li>test3</li><li>test4</li><li>test5</li><li>test6</li></ul>'
 // 			);
 // 		});
@@ -913,32 +913,32 @@
 // 		;
 //
 // 		render(template(BasicStatelessComponent1, 'abc'), container);
-// 		expect(container.firstChild.childNodes.length).to.equal(1);
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).to.equal('Hello, World!');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('SPAN');
-// 		expect(container.firstChild.firstChild.firstChild.textContent).to.equal('The title is abc');
+// 		expect(container.firstChild.childNodes.length).toEqual(1);
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).toEqual('Hello, World!');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('SPAN');
+// 		expect(container.firstChild.firstChild.firstChild.textContent).toEqual('The title is abc');
 // 		render(template(BasicStatelessComponent1, null), container);
 // 		render(template(BasicStatelessComponent1, 'abc'), container);
-// 		expect(container.firstChild.childNodes.length).to.equal(1);
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).to.equal('Hello, World!');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('SPAN');
-// 		expect(container.firstChild.firstChild.firstChild.textContent).to.equal('The title is abc');
+// 		expect(container.firstChild.childNodes.length).toEqual(1);
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).toEqual('Hello, World!');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('SPAN');
+// 		expect(container.firstChild.firstChild.firstChild.textContent).toEqual('The title is abc');
 //
 // 		render(template(BasicStatelessComponent1), container);
-// 		expect(container.firstChild.childNodes.length).to.equal(1);
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).to.equal('Hello, World!');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('SPAN');
-// 		expect(container.firstChild.firstChild.firstChild.textContent).to.equal('The title is ');
+// 		expect(container.firstChild.childNodes.length).toEqual(1);
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).toEqual('Hello, World!');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('SPAN');
+// 		expect(container.firstChild.firstChild.firstChild.textContent).toEqual('The title is ');
 //
 // 		render(template(BasicStatelessComponent1), container);
-// 		expect(container.firstChild.childNodes.length).to.equal(1);
-// 		expect(container.firstChild.firstChild.getAttribute('class')).to.equal('basic');
-// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).to.equal('Hello, World!');
-// 		expect(container.firstChild.firstChild.firstChild.tagName).to.equal('SPAN');
-// 		expect(container.firstChild.firstChild.firstChild.textContent).to.equal('The title is ');
+// 		expect(container.firstChild.childNodes.length).toEqual(1);
+// 		expect(container.firstChild.firstChild.getAttribute('class')).toEqual('basic');
+// 		expect(container.firstChild.firstChild.firstChild.getAttribute('class')).toEqual('Hello, World!');
+// 		expect(container.firstChild.firstChild.firstChild.tagName).toEqual('SPAN');
+// 		expect(container.firstChild.firstChild.firstChild.textContent).toEqual('The title is ');
 // 	});
 //
 // 	describe('should render a component with a conditional state item', () => {
@@ -988,7 +988,7 @@
 // 			render(tpl79713834(TEST), container);
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<div class="login-view bg-visma"><div><button>Make visible</button></div></div>')
 // 			);
 // 		});
@@ -1003,7 +1003,7 @@
 // 			requestAnimationFrame(() => {
 // 				expect(
 // 					container.innerHTML
-// 				).to.equal(
+// 				).toEqual(
 // 					innerHTML('<div class="login-view bg-visma"><div>VISIBLE</div>')
 // 				);
 // 				done();
@@ -1053,7 +1053,7 @@
 //
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<div class="login-view"><button>ADD</button><br><div><h1>SS</h1></div><div><h1>SS1</h1></div></div>')
 // 			);
 //
@@ -1061,7 +1061,7 @@
 //
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<div class="login-view"><button>ADD</button><br><div><h1>SS</h1></div><div><h1>SS1</h1></div></div>')
 // 			);
 // 		});
@@ -1088,7 +1088,7 @@
 // 			render(view(true), container);
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<div><div>Foo</div></div>')
 // 			);
 // 		});
@@ -1097,7 +1097,7 @@
 // 			render(view(false), container);
 // 			expect(
 // 				container.innerHTML
-// 			).to.equal(
+// 			).toEqual(
 // 				innerHTML('<div><div>BarQux</div></div>')
 // 			);
 // 		});

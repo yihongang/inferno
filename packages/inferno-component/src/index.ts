@@ -1,3 +1,7 @@
+/**
+ * @module Inferno-Component
+ */ /** TypeDoc Comment */
+
 // Make sure u use EMPTY_OBJ from 'inferno', otherwise it'll be a different reference
 import { EMPTY_OBJ, IFiber, Fiber, mount, internal_DOMNodeMap, internal_patch, options, Props, IVNode} from 'inferno';
 import {
@@ -11,6 +15,7 @@ import {
 	throwError,
 	isInvalid
 } from 'inferno-shared';
+import {next} from "most-subject";
 
 const C = options.component;
 
@@ -245,19 +250,21 @@ function handleUpdate(component: Component<any, any>, nextState, nextProps, cont
 
 		// lastVNode: nextVNode: parentDom, lifecycle, context, isSVG, isRecycling
 
-		if (isInvalid(componentRootFiber.input)) {
-			// fiber, input, parentDom, lifecycle, context, isSVG
-			mount(componentRootFiber, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG);
-		} else {
-			internal_patch(componentRootFiber, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG, isRecycling);
-		}
+    if (!isInvalid(nextInput)) {
+      if (isInvalid(componentRootFiber.input)) {
+        // fiber, input, parentDom, lifecycle, context, isSVG
+        mount(componentRootFiber, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG);
+      } else {
+        internal_patch(componentRootFiber, nextInput as IVNode, parentDom as Element, lifeCycle, childContext, isSVG, isRecycling);
+      }
+    }
 
 		if (fromSetState) {
 			lifeCycle.trigger();
 		}
 
 		if (hasComponentDidUpdateIsFunction) {
-			component.componentDidUpdate(prevProps, prevState, context);
+      (component.componentDidUpdate as Function)(prevProps, prevState, context);
 		}
 		if (isFunction(options.afterUpdate)) {
 			// options.afterUpdate(vNode);

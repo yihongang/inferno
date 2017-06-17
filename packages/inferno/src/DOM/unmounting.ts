@@ -69,6 +69,8 @@ export function unmountComponent(fiber: IFiber, parentDom: Element|null, lifecyc
 			}
 		}
 	}
+
+  fiber.children = null;
 	if (parentDom && !isNull(dom)) {
 		// let lastInput = instance._lastInput;
 		//
@@ -128,6 +130,7 @@ export function unmountElement(fiber: IFiber, parentDom: Element|null, lifecycle
 	if (!isNull(parentDom)) {
 		removeChild(parentDom, dom);
 	}
+  fiber.children = null;
 	if (options.recyclingEnabled && (parentDom || canRecycle)) {
 		pool(vNode, elementPools);
 	}
