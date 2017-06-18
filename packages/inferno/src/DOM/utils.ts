@@ -130,7 +130,6 @@ Object.defineProperty(G, 'INFRender', {
   writable: true
 });
 
-export function isKeyed(lastChildren: IVNode[], nextChildren: IVNode[]): boolean {
-	return nextChildren.length > 0 && !isNullOrUndef(nextChildren[0]) && !isNullOrUndef(nextChildren[0].key)
-		&& lastChildren.length > 0 && !isNullOrUndef(lastChildren[0]) && !isNullOrUndef(lastChildren[0].key);
+export function isKeyed(nextChildren: IVNode[]): boolean {
+	return nextChildren.length > 0 && !isNullOrUndef(nextChildren[0]) && !isNullOrUndef(nextChildren[0].key);
 }

@@ -17,7 +17,7 @@ import { patchProp } from './patching';
 import { recycleComponent, recycleElement } from './recycling';
 import { appendChild, documentCreateElement, EMPTY_OBJ, handleComponentInput, setTextContent } from './utils';
 import { isControlledFormElement, processElement } from './wrappers/processelements';
-import { IFiber, Fiber } from '../core/fiber';
+import {IFiber, Fiber, FiberFlags} from '../core/fiber';
 import { componentToDOMNodeMap } from './rendering';
 
 export function mount(fiber: IFiber, input: IVNode|string|number, parentDom: Element|null, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
@@ -84,7 +84,7 @@ export function mountElement(fiber: IFiber, vNode: IVNode, parentDom: Element|nu
 			const childrenIsSVG = isSVG === true && vNode.type !== 'foreignObject';
 			if (isArray(children)) {
 				// Array
-				mountArrayChildren(fiber, children, dom, lifecycle, context, childrenIsSVG, '');
+				mountArrayChildren(fiber, children, dom, lifecycle, context, childrenIsSVG, '', false, 0);
 			} else {
 				// VNode
 				const childFiber = new Fiber(children as IVNode, '0');
@@ -129,7 +129,8 @@ export function mountElement(fiber: IFiber, vNode: IVNode, parentDom: Element|nu
 	return dom;
 }
 
-export function mountArrayChildren(fiber, children, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, prefix: string, itsKeyed: boolean) {
+// TODO: Remove recursion
+export function mountArrayChildren(fiber, children, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, prefix: string, isKeyed: boolean, counter: number) {
 	for (let i = 0, len = children.length; i < len; i++) {
 		const child = children[ i ];
 
@@ -137,14 +138,22 @@ export function mountArrayChildren(fiber, children, dom: Element, lifecycle: Lif
 		if (!isInvalid(child)) {
 			if (isArray(child)) {
 				// TODO: Add warning about nested arrays?
-				mountArrayChildren(fiber, child, dom, lifecycle, context, isSVG, itsKeyed ? '' : prefix + (i + 1) + '.', itsKeyed);
+				mountArrayChildren(fiber, child, dom, lifecycle, context, isSVG, isKeyed ? '' : prefix + (i + 1) + '.', isKeyed, counter);
 			} else {
         if (fiber.children === null) {
           fiber.children = [];
-          itsKeyed = isObject(child) ? !isNullOrUndef((child as IVNode).key) : false;
+          isKeyed = isObject(child) ? !isNullOrUndef((child as IVNode).key) : false;
+          fiber.flags |= (isKeyed ? FiberFlags.HasKeyedChildren : FiberFlags.HasNonKeydChildren);
+          if (isKeyed) {
+            fiber.childrenKeys = new Map();
+          }
         }
-				const childFiber = new Fiber(child, itsKeyed ? child.key : prefix + (i + 1));
+				const childFiber = new Fiber(child, isKeyed ? child.key : prefix + (i + 1));
+
 				fiber.children.push(childFiber);
+				if (isKeyed) {
+				  fiber.childrenKeys.set(child.key, counter++);
+        }
 				mount(childFiber, child, dom, lifecycle, context, isSVG);
 			}
 		}
