@@ -170,7 +170,7 @@ describe("keyed-nodes", () => {
     expect(container.textContent).toBe("c");
     expect(container.firstChild.childNodes.length).toBe(1);
   });
-  it("should add one key to start", () => {
+  it("should add one key to end", () => {
     render(template(generateKeyNodes(["a", "b", "c"])), container);
     expect(container.textContent).toBe("abc");
     expect(container.firstChild.childNodes.length).toBe(3);
@@ -262,6 +262,7 @@ describe("keyed-nodes", () => {
   it("should move a element forward", () => {
     render(template(generateKeyNodes([1, 2, 3, 4])), container);
     expect(container.firstChild.childNodes.length).toBe(4);
+    //                                2, 3, 1, 4
     render(template(generateKeyNodes([2, 3, 1, 4])), container);
     expect(container.textContent).toBe("2314");
     expect(container.firstChild.childNodes.length).toBe(4);
@@ -1196,7 +1197,9 @@ describe("keyed-nodes", () => {
 
       function gen(item, keys) {
         if (typeof item === "number") {
-          return keys ? createVNode(2, 'i', null, item, null, item) : createVNode(2, 'p', null, item);
+          return keys
+            ? createVNode(2, "p", null, item, null, item)
+            : createVNode(2, "p", null, item);
         } else if (Array.isArray(item)) {
           const result = [];
           for (let i = 0; i < item.length; i++) {

@@ -8,7 +8,7 @@ function generateNodes(array) {
   for (i = 0; i < array.length; i++) {
     id = array[i];
 
-    children.push(createElement("div", { key: String(id) }, id));
+    children.push(createElement("div", {}, id));
   }
   return children;
 }
