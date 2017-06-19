@@ -3,6 +3,7 @@ import curry from "lodash/curry";
 import { map, reduce, scan } from "most";
 import { hold, sync } from "most-subject";
 import Type from "union-type-es";
+
 describe("Functional methods (JSX)", () => {
   let container;
 
@@ -60,12 +61,12 @@ describe("Functional methods (JSX)", () => {
     runApp();
     setTimeout(() => {
       /*
-			 <div style="font-size: 48px; font-family: monospace; width: 100%; text-align: center;">
-			 <button id="decrement">-</button>
-			 <div style="font-size: 48px; font-family: monospace; width: 100%; text-align: center;">0</div>
-			 <button id="increment">+</button>
-			 </div>
-			 */
+       <div style="font-size: 48px; font-family: monospace; width: 100%; text-align: center;">
+       <button id="decrement">-</button>
+       <div style="font-size: 48px; font-family: monospace; width: 100%; text-align: center;">0</div>
+       <button id="increment">+</button>
+       </div>
+       */
       const outerDiv = container.firstChild;
 
       expect(outerDiv.style.fontSize).toEqual("48px");

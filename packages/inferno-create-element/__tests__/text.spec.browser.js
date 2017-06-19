@@ -1,5 +1,6 @@
 import { render } from "inferno";
 import createElement from "inferno-create-element";
+
 describe("Text", () => {
   let container;
 
@@ -140,9 +141,9 @@ describe("Text", () => {
     [
       {
         description:
-          "should create a dynamic text node with " +
-            arg.name +
-            " - text property",
+        "should create a dynamic text node with " +
+        arg.name +
+        " - text property",
         template: text => createElement("div", null, text)
       }
     ].forEach(test => {
@@ -176,9 +177,9 @@ describe("Text", () => {
     [
       {
         description:
-          "should create a dynamic text node with " +
-            arg.name +
-            " - children node text",
+        "should create a dynamic text node with " +
+        arg.name +
+        " - children node text",
         template: text =>
           createElement("div", null, createElement("span", null, text))
       }
@@ -203,9 +204,9 @@ describe("Text", () => {
     [
       {
         description:
-          "should create a dynamic text node with " +
-            arg.name +
-            " - single child with text ",
+        "should create a dynamic text node with " +
+        arg.name +
+        " - single child with text ",
         template: text => createElement("div", null, text)
       }
     ].forEach(test => {
@@ -229,9 +230,9 @@ describe("Text", () => {
     [
       {
         description:
-          "should create a dynamic text node with " +
-            arg.name +
-            " - deep child with text property ",
+        "should create a dynamic text node with " +
+        arg.name +
+        " - deep child with text property ",
         template: text =>
           createElement("div", null, createElement("span", null, text))
       }
@@ -256,9 +257,9 @@ describe("Text", () => {
     [
       {
         description:
-          "should create a dynamic text node with " +
-            arg.name +
-            " - deeper child with text property ",
+        "should create a dynamic text node with " +
+        arg.name +
+        " - deeper child with text property ",
         template: text =>
           createElement(
             "div",

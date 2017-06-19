@@ -83,7 +83,8 @@ function hydrateComponent(
     instance._vNode = vNode;
     const childFiber = fiber.children as IFiber;
     if (!isInvalid(childFiber.input)) {
-      childFiber.dom = hydrate(childFiber as IFiber, childFiber.input, dom, lifecycle, instance._childContext, _isSVG);
+      // TODO: Can input be string?
+      childFiber.dom = hydrate(childFiber as IFiber, childFiber.input as IVNode, dom, lifecycle, instance._childContext, _isSVG) as Element;
     }
 
     mountClassComponentCallbacks(vNode, ref, instance, lifecycle);

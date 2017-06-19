@@ -1,5 +1,6 @@
 import { render } from "inferno";
 import { innerHTML } from "inferno-utils";
+
 describe("createTree - SVG (JSX)", () => {
   let container;
 

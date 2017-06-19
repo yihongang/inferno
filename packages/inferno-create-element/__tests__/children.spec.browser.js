@@ -1,5 +1,6 @@
 import { render } from "inferno";
 import createElement from "inferno-create-element";
+
 describe("Children - (non-JSX)", () => {
   let container;
 

@@ -37,17 +37,13 @@ function renderStylesToString(styles) {
   }
 }
 
-function renderToStringArray() {
-
-}
-
 function renderVNodeToString(vNode, parent, context): string|undefined {
   const flags = vNode.flags;
   const type = vNode.type;
   const props = vNode.props || EMPTY_OBJ;
   const children = vNode.children;
 
-  if (flags & VNodeFlags.Component) {
+  if ((flags & VNodeFlags.Component) > 0) {
     const isClass = flags & VNodeFlags.ComponentClass;
 
     if (isClass) {
@@ -86,7 +82,7 @@ function renderVNodeToString(vNode, parent, context): string|undefined {
       }
       return renderVNodeToString(nextVNode, vNode, context);
     }
-  } else if (flags & VNodeFlags.Element) {
+  } else if ((flags & VNodeFlags.Element) > 0) {
     let renderedString = `<${ type }`;
     let html;
     const isVoidElement = _isVoidElement(type);
@@ -134,7 +130,9 @@ function renderVNodeToString(vNode, parent, context): string|undefined {
     } else {
       renderedString += `>`;
       if (!isInvalid(children)) {
-        if (isArray(children)) {
+        if (isStringOrNumber(children)) {
+          renderedString += children === '' ? ' ' : escapeText(children);
+        } else if (isArray(children)) {
           let i: number = 0;
           let n: number = 0;
           let depth: number = 1;
@@ -174,9 +172,6 @@ function renderVNodeToString(vNode, parent, context): string|undefined {
               n = prevN;
             }
           }
-        } else if (isStringOrNumber(children)) {
-          renderedString += children === '' ? ' ' : escapeText(children);
-          // renderedString += (children === '' ? ' ' : escapeText(children));
         } else {
           renderedString += renderVNodeToString(children, vNode, context);
         }

@@ -14,25 +14,24 @@ export function useStaticRendering(useStaticRendering) {
  * Utilities
  */
 
-function patch(target, funcName, runMixinFirst = false) {
+function patch(target, funcName, runMixinFirst?: boolean) {
 	const base = target[funcName];
 	const mixinFunc = reactiveMixin[funcName];
-	const f = !base
-		? mixinFunc
-		: runMixinFirst === true
-			? function() {
-				mixinFunc.apply(this, arguments);
-				base.apply(this, arguments);
-			}
-			: function() {
-				base.apply(this, arguments);
-				mixinFunc.apply(this, arguments);
-			}
-	;
 
 	// MWE: ideally we freeze here to protect against accidental overwrites in component instances, see #195
 	// ...but that breaks react-hot-loader, see #231...
-	target[funcName] = f;
+	target[funcName] = !base
+    ? mixinFunc
+    : runMixinFirst === true
+      ? function() {
+        mixinFunc.apply(this, arguments);
+        base.apply(this, arguments);
+      }
+      : function() {
+        base.apply(this, arguments);
+        mixinFunc.apply(this, arguments);
+      }
+  ;
 }
 
 function isObjectShallowModified(prev, next) {

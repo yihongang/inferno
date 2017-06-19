@@ -1,5 +1,6 @@
 import { linkEvent, render } from "inferno";
 import Component from "inferno-component";
+
 describe("linkEvent", () => {
   let container;
 

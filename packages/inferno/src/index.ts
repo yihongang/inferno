@@ -4,7 +4,7 @@ import _VNodeFlags from 'inferno-vnode-flags';
 import { IFiber, Fiber } from './core/fiber';
 import { getFlagsForElementVnode, normalize as internal_normalize } from './core/normalization';
 import { options } from './core/options';
-import { createVNode, InfernoChildren, Props, IVNode } from './core/vnode';
+import { createVNode, InfernoChildren, Props, Refs, IVNode } from './core/vnode';
 import { isUnitlessNumber as internal_isUnitlessNumber } from './DOM/constants';
 import { linkEvent } from './DOM/events/linkEvent';
 import { patch as internal_patch } from './DOM/patching';
@@ -61,6 +61,7 @@ export {
 	Fiber,
 	NO_OP,
 	Props,
+  Refs,
 	createRenderer,
 	createVNode,
 	findDOMNode,

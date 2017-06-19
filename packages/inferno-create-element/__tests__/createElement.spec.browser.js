@@ -1,6 +1,7 @@
 import { render } from "inferno";
 import createElement from "inferno-create-element";
 import { innerHTML } from "inferno-utils";
+
 describe("CreateElement (non-JSX)", () => {
   let container;
 
