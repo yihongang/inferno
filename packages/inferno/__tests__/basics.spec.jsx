@@ -30,15 +30,15 @@ describe('Basic JSX', () => {
       );
     }
 
-    render(createVNode(2, 'div', null, [ <Functional>{['1', '2', '3']}</Functional>, <Functional>{['4', '5']}</Functional> ], null, null, null), container);
+    render(createVNode(1, 'div', null, [ <Functional>{['1', '2', '3']}</Functional>, <Functional>{['4', '5']}</Functional> ], null, null, null), container);
 
     expect(innerHTML(container.innerHTML)).toEqual(innerHTML('<div><div>123</div><div>45</div></div>'));
 
-    render(createVNode(2, 'div', null, [ <Functional>{['3', '4', '5']}</Functional>, <Functional>{['6', '7']}</Functional> ], null, null, null), container);
+    render(createVNode(1, 'div', null, [ <Functional>{['3', '4', '5']}</Functional>, <Functional>{['6', '7']}</Functional> ], null, null, null), container);
 
     expect(innerHTML(container.innerHTML)).toEqual(innerHTML('<div><div>345</div><div>67</div></div>'));
 
-    render(createVNode(2, 'div', null, [ <Functional>{['3', '4', '5']}</Functional>, <Functional>{['6', '7']}</Functional>, <Functional>{['3', '4', '5']}</Functional> ], null, null, null), container);
+    render(createVNode(1, 'div', null, [ <Functional>{['3', '4', '5']}</Functional>, <Functional>{['6', '7']}</Functional>, <Functional>{['3', '4', '5']}</Functional> ], null, null, null), container);
 
     expect(innerHTML(container.innerHTML)).toEqual(innerHTML('<div><div>345</div><div>67</div><div>345</div></div>'));
   });

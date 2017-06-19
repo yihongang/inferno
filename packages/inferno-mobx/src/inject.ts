@@ -42,7 +42,7 @@ function createStoreInjector(grabStoresFn, component, injectNames?): any {
 				newProps[key] = additionalProps[key];
 			}
 
-			return createVNode(16 /* Unknown Component */, component, null, null, newProps, props.key, this.storeRef);
+			return createVNode(8 /* Unknown Component */, component, null, null, newProps, props.key, this.storeRef);
 		}
 	}
 

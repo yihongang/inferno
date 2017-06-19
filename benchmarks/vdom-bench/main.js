@@ -19,7 +19,7 @@
 			if (n.children !== null) {
 				children[i] = createVNode(34, 'div', null, renderTree(n.children), null, n.key, null, true);
 			} else {
-				children[i] = createVNode(2, 'span', null, n.key, null, n.key, null, true);
+				children[i] = createVNode(1, 'span', null, n.key, null, n.key, null, true);
 			}
 		}
 		return children;

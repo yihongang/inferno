@@ -19,7 +19,7 @@ describe("rendering routine", () => {
 
   it("Should throw error when trying to render to document.body", () => {
     const div = createVNode(
-      VNodeFlags.Element,
+      VNodeFlags.HtmlElement,
       "div",
       null,
       "1",
@@ -43,8 +43,8 @@ describe("rendering routine", () => {
   });
 
   it("Should create new object when dom exists", () => {
-    const bar = createVNode(2, "div", null, "123", null, null, null, true);
-    const foo = createVNode(2, "div", null, bar, null, null, null, true);
+    const bar = createVNode(1, "div", null, "123", null, null, null, true);
+    const foo = createVNode(1, "div", null, bar, null, null, null, true);
 
     render(foo, container);
     expect(container.innerHTML).toEqual("<div><div>123</div></div>");

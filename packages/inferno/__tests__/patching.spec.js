@@ -1,6 +1,5 @@
 import { createVNode, render } from "inferno";
 import VNodeFlags from "inferno-vnode-flags";
-import { createTextVNode } from "inferno/core/VNodes";
 
 describe("patching routine", () => {
   let container;
@@ -17,16 +16,16 @@ describe("patching routine", () => {
   });
 
   it("Should do nothing if lastVNode strictly equals nextVnode", () => {
-    const yar = createVNode(2, "div", null, "123", null, null, null, true);
-    const bar = createVNode(2, "div", null, "123", null, null, null, true);
-    let foo = createVNode(2, "div", null, [bar, yar], null, null, null, true);
+    const yar = createVNode(VNodeFlags.HtmlElement, "div", null, "123", null, null, null, true);
+    const bar = createVNode(VNodeFlags.HtmlElement, "div", null, "123", null, null, null, true);
+    let foo = createVNode(VNodeFlags.HtmlElement, "div", null, [bar, yar], null, null, null, true);
 
     render(foo, container);
     expect(container.innerHTML).toEqual(
       "<div><div>123</div><div>123</div></div>"
     );
 
-    foo = createVNode(2, "div", null, [bar, yar], null, null, null, true);
+    foo = createVNode(VNodeFlags.HtmlElement, "div", null, [bar, yar], null, null, null, true);
 
     render(foo, container);
     expect(container.innerHTML).toEqual(
@@ -39,7 +38,7 @@ describe("patching routine", () => {
       VNodeFlags.HtmlElement,
       "span",
       null,
-      createTextVNode("a"),
+      createVNode(VNodeFlags.HtmlElement, 'div', null, "a"),
       null,
       null,
       null,
@@ -55,10 +54,10 @@ describe("patching routine", () => {
         e.message.indexOf("Inferno Error: mount() received an object")
       ).not.toEqual(-1);
     }
-    expect(container.innerHTML).toEqual("<span>a</span>");
+    expect(container.innerHTML).toEqual("<span><div>a</div></span>");
 
     render(validNode, container);
-    expect(container.innerHTML).toEqual("<span>a</span>");
+    expect(container.innerHTML).toEqual("<span><div>a</div></span>");
   });
 
   it("Patch operation when nextChildren is NOT Invalid/Array/StringOrNumber/VNode", () => {
@@ -70,7 +69,7 @@ describe("patching routine", () => {
         VNodeFlags.HtmlElement,
         "span",
         null,
-        createTextVNode("a"),
+        createVNode(VNodeFlags.HtmlElement, 'div', null, "a"),
         null,
         null,
         null,
@@ -98,9 +97,9 @@ describe("patching routine", () => {
   });
 
   it("Should not access real DOM property when text does not change", () => {
-    render(createTextVNode("a"), container);
-    expect(container.innerHTML).toEqual("a");
-    render(createTextVNode("a"), container);
-    expect(container.innerHTML).toEqual("a");
+    render(createVNode(VNodeFlags.HtmlElement, 'div', null, "a"), container);
+    expect(container.textContent).toEqual("a");
+    render(createVNode(VNodeFlags.HtmlElement, 'div', null, "a"), container);
+    expect(container.textContent).toEqual("a");
   });
 });

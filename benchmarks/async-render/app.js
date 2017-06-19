@@ -24,7 +24,7 @@
 
 		componentDidMount() {
 			while (this.items.length < 20000) {
-				this.items[this.items.length] = createVNode(2, 'li', null, `${this.items.length}bar`), null, null, null, false;
+				this.items[this.items.length] = createVNode(1, 'li', null, `${this.items.length}bar`), null, null, null, false;
 				this.setState({ items: this.items }, function () {
 					console.log(setStateCounter++);
 				});
@@ -32,7 +32,7 @@
 		}
 
 		render() {
-			return createVNode(2, 'ul', null, this.state.items, null, null, null, false);
+			return createVNode(1, 'ul', null, this.state.items, null, null, null, false);
 		}
 	}
 

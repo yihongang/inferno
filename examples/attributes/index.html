@@ -21,7 +21,7 @@
 
 	function loop() {
 		// Mount
-		render(createVNode(2, 'div', 'foo bar', 'First', {
+		render(createVNode(1, 'div', 'foo bar', 'First', {
 			style: {
 				color: 'red',
 				float: 'left'
@@ -33,7 +33,7 @@
 		// Change
     setTimeout(
     	function () {
-				render(createVNode(2, 'div', 'bar', 'Second', {
+				render(createVNode(1, 'div', 'bar', 'Second', {
 					style: {color: 'blue'},
 					'data-attribute': 'data-value'
 				}), 

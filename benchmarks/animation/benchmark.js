@@ -202,7 +202,7 @@ var N = 200;
 					'left:' + Math.cos(count / 10) * 10 + 'px;' +
 					'background-color:' + 'rgb(0, 0,' + count % 255 + ');';
 
-			boxes.push(createVNode(2, 'div', 'box-view', createVNode(2, 'div', 'box', count % 100, { style: style }, null, null, true), null, null, null, true));
+			boxes.push(createVNode(1, 'div', 'box-view', createVNode(1, 'div', 'box', count % 100, { style: style }, null, null, true), null, null, null, true));
 
 		}
 		return boxes;

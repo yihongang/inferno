@@ -75,7 +75,7 @@
     "babel-core": "^6.25.0",
     "babel-jest": "^20.0.3",
     "babel-loader": "^7.0.0",
-    "babel-plugin-inferno": "^3.2.0",
+    "babel-plugin-inferno": "git+ssh://git@github.com/infernojs/babel-plugin-inferno.git#5ab2196dcaabc258a28c2098d20d1f21bf54835b",
     "babel-plugin-module-resolver": "^2.7.1",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-syntax-object-rest-spread": "^6.13.0",

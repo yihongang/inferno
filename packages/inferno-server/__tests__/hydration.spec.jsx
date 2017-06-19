@@ -259,7 +259,7 @@ describe("SSR Hydration - (JSX)", () => {
 
   it("should rebuild and patch from existing DOM content", () => {
     const container = document.createElement("div");
-    const vNode = createVNode(2, "div", "example", "Hello world!");
+    const vNode = createVNode(1, "div", "example", "Hello world!");
 
     container.innerHTML = "<h1><div>Existing DOM content</div></h1>";
     render(vNode, container);
@@ -270,7 +270,7 @@ describe("SSR Hydration - (JSX)", () => {
 
   it("should rebuild and patch from existing DOM content (whitespace) ", () => {
     const container = document.createElement("div");
-    const vNode = createVNode(2, "div", "example", "Hello world!");
+    const vNode = createVNode(1, "div", "example", "Hello world!");
 
     container.appendChild(document.createTextNode(""));
     container.appendChild(document.createElement("h1"));
@@ -283,9 +283,9 @@ describe("SSR Hydration - (JSX)", () => {
 
   it("should rebuild and patch from existing DOM content #2", () => {
     const container = document.createElement("div");
-    const vNode = createVNode(2, "div", "example", [
-      createVNode(2, "div", null, "Item 1"),
-      createVNode(2, "div", null, "Item 2")
+    const vNode = createVNode(1, "div", "example", [
+      createVNode(1, "div", null, "Item 1"),
+      createVNode(1, "div", null, "Item 2")
     ]);
 
     container.innerHTML =
@@ -298,9 +298,9 @@ describe("SSR Hydration - (JSX)", () => {
 
   it("should rebuild and patch from existing DOM content #3", () => {
     const container = document.createElement("div");
-    const vNode = createVNode(2, "div", "example", [
-      createVNode(2, "div", null, "Item 1"),
-      createVNode(2, "div", null, "Item 2")
+    const vNode = createVNode(1, "div", "example", [
+      createVNode(1, "div", null, "Item 1"),
+      createVNode(1, "div", null, "Item 2")
     ]);
 
     container.innerHTML =

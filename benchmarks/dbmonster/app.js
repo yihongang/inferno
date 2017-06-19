@@ -9,7 +9,7 @@
 
 	var createVNode = Inferno.createVNode;
 
-	var arrow = createVNode(2, 'div', 'arrow', null, null, null, null, true);
+	var arrow = createVNode(1, 'div', 'arrow', null, null, null, null, true);
 
 
 	function renderBenchmark(dbs) {
@@ -21,18 +21,18 @@
 			var lastSample = db.lastSample;
 			var children = new Array(7);
 
-			children[0] = createVNode(2, 'td', 'dbname', db.dbname, null, null, null, true);
-			children[1] = createVNode(2, 'td', 'query-count',
-				createVNode(2, 'span', lastSample.countClassName, lastSample.nbQueries, null, null, null, true),
+			children[0] = createVNode(1, 'td', 'dbname', db.dbname, null, null, null, true);
+			children[1] = createVNode(1, 'td', 'query-count',
+				createVNode(1, 'span', lastSample.countClassName, lastSample.nbQueries, null, null, null, true),
 			null, null, null, true);
 
 			for (var i2 = 0; i2 < 5; i2++) {
 				var query = lastSample.topFiveQueries[i2];
 
 				children[i2 + 2] = createVNode(66, 'td', query.elapsedClassName, [
-					createVNode(2, 'div', 'foo', query.formatElapsed, null, null, null, true),
+					createVNode(1, 'div', 'foo', query.formatElapsed, null, null, null, true),
 					createVNode(66, 'div', 'popover left', [
-						createVNode(2, 'div', 'popover-content', query.query, null, null, null, true),
+						createVNode(1, 'div', 'popover-content', query.query, null, null, null, true),
 						arrow
 					], null, null, null, true)
 				], null, null, null, true);
@@ -41,7 +41,7 @@
 		}
 
 		Inferno.render(
-			createVNode(2, 'table', 'table table-striped latest-data', createVNode(66, 'tbody', null, databases, null, null, null, true), null, null, null, true),
+			createVNode(1, 'table', 'table table-striped latest-data', createVNode(66, 'tbody', null, databases, null, null, null, true), null, null, null, true),
 		elem);
 	}
 
