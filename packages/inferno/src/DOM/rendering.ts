@@ -17,6 +17,7 @@ import { patch } from './patching';
 import { unmount } from './unmounting';
 import {EMPTY_OBJ, G} from './utils';
 import { Fiber, IFiber } from '../core/fiber';
+import {hydrateRoot} from "./hydration";
 
 // rather than use a Map, like we did before, we can use an array here
 // given there shouldn't be THAT many roots on the page, the difference
@@ -105,10 +106,9 @@ export function render(input: IVNode|null|string|undefined, parentDom: Element |
 		}
 		rootFiber  = new Fiber(input, '0') as IFiber; // Stupid typescript... why casting needed???
 		rootFiber.lifeCycle = lifecycle = new Lifecycle();
-		// if (!hydrateRoot(input, parentDom as any, lifecycle)) {
-		// 	mount(input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false);
-		// }
-		mount(rootFiber, input, parentDom as Element, lifecycle, EMPTY_OBJ, false);
+		if (!hydrateRoot(rootFiber, input, parentDom as any, lifecycle)) {
+			mount(rootFiber, input as IVNode, parentDom as Element, lifecycle, EMPTY_OBJ, false);
+		}
 
 		// rootFiber = setRoot(parentDom as any, input, lifecycle);
 		roots.set(parentDom, rootFiber);

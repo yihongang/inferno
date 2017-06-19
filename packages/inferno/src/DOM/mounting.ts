@@ -134,7 +134,6 @@ export function mountArrayChildren(fiber, children, dom: Element, lifecycle: Lif
 	for (let i = 0, len = children.length; i < len; i++) {
 		const child = children[ i ];
 
-		// Verify can string/number be here. might cause de-opt. - Normalization takes care of it.
 		if (!isInvalid(child)) {
 			if (isArray(child)) {
 				// TODO: Add warning about nested arrays?

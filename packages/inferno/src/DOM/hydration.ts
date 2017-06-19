@@ -1,227 +1,332 @@
-// // TODO: Implement hydration
-// import { isArray, isNull, isNullOrUndef, isObject, isStringOrNumber, LifecycleClass, throwError, warning } from 'inferno-shared';
-// import VNodeFlags from 'inferno-vnode-flags';
-// import { options } from '../core/options';
-// import { InfernoChildren, IVNode } from '../core/vnode';
-// import { svgNS } from './constants';
-// import {
-// 	mount,
-// 	mountClassComponentCallbacks,
-// 	mountElement,
-// 	mountFunctionalComponentCallbacks,
-// 	mountRef,
-// 	mountText
-// } from './mounting';
-// import { patchProp } from './patching';
-// import { componentToDOMNodeMap } from './rendering';
-// import { EMPTY_OBJ, handleComponentInput, replaceChild } from './utils';
-// import { isControlledFormElement, processElement } from './wrappers/processelements';
-//
-// function normalizeChildNodes(parentDom) {
-// 	let dom = parentDom.firstChild;
-//
-// 	while (dom) {
-// 		if (dom.nodeType === 8) {
-// 			if (dom.data === '!') {
-// 				const placeholder = document.createTextNode('');
-//
-// 				parentDom.replaceChild(placeholder, dom);
-// 				dom = dom.nextSibling;
-// 			} else {
-// 				const lastDom = dom.previousSibling;
-//
-// 				parentDom.removeChild(dom);
-// 				dom = lastDom || parentDom.firstChild;
-// 			}
-// 		} else {
-// 			dom = dom.nextSibling;
-// 		}
-// 	}
-// }
-//
-// const C = options.component;
-//
-// function hydrateComponent(input: IVNode, dom: Element, lifecycle: LifecycleClass, context, isSVG: boolean, isClass: boolean): Element {
-// 	const type = input.type as Function;
-// 	const ref = input.ref;
-//
-// 	input.dom = dom;
-//
-// 	const props = input.props || EMPTY_OBJ;
-//
-// 	if (isClass) {
-// 		const _isSVG = dom.namespaceURI === svgNS;
-// 		const instance = (C.create as Function)(input, type, props, context, _isSVG, lifecycle);
-// 		const input = instance._lastInput;
-//
-// 		hydrate(input, dom, lifecycle, instance._childContext, _isSVG);
-// 		mountClassComponentCallbacks(input, ref, instance, lifecycle);
-// 		instance._updating = false; // Mount finished allow going sync
-// 		if (options.findDOMNodeEnabled) {
-// 			componentToDOMNodeMap.set(instance, dom);
-// 		}
-// 	} else {
-// 		const renderOutput = type(props, context);
-// 		const input = handleComponentInput(renderOutput, input);
-// 		hydrate(input, dom, lifecycle, context, isSVG);
-// 		input.children = input;
-// 		input.dom = input.dom;
-// 		mountFunctionalComponentCallbacks(ref, dom, lifecycle);
-// 	}
-// 	return dom;
-// }
-//
-// function hydrateElement(input: IVNode, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean): Element {
-// 	const children = input.children;
-// 	const props = input.props;
-// 	const className = input.className;
-// 	const flags = input.flags;
-// 	const ref = input.ref;
-//
-// 	isSVG = isSVG || (flags & VNodeFlags.SvgElement) > 0;
-// 	if (dom.nodeType !== 1 || dom.tagName.toLowerCase() !== input.type) {
-// 		if (process.env.NODE_ENV !== 'production') {
-// 			warning('Inferno hydration: Server-side markup doesn\'t match client-side markup or Initial render target is not empty');
-// 		}
-// 		const newDom = mountElement(input, null, lifecycle, context, isSVG);
-//
-// 		input.dom = newDom;
-// 		replaceChild(dom.parentNode, newDom, dom);
-// 		return newDom as Element;
-// 	}
-// 	input.dom = dom;
-// 	if (children) {
-// 		hydrateChildren(children, dom, lifecycle, context, isSVG);
-// 	} else if (dom.firstChild !== null) {
-// 		dom.textContent = ''; // dom has content, but IVNode has no children remove everything from DOM
-// 	}
-// 	if (props) {
-// 		let hasControlledValue = false;
-// 		const isFormElement = (flags & VNodeFlags.FormElement) > 0;
-// 		if (isFormElement) {
-// 			hasControlledValue = isControlledFormElement(props);
-// 		}
-// 		for (const prop in props) {
-// 			// do not add a hasOwnProperty check here, it affects performance
-// 			patchProp(prop, null, props[ prop ], dom, isSVG, hasControlledValue);
-// 		}
-// 		if (isFormElement) {
-// 			processElement(flags, input, dom, props, true, hasControlledValue);
-// 		}
-// 	}
-// 	if (!isNullOrUndef(className)) {
-// 		if (isSVG) {
-// 			dom.setAttribute('class', className);
-// 		} else {
-// 			dom.className = className;
-// 		}
-// 	} else {
-// 		if (dom.className !== '') {
-// 			dom.removeAttribute('class');
-// 		}
-// 	}
-// 	if (ref) {
-// 		mountRef(dom, ref, lifecycle);
-// 	}
-// 	return dom;
-// }
-//
-// function hydrateChildren(children: InfernoChildren, parentDom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean): void {
-// 	normalizeChildNodes(parentDom);
-// 	let dom = parentDom.firstChild;
-//
-// 	if (isStringOrNumber(children)) {
-// 		if (dom && dom.nodeType === 3) {
-// 			if (dom.nodeValue !== children) {
-// 				dom.nodeValue = children as string;
-// 			}
-// 		} else if (children) {
-// 			parentDom.textContent = children as string;
-// 		}
-// 		dom = (dom as Element).nextSibling;
-// 	} else if (isArray(children)) {
-// 		for (let i = 0, len = (children as Array<string | number | IVNode>).length; i < len; i++) {
-// 			const child = children[ i ];
-//
-// 			if (!isNull(child) && isObject(child)) {
-// 				if (!isNull(dom)) {
-// 					const nextSibling = dom.nextSibling;
-// 					hydrate(child as IVNode, dom as Element, lifecycle, context, isSVG);
-// 					dom = nextSibling;
-// 				} else {
-// 					mount(child as IVNode, parentDom, lifecycle, context, isSVG);
-// 				}
-// 			}
-// 		}
-// 	} else {
-// 		// It's IVNode
-// 		hydrate(children as IVNode, dom as Element, lifecycle, context, isSVG);
-// 		dom = (dom as Element).nextSibling;
-// 	}
-//
-// 	// clear any other DOM nodes, there should be only a single entry for the root
-// 	while (dom) {
-// 		const nextSibling = dom.nextSibling;
-// 		parentDom.removeChild(dom);
-// 		dom = nextSibling;
-// 	}
-// }
-//
-// function hydrateText(input: IVNode, dom: Element): Element {
-// 	if (dom.nodeType !== 3) {
-// 		const newDom = mountText(input, null);
-//
-// 		input.dom = newDom;
-// 		replaceChild(dom.parentNode, newDom, dom);
-// 		return newDom;
-// 	}
-// 	const text = input.children;
-//
-// 	if (dom.nodeValue !== text) {
-// 		dom.nodeValue = text as string;
-// 	}
-// 	input.dom = dom;
-// 	return dom;
-// }
-//
-// function hydrateVoid(input: IVNode, dom: Element): Element {
-// 	input.dom = dom;
-// 	return dom;
-// }
-//
-// function hydrate(input: IVNode, dom: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean) {
-// 	const flags = input.flags;
-//
-// 	if (flags & VNodeFlags.Component) {
-// 		hydrateComponent(input, dom, lifecycle, context, isSVG, (flags & VNodeFlags.ComponentClass) > 0);
-// 	} else if (flags & VNodeFlags.Element) {
-// 		hydrateElement(input, dom, lifecycle, context, isSVG);
-// 	} else if (flags & VNodeFlags.Text) {
-// 		hydrateText(input, dom);
-// 	} else if (flags & VNodeFlags.Void) {
-// 		hydrateVoid(input, dom);
-// 	} else {
-// 		if (process.env.NODE_ENV !== 'production') {
-// 			throwError(`hydrate() expects a valid IVNode, instead it received an object with the type "${ typeof input }".`);
-// 		}
-// 		throwError();
-// 	}
-// }
-//
-// export function hydrateRoot(input, parentDom: Element|null, lifecycle: LifecycleClass) {
-// 	if (!isNull(parentDom)) {
-// 		let dom = (parentDom.firstChild as Element);
-//
-// 		if (!isNull(dom)) {
-// 			hydrate(input, dom, lifecycle, EMPTY_OBJ, false);
-// 			dom = parentDom.firstChild as Element;
-// 			// clear any other DOM nodes, there should be only a single entry for the root
-// 			while (dom = dom.nextSibling as Element) {
-// 				parentDom.removeChild(dom);
-// 			}
-// 			return true;
-// 		}
-// 	}
-//
-// 	return false;
-// }
+/**
+ * @module Inferno
+ */ /** TypeDoc Comment */
+
+import {
+  isArray, isInvalid,
+  isNull,
+  isNullOrUndef,
+  isObject,
+  isStringOrNumber,
+  LifecycleClass,
+  throwError,
+  warning
+} from "inferno-shared";
+import VNodeFlags from "inferno-vnode-flags";
+import { options } from "../core/options";
+import {InfernoChildren, IVNode} from "../core/vnode";
+import { svgNS } from "./constants";
+import {
+  mount,
+  mountClassComponentCallbacks,
+  mountElement,
+  mountFunctionalComponentCallbacks,
+  mountRef,
+  mountText
+} from "./mounting";
+import { patchProp } from "./patching";
+import { componentToDOMNodeMap } from "./rendering";
+import {
+  EMPTY_OBJ, handleComponentInput,
+  replaceChild
+} from "./utils";
+import {
+  isControlledFormElement,
+  processElement
+} from "./wrappers/processelements";
+import {IFiber, Fiber, FiberFlags} from "../core/fiber";
+
+function normalizeChildNodes(parentDom) {
+  let dom = parentDom.firstChild;
+
+  while (dom) {
+    if (dom.nodeType === 8) {
+      if (dom.data === "!") {
+        const placeholder = document.createTextNode("");
+
+        parentDom.replaceChild(placeholder, dom);
+        dom = dom.nextSibling;
+      } else {
+        const lastDom = dom.previousSibling;
+
+        parentDom.removeChild(dom);
+        dom = lastDom || parentDom.firstChild;
+      }
+    } else {
+      dom = dom.nextSibling;
+    }
+  }
+}
+
+const C = options.component;
+
+function hydrateComponent(
+  fiber: IFiber,
+  vNode: IVNode,
+  dom: Element,
+  lifecycle: LifecycleClass,
+  context,
+  isSVG: boolean,
+  isClass: boolean
+): Element {
+  const type = vNode.type;
+  const ref = vNode.ref;
+
+  fiber.dom = dom;
+
+  const props = vNode.props || EMPTY_OBJ;
+
+  if (isClass) {
+    const _isSVG = dom.namespaceURI === svgNS;
+    const instance = (C.create as Function)(fiber, vNode, type, props, context, isSVG, lifecycle);
+    fiber.c = instance;
+    instance._vNode = vNode;
+    const childFiber = fiber.children as IFiber;
+    if (!isInvalid(childFiber.input)) {
+      childFiber.dom = hydrate(childFiber as IFiber, childFiber.input, dom, lifecycle, instance._childContext, _isSVG);
+    }
+
+    mountClassComponentCallbacks(vNode, ref, instance, lifecycle);
+    instance._updating = false; // Mount finished allow going sync
+    if (options.findDOMNodeEnabled) {
+      componentToDOMNodeMap.set(instance, dom);
+    }
+  } else {
+    const renderOutput = (type as Function)(props, context);
+    const input = handleComponentInput(renderOutput);
+
+    if (!isInvalid(input)) {
+      const childFiber = new Fiber(input, '0');
+      fiber.children = childFiber;
+      childFiber.dom = hydrate(childFiber, input, dom, lifecycle, context, isSVG);
+    }
+    // fiber.c = 'stateless';
+    fiber.dom = dom;
+
+    mountFunctionalComponentCallbacks(ref, dom, lifecycle);
+  }
+  return dom;
+}
+
+function hydrateElement(
+  fiber: IFiber,
+  vNode: IVNode,
+  dom: Element,
+  lifecycle: LifecycleClass,
+  context: Object,
+  isSVG: boolean
+): Element {
+  const children = vNode.children;
+  const props = vNode.props;
+  const className = vNode.className;
+  const flags = vNode.flags;
+  const ref = vNode.ref;
+
+  isSVG = isSVG || (flags & VNodeFlags.SvgElement) > 0;
+  if (dom.nodeType !== 1 || dom.tagName.toLowerCase() !== vNode.type) {
+    if (process.env.NODE_ENV !== "production") {
+      warning(
+        "Inferno hydration: Server-side markup doesn't match client-side markup or Initial render target is not empty"
+      );
+    }
+    const newDom = mountElement(fiber, vNode, null, lifecycle, context, isSVG);
+
+    fiber.dom = newDom;
+    replaceChild(dom.parentNode, newDom, dom);
+
+    return newDom as Element;
+  }
+
+  fiber.dom = dom;
+  if (children) {
+    hydrateChildren(fiber, children, dom, lifecycle, context, isSVG);
+  } else if (dom.firstChild !== null) {
+    dom.textContent = ""; // dom has content, but VNode has no children remove everything from DOM
+  }
+  if (props) {
+    let hasControlledValue = false;
+    const isFormElement = (flags & VNodeFlags.FormElement) > 0;
+    if (isFormElement) {
+      hasControlledValue = isControlledFormElement(props);
+    }
+    for (const prop in props) {
+      // do not add a hasOwnProperty check here, it affects performance
+      patchProp(prop, null, props[prop], dom, isSVG, hasControlledValue);
+    }
+    if (isFormElement) {
+      processElement(flags, vNode, dom, props, true, hasControlledValue);
+    }
+  }
+  if (!isNullOrUndef(className)) {
+    if (isSVG) {
+      dom.setAttribute("class", className);
+    } else {
+      dom.className = className;
+    }
+  } else {
+    if (dom.className !== "") {
+      dom.removeAttribute("class");
+    }
+  }
+  if (ref) {
+    mountRef(dom, ref, lifecycle);
+  }
+  return dom;
+}
+
+// TODO: Remove recursion
+export function hydrateArrayChildren(dom, parentFiber, children, parentDOM: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, prefix: string, isKeyed: boolean, counter: number) {
+  for (let i = 0, len = children.length; i < len; i++) {
+    const child = children[ i ];
+
+    if (!isInvalid(child)) {
+      if (isArray(child)) {
+        // TODO: Add warning about nested arrays?
+        dom = hydrateArrayChildren(dom, parentFiber, child, parentDOM, lifecycle, context, isSVG, isKeyed ? '' : prefix + (i + 1) + '.', isKeyed, counter);
+      } else {
+        if (parentFiber.children === null) {
+          parentFiber.children = [];
+          isKeyed = isObject(child) ? !isNullOrUndef((child as IVNode).key) : false;
+          parentFiber.flags = (isKeyed ? FiberFlags.HasKeyedChildren : FiberFlags.HasNonKeydChildren);
+          if (isKeyed) {
+            parentFiber.childrenKeys = new Map();
+          }
+        }
+        const childFiber = new Fiber(child, isKeyed ? child.key : prefix + (i + 1));
+
+        parentFiber.children.push(childFiber);
+        if (isKeyed) {
+          parentFiber.childrenKeys.set(child.key, counter++);
+        }
+
+        if (isNull(dom)) {
+          mount(childFiber, child, parentDOM, lifecycle, context, isSVG);
+        } else {
+          const nextSibling = dom.nextSibling;
+          hydrate(childFiber, child as IVNode, dom as Element, lifecycle, context, isSVG);
+          dom = nextSibling;
+        }
+      }
+    }
+  }
+
+  return dom;
+}
+
+function hydrateChildren(
+  parentFiber: IFiber,
+  children: InfernoChildren,
+  parentDom: Element,
+  lifecycle: LifecycleClass,
+  context: Object,
+  isSVG: boolean
+): void {
+  normalizeChildNodes(parentDom);
+  let dom = parentDom.firstChild;
+
+  if (isStringOrNumber(children)) {
+    if (!isNull(dom) && dom.nodeType === 3) {
+      if (dom.nodeValue !== children) {
+        dom.nodeValue = children as string;
+      }
+    } else if (children) {
+      parentDom.textContent = children as string;
+    }
+    if (!isNull(dom)) {
+      dom = (dom as Element).nextSibling;
+    }
+  } else if (isArray(children)) {
+    dom = hydrateArrayChildren(dom, parentFiber, children, parentDom, lifecycle, context, isSVG, '', (parentFiber.flags & FiberFlags.HasKeyedChildren) > 0, 0)
+  } else {
+    // It's VNode
+    if (!isNull(dom)) {
+      hydrate(parentFiber, children as IVNode, dom as Element, lifecycle, context, isSVG);
+      dom = (dom as Element).nextSibling;
+    } else {
+      mount(parentFiber, children as IVNode, parentDom, lifecycle, context, isSVG);
+    }
+  }
+
+  // clear any other DOM nodes, there should be only a single entry for the root
+  while (dom) {
+    const nextSibling = dom.nextSibling;
+    parentDom.removeChild(dom);
+    dom = nextSibling;
+  }
+}
+
+function hydrateText(fiber: IFiber, text: string, dom: Element): Element {
+  if (dom.nodeType !== 3) {
+    const newDom = mountText(fiber, text, null);
+
+    fiber.dom = newDom;
+    replaceChild(dom.parentNode, newDom, dom);
+    return newDom;
+  }
+
+  if (dom.nodeValue !== text) {
+    dom.nodeValue = text as string;
+  }
+  fiber.dom = dom;
+  return dom;
+}
+
+function hydrate(
+  parentFiber: IFiber,
+  input: IVNode|string,
+  dom: Element,
+  lifecycle: LifecycleClass,
+  context: Object,
+  isSVG: boolean
+) {
+  if (isStringOrNumber(input)) {
+    return hydrateText(parentFiber, input, dom);
+  } else {
+    // It's VNode
+    const flags = input.flags;
+
+    if (flags & VNodeFlags.Component) {
+      return hydrateComponent(
+        parentFiber,
+        input,
+        dom,
+        lifecycle,
+        context,
+        isSVG,
+        (flags & VNodeFlags.ComponentClass) > 0
+      );
+    } else if (flags & VNodeFlags.Element) {
+      return hydrateElement(parentFiber, input, dom, lifecycle, context, isSVG);
+    } else {
+      if (process.env.NODE_ENV !== "production") {
+        throwError(
+          `hydrate() expects a valid VNode, instead it received an object with the type "${typeof input}".`
+        );
+      }
+      throwError();
+    }
+  }
+}
+
+export function hydrateRoot(
+  rootFiber: IFiber,
+  input: IVNode|string,
+  parentDom: Element | null,
+  lifecycle: LifecycleClass
+) {
+  if (!isNull(parentDom)) {
+    let dom = parentDom.firstChild as Element;
+
+    if (!isNull(dom)) {
+      hydrate(rootFiber, input, dom, lifecycle, EMPTY_OBJ, false);
+      dom = parentDom.firstChild as Element;
+      // clear any other DOM nodes, there should be only a single entry for the root
+      while ((dom = dom.nextSibling as Element)) {
+        parentDom.removeChild(dom);
+      }
+      return true;
+    }
+  }
+
+  return false;
+}
