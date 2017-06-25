@@ -1198,8 +1198,8 @@ describe("keyed-nodes", () => {
       function gen(item, keys) {
         if (typeof item === "number") {
           return keys
-            ? createVNode(1, "p", null, item, null, item)
-            : createVNode(1, "p", null, item);
+            ? createVNode(2, "div", null, item, null, item)
+            : createVNode(2, "div", null, item);
         } else if (Array.isArray(item)) {
           const result = [];
           for (let i = 0; i < item.length; i++) {

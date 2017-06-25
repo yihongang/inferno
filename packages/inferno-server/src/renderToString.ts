@@ -2,7 +2,7 @@
  * @module Inferno-Server
  */ /** TypeDoc Comment */
 
-import { EMPTY_OBJ, internal_isUnitlessNumber } from 'inferno';
+import { EMPTY_OBJ } from "inferno";
 import {
   combineFrom,
   isArray,
@@ -11,33 +11,20 @@ import {
   isNull,
   isNullOrUndef,
   isNumber,
-  isStringOrNumber,
+  isString,
   isTrue,
   throwError
-} from 'inferno-shared';
-import VNodeFlags from 'inferno-vnode-flags';
-import { escapeText, isVoidElement as _isVoidElement, toHyphenCase } from './utils';
-import {IVNode} from "../../inferno/src/core/vnode";
+} from "inferno-shared";
+import VNodeFlags from "inferno-vnode-flags";
+import { renderStylesToString } from "./prop-renderers";
+import { escapeText, voidElements } from "./utils";
 
-function renderStylesToString(styles) {
-  if (isStringOrNumber(styles)) {
-    return styles;
-  } else {
-    let renderedString = '';
-
-    for (const styleName in styles) {
-      const value = styles[ styleName ];
-      const px = isNumber(value) && !internal_isUnitlessNumber.has(styleName) ? 'px' : '';
-
-      if (!isNullOrUndef(value)) {
-        renderedString += `${ toHyphenCase(styleName) }:${ escapeText(value) }${ px };`;
-      }
-    }
-    return renderedString;
-  }
-}
-
-function renderVNodeToString(vNode, parent, context): string|undefined {
+function renderVNodeToString(
+  vNode,
+  parent,
+  context,
+  firstChild
+): string | undefined {
   const flags = vNode.flags;
   const type = vNode.type;
   const props = vNode.props || EMPTY_OBJ;
@@ -71,56 +58,58 @@ function renderVNodeToString(vNode, parent, context): string|undefined {
       instance._pendingSetState = false;
       // In case render returns invalid stuff
       if (isInvalid(nextVNode)) {
-        return '<!--!-->';
+        return "<!--!-->";
       }
-      return renderVNodeToString(nextVNode, vNode, context);
+      return renderVNodeToString(nextVNode, vNode, context, true);
     } else {
       const nextVNode = type(props, context);
 
       if (isInvalid(nextVNode)) {
-        return '<!--!-->';
+        return "<!--!-->";
       }
-      return renderVNodeToString(nextVNode, vNode, context);
+      return renderVNodeToString(nextVNode, vNode, context, true);
     }
   } else if ((flags & VNodeFlags.Element) > 0) {
-    let renderedString = `<${ type }`;
+    let renderedString = `<${type}`;
     let html;
-    const isVoidElement = _isVoidElement(type);
+    const isVoidElement = voidElements.has(type);
 
     if (!isNullOrUndef(vNode.className)) {
-      renderedString += ` class="${ escapeText(vNode.className) }"`;
+      renderedString += ` class="${escapeText(vNode.className)}"`;
     }
 
     if (!isNull(props)) {
       for (const prop in props) {
-        const value = props[ prop ];
+        const value = props[prop];
 
-        if (prop === 'dangerouslySetInnerHTML') {
+        if (prop === "dangerouslySetInnerHTML") {
           html = value.__html;
-        } else if (prop === 'style') {
-          renderedString += ` style="${ renderStylesToString(props.style) }"`;
-        } else if (prop === 'children') {
+        } else if (prop === "style") {
+          renderedString += ` style="${renderStylesToString(props.style)}"`;
+        } else if (prop === "children") {
           // Ignore children as prop.
-        } else if (prop === 'defaultValue') {
+        } else if (prop === "defaultValue") {
           // Use default values if normal values are not present
           if (!props.value) {
-            renderedString += ` value="${ escapeText(value) }"`;
+            renderedString += ` value="${escapeText(value)}"`;
           }
-        } else if (prop === 'defaultChecked') {
+        } else if (prop === "defaultChecked") {
           // Use default values if normal values are not present
           if (!props.checked) {
-            renderedString += ` checked="${ value }"`;
+            renderedString += ` checked="${value}"`;
           }
-        } else if (type === 'option' && prop === 'value') {
+        } else if (type === "option" && prop === "value") {
           // Parent value sets children value
           if (value === parent.props.value) {
             renderedString += ` selected`;
           }
         } else {
-          if (isStringOrNumber(value)) {
-            renderedString += ` ${ prop }="${ escapeText(value) }"`;
+          if (isString(value)) {
+            renderedString += ` ${prop}="${escapeText(value)}"`;
+          } else if (isNumber(value)) {
+            renderedString += ` ${prop}="${value}"`;
           } else if (isTrue(value)) {
-            renderedString += ` ${ prop }`;
+            renderedString += ` ${prop}`;
           }
         }
       }
@@ -130,65 +119,49 @@ function renderVNodeToString(vNode, parent, context): string|undefined {
     } else {
       renderedString += `>`;
       if (!isInvalid(children)) {
-        if (isStringOrNumber(children)) {
-          renderedString += children === '' ? ' ' : escapeText(children);
+        if (isString(children)) {
+          renderedString += (firstChild ? "" : "<!---->") + children === "" ? " " : escapeText(children);
+        } else if (isNumber(children)) {
+          renderedString += children + "";
         } else if (isArray(children)) {
-          let i: number = 0;
-          let n: number = 0;
-          let depth: number = 1;
-          let len: number = children.length;
-          let prev: any[]|null = null;
-          let prevLen: number = 0;
-          let iterator: any[]|null = children;
-          let prevN: number = 0;
-          let child: string|number|null|undefined|false|true|IVNode;
-
-          while (depth > 0 || len > n) {
-            while (len > n) {
-              child = (iterator as any[])[n];
-              n++;
-              if (!isInvalid(child)) {
-                if (isStringOrNumber(child)) {
-                  i++;
-                  renderedString += (i === 1 ? '' : '<!---->') + (child === '' ? ' ' : escapeText(child));
-                } else if (isArray(child)) {
-                  depth++;
-                  prevN = n;
-                  prevLen = len;
-                  n = 0;
-                  prev = iterator;
-                  iterator = child;
-                  len = child.length;
-                } else {
-                  i++;
-                  renderedString += renderVNodeToString(child, vNode, context);
-                }
-              }
-            }
-            if (depth > 0) {
-              depth--;
-              len = prevLen;
-              iterator = prev;
-              n = prevN;
+          for (let i = 0, len = children.length; i < len; i++) {
+            const child = children[i];
+            if (isString(child)) {
+              renderedString += child === "" ? " " : escapeText(child);
+            } else if (isNumber(child)) {
+              renderedString += child;
+            } else if (!isInvalid(child)) {
+              renderedString += renderVNodeToString(
+                child,
+                vNode,
+                context,
+                i === 0
+              );
             }
           }
         } else {
-          renderedString += renderVNodeToString(children, vNode, context);
+          renderedString += renderVNodeToString(children, vNode, context, true);
         }
       } else if (html) {
         renderedString += html;
       }
       if (!isVoidElement) {
-        renderedString += `</${ type }>`;
+        renderedString += `</${type}>`;
       }
     }
     return renderedString;
   } else {
-    if (process.env.NODE_ENV !== 'production') {
-      if (typeof vNode === 'object') {
-        throwError(`renderToString() received an object that's not a valid VNode, you should stringify it first. Object: "${ JSON.stringify(vNode) }".`);
+    if (process.env.NODE_ENV !== "production") {
+      if (typeof vNode === "object") {
+        throwError(
+          `renderToString() received an object that's not a valid VNode, you should stringify it first. Object: "${JSON.stringify(
+            vNode
+          )}".`
+        );
       } else {
-        throwError(`renderToString() expects a valid VNode, instead it received an object with the type "${ typeof vNode }".`);
+        throwError(
+          `renderToString() expects a valid VNode, instead it received an object with the type "${typeof vNode}".`
+        );
       }
     }
     throwError();
@@ -196,9 +169,9 @@ function renderVNodeToString(vNode, parent, context): string|undefined {
 }
 
 export default function renderToString(input: any): string {
-  return renderVNodeToString(input, {}, {}) as string;
+  return renderVNodeToString(input, {}, {}, true) as string;
 }
 
 export function renderToStaticMarkup(input: any): string {
-  return renderVNodeToString(input, {}, {}) as string;
+  return renderVNodeToString(input, {}, {}, true) as string;
 }

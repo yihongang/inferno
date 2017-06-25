@@ -6,7 +6,7 @@
     }
   },
   "packages": [
-		"packages/**"
+    "packages/*"
   ],
   "version": "4.0.0"
 }

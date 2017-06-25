@@ -6,6 +6,8 @@ export function createVNode(flags, type, className?, children?, props?, key?, re
 		type,
 		{
 			className,
+      key,
+      ref,
 			...props
 		},
 		children

@@ -2,12 +2,20 @@
  * @module Inferno-Server
  */ /** TypeDoc Comment */
 
-import { combineFrom, isArray, isInvalid, isNullOrUndef, isStringOrNumber, isUndefined } from 'inferno-shared';
-import VNodeFlags from 'inferno-vnode-flags';
-import { Readable } from 'stream';
-import { renderAttributes, renderStyleToString } from './prop-renderers';
-import { escapeText, isVoidElement } from './utils';
-import {IVNode} from "inferno";
+import {
+  combineFrom,
+  isArray,
+  isFunction,
+  isInvalid,
+  isNullOrUndef,
+  isNumber,
+  isString,
+  isStringOrNumber
+} from "inferno-shared";
+import VNodeFlags from "inferno-vnode-flags";
+import { Readable } from "stream";
+import { renderAttributes, renderStylesToString } from "./prop-renderers";
+import { escapeText, voidElements } from "./utils";
 
 const resolvedPromise = Promise.resolve();
 
@@ -28,13 +36,16 @@ export class RenderStream extends Readable {
     }
     this.started = true;
 
-    resolvedPromise.then(() => {
-      return this.renderNode(this.initNode, null, this.staticMarkup);
-    }).then(() => {
-      this.push(null);
-    }).catch((err) => {
-      this.emit('error', err);
-    });
+    resolvedPromise
+      .then(() => {
+        return this.renderNode(this.initNode, null, this.staticMarkup);
+      })
+      .then(() => {
+        this.push(null);
+      })
+      .catch(err => {
+        this.emit("error", err);
+      });
   }
 
   public renderNode(vNode, context, isRoot) {
@@ -43,11 +54,19 @@ export class RenderStream extends Readable {
     } else {
       const flags = vNode.flags;
 
+      if ((flags & VNodeFlags.Component) > 0) {
+        return this.renderComponent(
+          vNode,
+          isRoot,
+          context,
+          flags & VNodeFlags.ComponentClass
+        );
+      }
       if ((flags & VNodeFlags.Element) > 0) {
         return this.renderElement(vNode, isRoot, context);
-      } else if ((flags & VNodeFlags.Component) > 0) {
-        return this.renderComponent(vNode, isRoot, context, flags & VNodeFlags.ComponentClass);
       }
+
+      return this.renderText(vNode);
     }
   }
 
@@ -62,7 +81,7 @@ export class RenderStream extends Readable {
     const instance = new type(props);
     instance._blockSetState = false;
     let childContext;
-    if (!isUndefined(instance.getChildContext)) {
+    if (isFunction(instance.getChildContext)) {
       childContext = instance.getChildContext();
     }
 
@@ -73,51 +92,64 @@ export class RenderStream extends Readable {
 
     // Block setting state - we should render only once, using latest state
     instance._pendingSetState = true;
-    return Promise.resolve(instance.componentWillMount && instance.componentWillMount()).then(() => {
+    return Promise.resolve(
+      instance.componentWillMount && instance.componentWillMount()
+    ).then(() => {
       const node = instance.render();
       instance._pendingSetState = false;
       return this.renderNode(node, context, isRoot);
     });
   }
 
-  public renderChildren(children: string|null|undefined|number|IVNode|Array<string|number|null|undefined|IVNode>, context?: any) {
-    if (isStringOrNumber(children)) {
+  public renderChildren(children: any, context?: any) {
+    if (isString(children)) {
       return this.push(escapeText(children));
     }
-    if (isInvalid(children)) {
+    if (isNumber(children)) {
+      return this.push(escapeText(children + ""));
+    }
+    if (!children) {
       return;
     }
 
-    if (isArray(children)) {
-      return children.reduce((p, child) => {
-        return p.then((insertComment: boolean) => {
-          const isText = isStringOrNumber(child);
-
-          if (isText) {
-            if (insertComment === true) {
-              this.push('<!---->');
-            }
-            this.push(escapeText(child));
-
-            return true;
-          } else if (isArray(child)) {
-            return Promise.resolve(this.renderChildren(child)).then(() => {
-              return true;
-            });
-          } else if (!isInvalid(child)) {
-            return Promise.resolve(this.renderNode(child, context, false)).then(() => false);
-          }
-
-          return false;
-        });
-      }, Promise.resolve(false));
-    } else {
+    const childrenIsArray = isArray(children);
+    if (!childrenIsArray && !isInvalid(children)) {
       return this.renderNode(children, context, false);
     }
+    if (!childrenIsArray) {
+      throw new Error("invalid component");
+    }
+    return children.reduce((p, child) => {
+      return p.then(insertComment => {
+        const isTextOrNumber = isStringOrNumber(child);
+
+        if (isTextOrNumber) {
+          if (insertComment === true) {
+            this.push("<!---->");
+          }
+          if (isString(child)) {
+            this.push(escapeText(child));
+          } else {
+            this.push(child + "");
+          }
+          return true;
+        } else if (isArray(child)) {
+          this.push("<!---->");
+          return Promise.resolve(this.renderChildren(child)).then(() => {
+            this.push("<!--!-->");
+            return true;
+          });
+        } else if (!isInvalid(child)) {
+          return Promise.resolve(this.renderNode(child, context, false)).then(
+            () => false
+          );
+        }
+      });
+    }, Promise.resolve(false));
   }
 
-  public renderText(vNode, isRoot, context) {
-    return resolvedPromise.then((insertComment) => {
+  public renderText(vNode) {
+    return resolvedPromise.then(insertComment => {
       this.push(vNode.children);
       return insertComment;
     });
@@ -129,7 +161,7 @@ export class RenderStream extends Readable {
 
     const outputAttrs = renderAttributes(props);
 
-    let html = '';
+    let html = "";
     const className = vElement.className;
     if (!isNullOrUndef(className)) {
       outputAttrs.push('class="' + escapeText(className) + '"');
@@ -137,7 +169,7 @@ export class RenderStream extends Readable {
     if (props) {
       const style = props.style;
       if (style) {
-        outputAttrs.push('style="' + renderStyleToString(style) + '"');
+        outputAttrs.push('style="' + renderStylesToString(style) + '"');
       }
 
       if (props.dangerouslySetInnerHTML) {
@@ -146,10 +178,12 @@ export class RenderStream extends Readable {
     }
 
     if (isRoot) {
-      outputAttrs.push('data-infernoroot');
+      outputAttrs.push("data-infernoroot");
     }
-    this.push(`<${tag}${outputAttrs.length > 0 ? ' ' + outputAttrs.join(' ') : ''}>`);
-    if (isVoidElement(tag)) {
+    this.push(
+      `<${tag}${outputAttrs.length > 0 ? " " + outputAttrs.join(" ") : ""}>`
+    );
+    if (voidElements.has(tag)) {
       return;
     }
     if (html) {
@@ -157,7 +191,9 @@ export class RenderStream extends Readable {
       this.push(`</${tag}>`);
       return;
     }
-    return Promise.resolve(this.renderChildren(vElement.children, context)).then(() => {
+    return Promise.resolve(
+      this.renderChildren(vElement.children, context)
+    ).then(() => {
       this.push(`</${tag}>`);
     });
   }

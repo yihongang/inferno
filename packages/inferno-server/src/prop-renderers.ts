@@ -2,25 +2,27 @@
  * @module Inferno-Server
  */ /** TypeDoc Comment */
 
-import { internal_isUnitlessNumber } from 'inferno';
-import { isNullOrUndef, isNumber, isStringOrNumber, isTrue } from 'inferno-shared';
-import { escapeText, toHyphenCase } from './utils';
+import { internal_isUnitlessNumber } from "inferno";
+import { isNumber, isString, isTrue } from "inferno-shared";
+import { escapeText, getCssPropertyName } from "./utils";
 
-export function renderStyleToString(style): string|number {
-  if (isStringOrNumber(style)) {
-    return style;
+export function renderStylesToString(styles: string | object): string {
+  if (isString(styles)) {
+    return styles;
   } else {
-    const styles: string[] = [];
+    let renderedString = "";
+    for (const styleName in styles) {
+      const value = styles[styleName];
 
-    for (const styleName in style) {
-      const value = style[ styleName ];
-      const px = isNumber(value) && !internal_isUnitlessNumber.has(styleName) ? 'px' : '';
-
-      if (!isNullOrUndef(value)) {
-        styles.push(`${ toHyphenCase(styleName) }:${ escapeText(value) }${ px };`);
+      if (isString(value)) {
+        renderedString += `${getCssPropertyName(styleName)}${value};`;
+      } else if (isNumber(value)) {
+        renderedString += `${getCssPropertyName(
+          styleName
+        )}${value}${internal_isUnitlessNumber.has(styleName) ? "" : "px"};`;
       }
     }
-    return styles.join();
+    return renderedString;
   }
 }
 
@@ -28,21 +30,25 @@ export function renderAttributes(props): string[] {
   const outputAttrs: string[] = [];
   const propsKeys = (props && Object.keys(props)) || [];
 
-  propsKeys.forEach((propKey, i) => {
-    const value = props[ propKey ];
-    switch ( propKey ) {
-      case 'children':
-      case 'dangerouslySetInnerHTML':
-      case 'style':
-        return;
-      default:
-        if (isStringOrNumber(value)) {
-          outputAttrs.push(escapeText(propKey) + '="' + escapeText(value) + '"');
-        } else if (isTrue(value)) {
-          outputAttrs.push(escapeText(propKey));
-        }
+  for (let i = 0, len = propsKeys.length; i < len; i++) {
+    const prop = propsKeys[i];
+
+    if (
+      prop !== "children" &&
+      prop !== "dangerouslySetInnerHTML" &&
+      prop !== "style"
+    ) {
+      const value = props[prop];
+
+      if (isString(value)) {
+        outputAttrs.push(prop + '="' + escapeText(value) + '"');
+      } else if (isNumber(value)) {
+        outputAttrs.push(prop + '="' + value + '"');
+      } else if (isTrue(value)) {
+        outputAttrs.push(prop);
+      }
     }
-  });
+  }
 
   return outputAttrs;
 }
