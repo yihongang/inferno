@@ -123,7 +123,8 @@ describe("state", () => {
         }
       }
 
-      render(<Example name="World" />, document.getElementById("container"));
+      const node = <Example name="World" />;
+      render(node, document.getElementById("container"));
     });
   });
 });

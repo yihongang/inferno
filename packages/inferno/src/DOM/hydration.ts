@@ -3,7 +3,8 @@
  */ /** TypeDoc Comment */
 
 import {
-  isArray, isInvalid,
+  isArray,
+  isInvalid,
   isNull,
   isNullOrUndef,
   isObject,
@@ -14,7 +15,7 @@ import {
 } from "inferno-shared";
 import VNodeFlags from "inferno-vnode-flags";
 import { options } from "../core/options";
-import {InfernoChildren, IVNode} from "../core/vnode";
+import { InfernoChildren, IVNode } from "../core/vnode";
 import { svgNS } from "./constants";
 import {
   mount,
@@ -26,15 +27,12 @@ import {
 } from "./mounting";
 import { patchProp } from "./patching";
 import { componentToDOMNodeMap } from "./rendering";
-import {
-  EMPTY_OBJ, handleComponentInput,
-  replaceChild
-} from "./utils";
+import { EMPTY_OBJ, handleComponentInput, replaceChild } from "./utils";
 import {
   isControlledFormElement,
   processElement
 } from "./wrappers/processelements";
-import {IFiber, Fiber, FiberFlags} from "../core/fiber";
+import { IFiber, Fiber, FiberFlags } from "../core/fiber";
 
 function normalizeChildNodes(parentDom) {
   let dom = parentDom.firstChild;
@@ -78,13 +76,28 @@ function hydrateComponent(
 
   if (isClass) {
     const _isSVG = dom.namespaceURI === svgNS;
-    const instance = (C.create as Function)(fiber, vNode, type, props, context, isSVG, lifecycle);
+    const instance = (C.create as Function)(
+      fiber,
+      vNode,
+      type,
+      props,
+      context,
+      isSVG,
+      lifecycle
+    );
     fiber.c = instance;
     instance._vNode = vNode;
     const childFiber = fiber.children as IFiber;
     if (!isInvalid(childFiber.input)) {
       // TODO: Can input be string?
-      childFiber.dom = hydrate(childFiber as IFiber, childFiber.input as IVNode, dom, lifecycle, instance._childContext, _isSVG) as Element;
+      childFiber.dom = hydrate(
+        childFiber as IFiber,
+        childFiber.input as IVNode,
+        dom,
+        lifecycle,
+        instance._childContext,
+        _isSVG
+      ) as Element;
     }
 
     mountClassComponentCallbacks(vNode, ref, instance, lifecycle);
@@ -97,9 +110,16 @@ function hydrateComponent(
     const input = handleComponentInput(renderOutput);
 
     if (!isInvalid(input)) {
-      const childFiber = new Fiber(input, '0');
+      const childFiber = new Fiber(input, "0");
       fiber.children = childFiber;
-      childFiber.dom = hydrate(childFiber, input, dom, lifecycle, context, isSVG);
+      childFiber.dom = hydrate(
+        childFiber,
+        input,
+        dom,
+        lifecycle,
+        context,
+        isSVG
+      );
     }
     // fiber.c = 'stateless';
     fiber.dom = dom;
@@ -176,24 +196,51 @@ function hydrateElement(
 }
 
 // TODO: Remove recursion
-export function hydrateArrayChildren(dom, parentFiber, children, parentDOM: Element, lifecycle: LifecycleClass, context: Object, isSVG: boolean, prefix: string, isKeyed: boolean, counter: number) {
+export function hydrateArrayChildren(
+  dom,
+  parentFiber,
+  children,
+  parentDOM: Element,
+  lifecycle: LifecycleClass,
+  context: Object,
+  isSVG: boolean,
+  prefix: string,
+  isKeyed: boolean,
+  counter: number
+) {
   for (let i = 0, len = children.length; i < len; i++) {
-    const child = children[ i ];
+    const child = children[i];
 
     if (!isInvalid(child)) {
       if (isArray(child)) {
         // TODO: Add warning about nested arrays?
-        dom = hydrateArrayChildren(dom, parentFiber, child, parentDOM, lifecycle, context, isSVG, isKeyed ? '' : prefix + (i + 1) + '.', isKeyed, counter);
+        dom = hydrateArrayChildren(
+          dom,
+          parentFiber,
+          child,
+          parentDOM,
+          lifecycle,
+          context,
+          isSVG,
+          isKeyed ? "" : prefix + (i + 1) + ".",
+          isKeyed,
+          counter
+        );
       } else {
         if (parentFiber.children === null) {
           parentFiber.children = [];
-          isKeyed = isObject(child) ? !isNullOrUndef((child as IVNode).key) : false;
-          parentFiber.flags = (isKeyed ? FiberFlags.HasKeyedChildren : FiberFlags.HasNonKeydChildren);
+          isKeyed = isObject(child)
+            ? !isNullOrUndef((child as IVNode).key)
+            : false;
+          // parentFiber.flags = (isKeyed ? FiberFlags.HasKeyedChildren : FiberFlags.HasNonKeydChildren);
           if (isKeyed) {
             parentFiber.childrenKeys = new Map();
           }
         }
-        const childFiber = new Fiber(child, isKeyed ? child.key : prefix + (i + 1));
+        const childFiber = new Fiber(
+          child,
+          isKeyed ? child.key : prefix + (i + 1)
+        );
 
         parentFiber.children.push(childFiber);
         if (isKeyed) {
@@ -204,7 +251,14 @@ export function hydrateArrayChildren(dom, parentFiber, children, parentDOM: Elem
           mount(childFiber, child, parentDOM, lifecycle, context, isSVG);
         } else {
           const nextSibling = dom.nextSibling;
-          hydrate(childFiber, child as IVNode, dom as Element, lifecycle, context, isSVG);
+          hydrate(
+            childFiber,
+            child as IVNode,
+            dom as Element,
+            lifecycle,
+            context,
+            isSVG
+          );
           dom = nextSibling;
         }
       }
@@ -237,14 +291,39 @@ function hydrateChildren(
       dom = (dom as Element).nextSibling;
     }
   } else if (isArray(children)) {
-    dom = hydrateArrayChildren(dom, parentFiber, children, parentDom, lifecycle, context, isSVG, '', (parentFiber.flags & FiberFlags.HasKeyedChildren) > 0, 0)
+    dom = hydrateArrayChildren(
+      dom,
+      parentFiber,
+      children,
+      parentDom,
+      lifecycle,
+      context,
+      isSVG,
+      "",
+      (parentFiber.childFlags & FiberFlags.HasKeyedChildren) > 0,
+      0
+    );
   } else {
     // It's VNode
     if (!isNull(dom)) {
-      hydrate(parentFiber, children as IVNode, dom as Element, lifecycle, context, isSVG);
+      hydrate(
+        parentFiber,
+        children as IVNode,
+        dom as Element,
+        lifecycle,
+        context,
+        isSVG
+      );
       dom = (dom as Element).nextSibling;
     } else {
-      mount(parentFiber, children as IVNode, parentDom, lifecycle, context, isSVG);
+      mount(
+        parentFiber,
+        children as IVNode,
+        parentDom,
+        lifecycle,
+        context,
+        isSVG
+      );
     }
   }
 
@@ -274,7 +353,7 @@ function hydrateText(fiber: IFiber, text: string, dom: Element): Element {
 
 function hydrate(
   parentFiber: IFiber,
-  input: IVNode|string,
+  input: IVNode | string,
   dom: Element,
   lifecycle: LifecycleClass,
   context: Object,
@@ -311,7 +390,7 @@ function hydrate(
 
 export function hydrateRoot(
   rootFiber: IFiber,
-  input: IVNode|string,
+  input: IVNode | string,
   parentDom: Element | null,
   lifecycle: LifecycleClass
 ) {

@@ -296,10 +296,10 @@ function patchChildren(
   let patchArray = false;
   let patchKeyed = false;
 
-  if (nextFlags & VNodeFlags.HasNonKeyedChildren) {
+  if ((nextFlags & VNodeFlags.HasNonKeyedChildren) > 0) {
     patchArray = true;
   } else if (
-    fiber.flags & FiberFlags.HasKeyedChildren &&
+    (fiber.childFlags & FiberFlags.HasKeyedChildren) > 0 &&
     (nextFlags & VNodeFlags.HasKeyedChildren) > 0
   ) {
     patchKeyed = true;
@@ -347,7 +347,10 @@ function patchChildren(
     if (isArray(lastChildFibers)) {
       patchArray = true;
 
-      if (fiber.flags & FiberFlags.HasKeyedChildren && isKeyed(nextChildren)) {
+      if (
+        (fiber.childFlags & FiberFlags.HasKeyedChildren) > 0 &&
+        isKeyed(nextChildren)
+      ) {
         patchKeyed = true;
       }
     } else {
@@ -798,7 +801,7 @@ export function patchKeyedChildren(
     }
   }
 
-  parentFiber.flags = FiberFlags.HasKeyedChildren;
+  // parentFiber.flags = FiberFlags.HasKeyedChildren;
   parentFiber.childrenKeys = newChildrenKeysMap;
   parentFiber.children = newChildren;
 }

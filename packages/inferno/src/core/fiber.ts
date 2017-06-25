@@ -1,32 +1,27 @@
-import { LifecycleClass } from 'inferno-shared';
-import { IVNode } from './vnode';
+import { LifecycleClass } from "inferno-shared";
+import { IVNode } from "./vnode";
 
 // FiberFLags are used to describe shape of its vNode
 // Flags are used for internal optimizations
 // TODO: Implement this to reduce diffing overhead
 export const enum FiberFlags {
-  Text = 1,
-
-  HasNoChildren = 1 << 1, // Has no children at all, or only invalid children
+  HasNoChildren = 1 << 1,
   HasKeyedChildren = 1 << 2, // data is optimized for keyed algorithm
   HasNonKeydChildren = 1 << 3,
-  HasSingleChildren = 1 << 4, // Single Element children
-
-  hasEvents = 1 << 5, // This fiber has DOM events (TODO: Move to property?)
-
+  HasSingleChildren = 1 << 4 // Single Element children
 }
 
 export interface IFiber {
-	input: IVNode|string|number;
-	children: null|IFiber|IFiber[];
-	childrenKeys: Map<string|number, number>;
-	dom: null|Element;
-	lifeCycle: LifecycleClass;
+  input: IVNode | string | number;
+  children: null | IFiber | IFiber[];
+  childrenKeys: Map<string | number, number>;
+  dom: null | Element;
+  lifeCycle: LifecycleClass;
   // Non keyed index or keyed key
-	i: string|number;
-	// c is possible component instance
-	c: any;
-	flags: number;
+  i: string | number;
+  // c is possible component instance
+  c: any;
+  childFlags: number;
 }
 
 /**
@@ -37,12 +32,12 @@ export interface IFiber {
  * @constructor
  */
 export function Fiber(input, i) {
-	this.input = input;
-	this.dom = null;
-	this.children = null; // This value is null for Fibers that hold text nodes
+  this.input = input;
+  this.dom = null;
+  this.children = null; // This value is null for Fibers that hold text nodes
   this.childrenKeys = null;
-	this.lifeCycle = null;
-	this.i = i;
-	this.c = null;
-	this.flags = 0;
+  this.lifeCycle = null;
+  this.i = i;
+  this.c = null;
+  this.childFlags = 0;
 }
