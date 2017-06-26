@@ -193,6 +193,9 @@ function applyState<P, S>(component: Component<P, S>, force: boolean, callback?:
 
 let alreadyWarned = false;
 
+export type StateFn<P, S> = (prevState: S | null, props: P, context: any) => Partial<S>
+export type StateArg<P, S> = StateFn<P, S> | Partial<S>
+
 export default class Component<P, S> implements ComponentLifecycle<P, S> {
 	public static defaultProps: {};
 	public state: S|null = null;
@@ -243,7 +246,7 @@ export default class Component<P, S> implements ComponentLifecycle<P, S> {
 		applyState(this, true, callback);
 	}
 
-	public setState(newState, callback?: Function) {
+	public setState(newState: StateArg<P, S>, callback?: Function) {
 		if (this._unmounted) {
 			return;
 		}
@@ -257,7 +260,7 @@ export default class Component<P, S> implements ComponentLifecycle<P, S> {
 		}
 	}
 
-	public setStateSync(newState) {
+	public setStateSync(newState: StateArg<P, S>) {
 		if (process.env.NODE_ENV !== 'production') {
 			if (!alreadyWarned) {
 				alreadyWarned = true;
