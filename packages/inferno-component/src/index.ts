@@ -76,7 +76,7 @@ function addToQueue(component: Component<any, any>, force: boolean, callback?: F
 	}
 }
 
-function queueStateChanges<P, S>(component: Component<P, S>, newState: S, callback?: Function): void {
+function queueStateChanges<P, S, K extends keyof S>(component: Component<P, S>, newState: StateArg<P, S, K>, callback?: Function): void {
 	if (isFunction(newState)) {
 		newState = newState(component.state, component.props, component.context);
 	}
@@ -193,6 +193,10 @@ function applyState<P, S>(component: Component<P, S>, force: boolean, callback?:
 
 let alreadyWarned = false;
 
+export type NewState<S, K extends keyof S> = Pick<S, K>
+export type StateFn<P, S, K extends keyof S> = (prevState: S | null, props: P, context: any) => NewState<S, K>
+export type StateArg<P, S, K extends keyof S> = StateFn<P, S, K> | NewState<S, K>
+
 export default class Component<P, S> implements ComponentLifecycle<P, S> {
 	public static defaultProps: {};
 	public state: S|null = null;
@@ -201,7 +205,7 @@ export default class Component<P, S> implements ComponentLifecycle<P, S> {
 	public _blockRender = false;
 	public _blockSetState = true;
 	public _pendingSetState = false;
-	public _pendingState: S|null = null;
+	public _pendingState: any = null;
 	public _lastInput: any = null;
 	public _vNode: VNode|null = null;
 	public _unmounted = false;
@@ -243,7 +247,7 @@ export default class Component<P, S> implements ComponentLifecycle<P, S> {
 		applyState(this, true, callback);
 	}
 
-	public setState(newState, callback?: Function) {
+	public setState<K extends keyof S>(newState: StateArg<P, S, K>, callback?: Function) {
 		if (this._unmounted) {
 			return;
 		}
@@ -257,7 +261,7 @@ export default class Component<P, S> implements ComponentLifecycle<P, S> {
 		}
 	}
 
-	public setStateSync(newState) {
+	public setStateSync<K extends keyof S>(newState: StateArg<P, S, K>) {
 		if (process.env.NODE_ENV !== 'production') {
 			if (!alreadyWarned) {
 				alreadyWarned = true;
